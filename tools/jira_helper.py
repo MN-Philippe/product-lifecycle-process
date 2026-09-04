@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Small, stateless helpers for AI agents working with live Jira data.
+"""Stateless helpers for AI agents working with live Jira data.
 
 This module intentionally does not authenticate to Jira or persist Jira results.
-Use the agent's live Jira connector/client to fetch current data, then use this
-helper to resolve shared query presets, compact context, and run deterministic
+Use the active agent/connector to fetch current Jira data, then use this helper
+for shared query resolution, compact context, redaction, and deterministic
 quality checks.
 """
 
@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_QUERY_FILE = ROOT / "jira" / "queries.yaml"
 
 _SECRET_PATTERNS = [
-    re.compile(r"(?i)\b(password|passwd|pwd)\b\s*[:=]\s*([^\s,;]+)"),
+    re.compile(r"(?i)\b(password|passwd|pwd|pw)\b\s*[:=]\s*([^\s,;]+)"),
     re.compile(r"(?i)\b(api[_ -]?key|access[_ -]?token|secret)\b\s*[:=]\s*([^\s,;]+)"),
     re.compile(r"(?i)\bauthorization\s*:\s*bearer\s+([^\s]+)"),
 ]
@@ -42,12 +42,9 @@ def _flatten_adf(value: Any) -> str:
             return value["text"]
         if value.get("type") == "hardBreak":
             return "\n"
-        content = value.get("content")
-        if content is not None:
-            return _flatten_adf(content)
-        return "\n".join(
-            filter(None, (_flatten_adf(item) for item in value.values()))
-        )
+        if value.get("content") is not None:
+            return _flatten_adf(value["content"])
+        return "\n".join(filter(None, (_flatten_adf(item) for item in value.values())))
     return str(value)
 
 
@@ -75,26 +72,25 @@ def _name(value: Any) -> str | None:
 def compact_issue(issue: dict[str, Any]) -> dict[str, Any]:
     """Return a compact, secret-redacted runtime view of a Jira issue."""
     fields = issue.get("fields") if isinstance(issue.get("fields"), dict) else issue
-    description_raw = _flatten_adf(fields.get("description"))
     parent = fields.get("parent") if isinstance(fields.get("parent"), dict) else None
     fix_versions = fields.get("fixVersions") or []
     labels = fields.get("labels") or []
+    description = redact_text(_flatten_adf(fields.get("description"))).strip()
+    status = fields.get("status") if isinstance(fields.get("status"), dict) else None
 
     return {
         "key": issue.get("key") or fields.get("key"),
         "summary": fields.get("summary"),
         "issue_type": _name(fields.get("issuetype")),
         "status": _name(fields.get("status")),
-        "status_category": _name((fields.get("status") or {}).get("statusCategory"))
-        if isinstance(fields.get("status"), dict)
-        else None,
+        "status_category": _name(status.get("statusCategory")) if status else None,
         "priority": _name(fields.get("priority")),
         "assignee": _name(fields.get("assignee")),
         "parent": parent.get("key") if parent else None,
         "due_date": fields.get("duedate"),
         "fix_versions": [version.get("name") for version in fix_versions if isinstance(version, dict)],
         "labels": labels if isinstance(labels, list) else [],
-        "description": redact_text(description_raw).strip(),
+        "description": description,
     }
 
 
@@ -106,16 +102,14 @@ def extract_issues(payload: Any) -> list[dict[str, Any]]:
         return []
     if payload.get("key") or payload.get("fields"):
         return [payload]
+
     issues = payload.get("issues")
     if isinstance(issues, list):
         return [item for item in issues if isinstance(item, dict)]
-    if isinstance(issues, dict):
-        nodes = issues.get("nodes")
-        if isinstance(nodes, list):
-            return [item for item in nodes if isinstance(item, dict)]
-    nodes = payload.get("nodes")
-    if isinstance(nodes, list):
-        return [item for item in nodes if isinstance(item, dict)]
+    if isinstance(issues, dict) and isinstance(issues.get("nodes"), list):
+        return [item for item in issues["nodes"] if isinstance(item, dict)]
+    if isinstance(payload.get("nodes"), list):
+        return [item for item in payload["nodes"] if isinstance(item, dict)]
     return []
 
 
@@ -144,7 +138,11 @@ def audit_issue(issue: dict[str, Any], today: date | None = None) -> list[dict[s
         findings.append({"severity": severity, "code": code, "message": message})
 
     if contains_possible_secret(raw_description):
-        add("error", "possible_secret", "Description may contain a credential or secret. Review and remove/rotate it; the value is not echoed here.")
+        add(
+            "error",
+            "possible_secret",
+            "Description may contain a credential or secret. Review and remove/rotate it; the value is not echoed here.",
+        )
 
     if not _active(compact):
         return findings
@@ -153,20 +151,30 @@ def audit_issue(issue: dict[str, Any], today: date | None = None) -> list[dict[s
         if not description:
             add("error", "epic_description_empty", "Active Epic has no description or durable outcome context.")
         elif _links_only_or_too_thin(description):
-            add("warning", "epic_context_thin", "Epic context appears too thin or mostly link-based; verify the outcome can be understood without chasing external context.")
+            add(
+                "warning",
+                "epic_context_thin",
+                "Epic context appears too thin or mostly link-based; verify the outcome can be understood without chasing external context.",
+            )
 
     if issue_type in {"story", "task"}:
         if issue_type == "story" and not compact.get("parent"):
-            add("warning", "story_without_parent", "Active Story has no parent. Confirm whether it is intentional standalone work or should contribute to an initiative.")
+            add(
+                "warning",
+                "story_without_parent",
+                "Active Story has no parent. Confirm whether it is intentional standalone work or should contribute to an initiative.",
+            )
         if not description:
             add("error", "work_description_empty", f"Active {compact.get('issue_type') or 'work item'} has no description.")
-        else:
-            completion_signal = re.search(
-                r"(?i)acceptance|completion criteria|expected result|done when|definition of done",
-                description,
+        elif not re.search(
+            r"(?i)acceptance|completion criteria|expected result|done when|definition of done",
+            description,
+        ):
+            add(
+                "warning",
+                "completion_criteria_unclear",
+                "No obvious acceptance/completion criteria signal was found. Confirm the item has a testable definition of complete.",
             )
-            if not completion_signal:
-                add("warning", "completion_criteria_unclear", "No obvious acceptance/completion criteria signal was found. Confirm the item has a testable definition of complete.")
 
     if issue_type == "bug":
         if not description:
@@ -182,8 +190,7 @@ def audit_issue(issue: dict[str, Any], today: date | None = None) -> list[dict[s
     due_date = compact.get("due_date")
     if isinstance(due_date, str):
         try:
-            parsed = date.fromisoformat(due_date)
-            if parsed < today:
+            if date.fromisoformat(due_date) < today:
                 add("warning", "past_due", f"Due date {due_date} has passed while the issue remains active.")
         except ValueError:
             add("warning", "invalid_due_date", "Due date could not be parsed as YYYY-MM-DD.")
@@ -194,11 +201,12 @@ def audit_issue(issue: dict[str, Any], today: date | None = None) -> list[dict[s
 def audit_collection(issues: Iterable[dict[str, Any]], today: date | None = None) -> list[dict[str, Any]]:
     issue_list = list(issues)
     compact_by_key = {
-        compact.get("key"): compact
+        compact["key"]: compact
         for compact in (compact_issue(issue) for issue in issue_list)
         if compact.get("key")
     }
     output = []
+
     for issue in issue_list:
         compact = compact_issue(issue)
         findings = audit_issue(issue, today=today)
@@ -297,8 +305,7 @@ def main(argv: list[str] | None = None) -> int:
             print(resolve_query(args.name, _parse_params(args.param), args.queries))
             return 0
 
-        payload = _load_json(args.json_file)
-        issues = extract_issues(payload)
+        issues = extract_issues(_load_json(args.json_file))
         if not issues:
             raise ValueError("No Jira issues found in the supplied JSON payload")
 
