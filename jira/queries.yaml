@@ -5,6 +5,14 @@ projects:
   primary: [RAD, MYM]
 
 queries:
+  committed_story_bugs:
+    description: Stories and standalone Bugs with a Fix Version; the scope boundary for the AI Release Confidence experiment.
+    jql: >
+      project in (RAD, MYM)
+      AND issuetype in (Story, Bug)
+      AND fixVersion is not EMPTY
+      ORDER BY fixVersion ASC, priority DESC, key ASC
+
   active_epics:
     description: Active Epics across the primary product boards.
     jql: >
