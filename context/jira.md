@@ -5,13 +5,13 @@
 - `RAD` - Radius
 - `MYM` - myMathnasium
 
-Always query Jira live for current issues and metadata.
+Always query Jira live for current issues, field values, and history.
 
 ## Working interpretation
 
 The boards currently contain a mix of finite initiatives, persistent capability buckets, product Stories, engineering work, Bugs, and Spikes. Do not assume that an existing issue type or parent relationship proves the semantic role of an item.
 
-A recurring agent responsibility is to distinguish what an item *is intended to represent* from how Jira happens to classify it today.
+A recurring agent responsibility is to understand what an item is intended to represent from its live context without inventing a hierarchy redesign that has not been agreed.
 
 ## Core hierarchy
 
@@ -19,17 +19,9 @@ The common practical hierarchy is:
 
 `Epic -> Story / Task / Bug -> Sub-task`
 
-Some existing work does not follow this consistently. Treat hierarchy gaps as something to evaluate, not automatically as an error: standalone work can be legitimate, but meaningful delivery work should still have enough context to explain what outcome it contributes to.
+Some existing work does not follow this consistently. Evaluate hierarchy/context gaps when relevant, but the long-term Epic vs persistent-capability model is still an open design question.
 
-## Epic interpretation
-
-Before reviewing an Epic, classify it as one of:
-
-1. **Finite initiative** - a bounded outcome that can eventually be completed.
-2. **Persistent capability/work bucket** - an ongoing area such as a product capability, system-hardening stream, generic bug bucket, or other non-finite grouping.
-3. **Unclear/misclassified** - insufficient information to determine the intended role.
-
-Do not require a persistent capability bucket to satisfy every finite-initiative rule. Instead, flag the semantic mismatch and recommend a cleaner classification/model when useful.
+Do not enforce a new Epic taxonomy yet.
 
 ## Workflow interpretation
 
@@ -37,7 +29,31 @@ Issue status must be read live. Parent status is not currently guaranteed to rol
 
 ## Release metadata
 
-Fix versions are meaningful delivery signals, especially at Story/Bug level. Use them when reviewing release scope, but do not assume that an Epic's metadata is complete or authoritative without examining its children.
+**Fix Version is the delivery commitment** once Product + Engineering have planned the work.
+
+Distinguish it from the business due date:
+
+- **business due date** = when the business wants/needs the outcome;
+- **Fix Version** = the delivery team's current release commitment.
+
+A Fix Version change is meaningful history:
+
+- moved earlier -> expedite / compressed delivery window;
+- moved later -> delay / revised commitment.
+
+Use Jira field changelog/history to preserve and interpret commitment changes rather than copying them into Git.
+
+## AI Release Confidence fields
+
+The initial experiment uses three Jira fields:
+
+- **AI Release Confidence** - AI-owned: `On Track | Watch | At Risk`;
+- **AI Release Confidence Reason** - AI-owned concise rationale;
+- **AI Release Confidence Feedback** - human-owned persistent context, read but never edited by the agent.
+
+The scheduled early-morning scan assesses only Stories and standalone Bugs that have a Fix Version.
+
+See `standards/ai-release-confidence.md`.
 
 ## Security hygiene
 
