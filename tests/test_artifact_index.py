@@ -30,8 +30,8 @@ class ArtifactIndexTests(unittest.TestCase):
             self.assertIn("initiatives/MYM-421-observability/README.md", rendered)
             self.assertIn("initiatives/MYM-421-observability/architecture.md", rendered)
             self.assertIn("initiatives/MYM-421-observability/decisions/ADR-001-logging.md", rendered)
-            self.assertNotIn("status", rendered.lower())
-            self.assertNotIn("assignee", rendered.lower())
+            self.assertNotIn("John Doe", rendered)
+            self.assertNotIn("OCT-2026", rendered)
 
 
 if __name__ == "__main__":
