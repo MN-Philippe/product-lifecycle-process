@@ -1,0 +1,63 @@
+# Reusable JQL patterns for agents.
+# Results are always fetched live from Jira; never persist query results here.
+
+projects:
+  primary: [RAD, MYM]
+
+queries:
+  active_epics:
+    description: Active Epics across the primary product boards.
+    jql: >
+      project in (RAD, MYM)
+      AND issuetype = Epic
+      AND statusCategory != Done
+      ORDER BY updated DESC
+
+  orphan_stories:
+    description: Active Stories without a Jira parent.
+    jql: >
+      project in (RAD, MYM)
+      AND issuetype = Story
+      AND parent is EMPTY
+      AND statusCategory != Done
+      ORDER BY updated DESC
+
+  active_bugs:
+    description: Active Bugs across the primary product boards.
+    jql: >
+      project in (RAD, MYM)
+      AND issuetype = Bug
+      AND statusCategory != Done
+      ORDER BY updated DESC
+
+  recently_created:
+    description: Recent active work for intake/review. Supply a created-date window when running.
+    template: >
+      project in (RAD, MYM)
+      AND statusCategory != Done
+      AND created >= "{{created_since}}"
+      ORDER BY created DESC
+
+  release_scope:
+    description: Work assigned to a specific project/version.
+    parameters: [project, fix_version]
+    template: >
+      project = {{project}}
+      AND fixVersion = "{{fix_version}}"
+      ORDER BY issuetype ASC, priority DESC, key ASC
+
+  initiative_children:
+    description: Direct children of an Epic/parent.
+    parameters: [parent_key]
+    template: >
+      parent = {{parent_key}}
+      ORDER BY issuetype ASC, status ASC, priority DESC
+
+  stale_active_work:
+    description: Active work not updated since a caller-supplied date.
+    parameters: [updated_before]
+    template: >
+      project in (RAD, MYM)
+      AND statusCategory != Done
+      AND updated < "{{updated_before}}"
+      ORDER BY updated ASC
