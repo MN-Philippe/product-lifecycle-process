@@ -18,6 +18,7 @@ When the task is about Jira structure, issue quality, hierarchy, or workflow:
 - read `context/jira.md`
 - read `jira/quality-rules.md`
 - use `jira/queries.yaml` for known query patterns
+- use `tools/jira_helper.py` when deterministic query resolution, compaction, redaction, or audit checks are useful
 
 When reviewing an Epic:
 - read `playbooks/review-epic.md`
@@ -45,7 +46,8 @@ When technical design, architecture, rollout, testing, or integration detail is 
 - scaffold only the artifacts that add durable value
 
 When an initiative workspace exists:
-- inspect `initiatives/<JIRA-KEY>-*/`
+- inspect `ARTIFACT_INDEX.md` first
+- inspect `initiatives/<JIRA-KEY>-*/` for relevant durable context
 - treat it as durable context only; still fetch Jira live
 
 ## Working pattern
@@ -53,12 +55,35 @@ When an initiative workspace exists:
 For most tasks:
 
 1. Understand the user's goal.
-2. Fetch live Jira data relevant to that goal.
-3. Read only the repo guidance needed for the task.
-4. Inspect code or other repositories when technical truth matters.
-5. Identify gaps, conflicts, risks, and missing decisions.
-6. Produce a concise recommendation or proposed change set.
-7. Perform writes only within the user's authorization.
+2. Resolve a known query shortcut when one applies.
+3. Fetch live Jira data relevant to that goal through the available connector/client.
+4. Read only the repo guidance needed for the task.
+5. Optionally compact/audit the live payload with `tools/jira_helper.py`; never treat the helper as the data source.
+6. Inspect code or other repositories when technical truth matters.
+7. Inspect durable initiative artifacts when they exist.
+8. Identify gaps, conflicts, risks, and missing decisions.
+9. Produce a concise recommendation or proposed change set.
+10. Perform writes only within the user's authorization.
+
+## Helper examples
+
+```bash
+python tools/jira_helper.py list
+python tools/jira_helper.py query active_epics
+python tools/jira_helper.py query release_scope --param project=MYM --param fix_version=OCT-2026
+python tools/jira_helper.py context jira-result.json
+python tools/jira_helper.py audit jira-result.json
+```
+
+The JSON passed to `context` or `audit` must come from a current Jira read. Do not check that JSON into the repository.
+
+The artifact index is generated from repository files:
+
+```bash
+python tools/artifact_index.py --write
+```
+
+Do not manually add Jira status, assignee, priority, release, or child-ticket information to that index.
 
 ## Quality over templates
 

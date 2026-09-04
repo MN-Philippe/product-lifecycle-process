@@ -31,7 +31,8 @@ queries:
       ORDER BY updated DESC
 
   recently_created:
-    description: Recent active work for intake/review. Supply a created-date window when running.
+    description: Recent active work for intake/review.
+    parameters: [created_since]
     template: >
       project in (RAD, MYM)
       AND statusCategory != Done
