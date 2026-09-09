@@ -33,7 +33,35 @@ It may be:
 
 Search prior Jira work and requirements when useful. Where possible, trace a true defect back to the Story, requirement, release, or behavior it violates.
 
-## 3. Functional triage
+## 3. Watchlist Bugs
+
+A **Watchlist Bug** is an active triage state for a reported defect that is worth tracking, but is not yet ready for a delivery commitment. This is commonly appropriate when the evidence is credible but reproduction, scope, trigger conditions, or technical understanding are still incomplete.
+
+The Jira source of truth is:
+
+- **Confirmed Issue = Watchlist issue**;
+- **Fix Version is normally empty**.
+
+A Watchlist Bug is not merely a parking lot. Keep enough current evidence on the issue to make the next review useful, including as applicable:
+
+- known production examples / support cases;
+- observed and expected behavior;
+- logs, screenshots, or data evidence;
+- current hypothesis or suspected trigger;
+- what is still missing or unknown;
+- a workaround, if one exists;
+- the evidence or event that should cause the issue to be reviewed again.
+
+When the evidence is sufficient to treat the item as an actionable defect, change **Confirmed Issue** from **Watchlist issue** to **Confirmed issue** and prioritize it normally. Add a Fix Version only when delivery is actually committed.
+
+A Bug that is still marked **Watchlist issue** but has a Fix Version should be treated as an inconsistent state unless it is intentionally in transition. Once a Fix Version is assigned, it is a delivery commitment and should leave the Watchlist state.
+
+Do not confuse Jira's **Watchlist issue** state with **AI Release Confidence = Watch**. They are different concepts:
+
+- **Watchlist issue** = pre-commitment Bug triage / observation;
+- **AI Release Confidence = Watch** = delivery risk on an already committed Story or standalone Bug with a Fix Version.
+
+## 4. Functional triage
 
 A useful Bug should make the issue understandable and investigable.
 
@@ -49,7 +77,7 @@ Capture as applicable:
 
 A screenshot by itself is not a complete Bug if the issue cannot be understood without guessing.
 
-## 4. Technical assessment
+## 5. Technical assessment
 
 Before treating a standalone Bug as ready, Dev + QA + PM should understand enough of the technical scope to avoid making a narrow patch that breaks something else.
 
@@ -65,7 +93,7 @@ Assess as appropriate:
 
 The goal is not to require perfect root-cause analysis before work starts. The goal is to **fix the right problem in the right way with a conscious understanding of regression risk**.
 
-## 5. Prioritization
+## 6. Prioritization
 
 Once ready:
 
@@ -76,7 +104,7 @@ Once ready:
 
 A standalone Bug with a Fix Version is a delivery commitment and follows the same release-confidence and delivery rules as a committed Story.
 
-## 6. Bug of Story
+## 7. Bug of Story
 
 A defect discovered while a Story is still being developed or validated will normally remain a **Bug of Story**, tied to the parent Story and riding the parent Story's delivery path.
 
@@ -92,7 +120,7 @@ Promote it when, for example, it is:
 
 Do not split defects away merely to make the parent Story appear complete while known Story-related defects remain unresolved.
 
-## 7. Delivery pipeline
+## 8. Delivery pipeline
 
 Standalone Bugs use the same normal delivery pipeline as Stories:
 
@@ -100,7 +128,7 @@ Standalone Bugs use the same normal delivery pipeline as Stories:
 
 QA owns Ready for Release. Business + PM own the release decision.
 
-## 8. Secrets and sensitive content
+## 9. Secrets and sensitive content
 
 Do not place passwords, tokens, API keys, or other authentication secrets in Bug descriptions, comments, or evidence.
 
