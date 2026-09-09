@@ -13,6 +13,26 @@ queries:
       AND fixVersion is not EMPTY
       ORDER BY fixVersion ASC, priority DESC, key ASC
 
+  watchlist_bugs:
+    description: Active pre-commitment Bugs explicitly marked as Watchlist issues. These normally have no Fix Version and are reviewed for new evidence, reproduction, promotion to Confirmed issue, consolidation, or closure.
+    jql: >
+      project in (RAD, MYM)
+      AND issuetype = Bug
+      AND statusCategory != Done
+      AND "Confirmed Issue" = "Watchlist issue"
+      AND fixVersion is EMPTY
+      ORDER BY priority DESC, updated DESC, key ASC
+
+  watchlist_with_fix_version:
+    description: Hygiene check for Bugs still marked Watchlist issue after a delivery commitment has been assigned. Review and normally promote them to Confirmed issue.
+    jql: >
+      project in (RAD, MYM)
+      AND issuetype = Bug
+      AND statusCategory != Done
+      AND "Confirmed Issue" = "Watchlist issue"
+      AND fixVersion is not EMPTY
+      ORDER BY fixVersion ASC, priority DESC, key ASC
+
   active_epics:
     description: Active Epics across the primary product boards.
     jql: >
