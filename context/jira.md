@@ -5,7 +5,11 @@
 - `RAD` - Radius
 - `MYM` - myMathnasium
 
+Jira site: `https://mathnasium.atlassian.net`
+
 Always query Jira live for current issues, field values, and history.
+
+Whenever a Jira item is mentioned in user-facing output, make its visible Jira key a hyperlink to the live issue. Prefer the connector-provided `webUrl`; otherwise use `https://mathnasium.atlassian.net/browse/<JIRA-KEY>` after confirming the key is valid. In tables, documents, and slide decks, keep the short key visible and make it clickable instead of showing the long URL.
 
 ## Working interpretation
 
