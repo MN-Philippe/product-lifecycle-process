@@ -23,6 +23,8 @@ Some existing work does not follow this consistently. Evaluate hierarchy/context
 
 Do not enforce a new Epic taxonomy yet.
 
+One specific Bug rule is already decided: standalone Bugs should be categorized under the product area, feature, or initiative they impact rather than under a generic **Bug Fixing** Epic. This rule does not otherwise settle the broader Epic/capability taxonomy.
+
 ## Workflow interpretation
 
 Issue status must be read live. Parent status is not currently guaranteed to roll up coherently from children, so never infer initiative health from Epic status alone. Inspect child work and release metadata when evaluating progress.
