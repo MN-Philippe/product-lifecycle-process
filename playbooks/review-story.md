@@ -11,9 +11,8 @@ Read `standards/story-quality.md` first.
 1. Fetch the Story live.
 2. Fetch its parent/related context when useful to understand the intended outcome.
 3. Check the Summary against the required format:
-   - `As a [specific actor]`
-   - `I want [clear behavior/capability]`
-   - `so that [clear outcome/value]`
+   - `As a [specific actor], I want [clear behavior/capability] so that [clear outcome/value]`
+   - do not place a comma before `so that`.
 4. Apply the ELT test: can someone understand who / what / why from the Summary alone?
 5. Check whether the description captures the business context/rules/scenarios that do not fit in the Summary.
 6. Evaluate acceptance criteria for specificity, observability, and testability. Prefer Given / When / Then when it improves clarity.
