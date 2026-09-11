@@ -86,6 +86,18 @@ For most tasks:
 9. Produce a concise recommendation or proposed change set.
 10. Perform writes only within the user's authorization or an explicitly approved automation write policy.
 
+## Jira item hyperlink rule
+
+Whenever a Jira item is mentioned in user-facing output, make the visible Jira key a hyperlink to the live issue. Do not present a bare Jira key when the output format supports hyperlinks.
+
+Preferred behavior:
+
+- use the issue `webUrl` returned by the live Jira connector when available;
+- otherwise link to `https://mathnasium.atlassian.net/browse/<JIRA-KEY>` after confirming the key refers to a real Jira item;
+- in Markdown, use the key as the link text, for example `[RAD-1234](https://mathnasium.atlassian.net/browse/RAD-1234)`;
+- in tables, documents, and slide decks, keep the short Jira key visible and make that text clickable rather than displaying the full URL;
+- apply the rule to every Jira item mentioned, including Stories, Bugs, Epics, Tasks, and Spikes.
+
 ## Helper examples
 
 ```bash
