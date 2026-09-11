@@ -6,7 +6,9 @@ This standard defines what a good Jira Story should look like for RAD and MYM.
 
 The Jira Story Summary should use the full user-story format:
 
-> **As a [specific actor], I want [clear behavior/capability], so that [clear outcome/value].**
+> **As a [specific actor], I want [clear behavior/capability] so that [clear outcome/value].**
+
+Do not place a comma before `so that`.
 
 This is not just formatting. The Summary should be good enough that an ELT member can read it by itself and understand what the Story is about.
 
@@ -45,11 +47,11 @@ If the `I want` and `So that` do not clearly explain the Story to someone outsid
 
 Weak:
 
-> As a user, I want better scheduling, so that scheduling is easier.
+> As a user, I want better scheduling so that scheduling is easier.
 
 Stronger:
 
-> As a Center Director, I want to be warned before an appointment exceeds available instructor capacity, so that I can resolve the conflict before confirming the booking.
+> As a Center Director, I want to be warned before an appointment exceeds available instructor capacity so that I can resolve the conflict before confirming the booking.
 
 ## Description
 
