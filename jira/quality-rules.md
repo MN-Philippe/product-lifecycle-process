@@ -29,7 +29,9 @@ Flag obvious quality gaps such as an empty/links-only Epic or an initiative that
 
 The Jira Story Summary **must** use:
 
-> **As a [specific actor], I want [clear behavior/capability], so that [clear outcome/value].**
+> **As a [specific actor], I want [clear behavior/capability] so that [clear outcome/value].**
+
+Do not place a comma before `so that`.
 
 Quality test:
 
@@ -110,6 +112,8 @@ For a standalone Bug, look for:
 - QA verification approach.
 
 A screenshot alone is not sufficient if the problem cannot be understood without guessing.
+
+Standalone Bugs should be categorized under the product area, feature, or initiative they impact. Do not use a generic **Bug Fixing** Epic as the default parent/container. If the correct area is not obvious, determine it during triage rather than routing the Bug to a catch-all Bug Epic.
 
 Dev + QA + PM jointly decide whether a defect found during Story delivery stays a Bug of Story or becomes a standalone Bug.
 
