@@ -33,7 +33,23 @@ It may be:
 
 Search prior Jira work and requirements when useful. Where possible, trace a true defect back to the Story, requirement, release, or behavior it violates.
 
-## 3. Watchlist Bugs
+## 3. Categorize by impacted area or feature
+
+Standalone Bugs should be categorized based on the product area, feature, or initiative they impact so the Bug appears in the same product context as the behavior it affects.
+
+Do **not** use a generic **Bug Fixing** Epic as the default parent/container for Bugs.
+
+During triage:
+
+- identify the impacted product area or feature;
+- associate the Bug with the most appropriate existing product context when one exists;
+- prefer the feature/area being affected over a generic defect bucket;
+- if the correct categorization is unclear, resolve that as part of triage rather than automatically routing the Bug to a catch-all Bug Epic;
+- when encountering an existing Bug under the generic **Bug Fixing** Epic, recommend moving it to the appropriate impacted area/feature when that categorization can be determined confidently.
+
+This rule does not resolve the broader long-term Epic/capability taxonomy. It establishes only that **Bug Fixing is not the desired product categorization for Bugs**.
+
+## 4. Watchlist Bugs
 
 A **Watchlist Bug** is an active triage state for a reported defect that is worth tracking, but is not yet ready for a delivery commitment. This is commonly appropriate when the evidence is credible but reproduction, scope, trigger conditions, or technical understanding are still incomplete.
 
@@ -61,7 +77,7 @@ Do not confuse Jira's **Watchlist issue** state with **AI Release Confidence = W
 - **Watchlist issue** = pre-commitment Bug triage / observation;
 - **AI Release Confidence = Watch** = delivery risk on an already committed Story or standalone Bug with a Fix Version.
 
-## 4. Functional triage
+## 5. Functional triage
 
 A useful Bug should make the issue understandable and investigable.
 
@@ -77,7 +93,7 @@ Capture as applicable:
 
 A screenshot by itself is not a complete Bug if the issue cannot be understood without guessing.
 
-## 5. Technical assessment
+## 6. Technical assessment
 
 Before treating a standalone Bug as ready, Dev + QA + PM should understand enough of the technical scope to avoid making a narrow patch that breaks something else.
 
@@ -93,7 +109,7 @@ Assess as appropriate:
 
 The goal is not to require perfect root-cause analysis before work starts. The goal is to **fix the right problem in the right way with a conscious understanding of regression risk**.
 
-## 6. Prioritization
+## 7. Prioritization
 
 Once ready:
 
@@ -104,7 +120,7 @@ Once ready:
 
 A standalone Bug with a Fix Version is a delivery commitment and follows the same release-confidence and delivery rules as a committed Story.
 
-## 7. Bug of Story
+## 8. Bug of Story
 
 A defect discovered while a Story is still being developed or validated will normally remain a **Bug of Story**, tied to the parent Story and riding the parent Story's delivery path.
 
@@ -120,7 +136,9 @@ Promote it when, for example, it is:
 
 Do not split defects away merely to make the parent Story appear complete while known Story-related defects remain unresolved.
 
-## 8. Delivery pipeline
+When promoted to a standalone Bug, categorize it under the impacted product area/feature rather than a generic Bug Fixing Epic.
+
+## 9. Delivery pipeline
 
 Standalone Bugs use the same normal delivery pipeline as Stories:
 
@@ -128,7 +146,7 @@ Standalone Bugs use the same normal delivery pipeline as Stories:
 
 QA owns Ready for Release. Business + PM own the release decision.
 
-## 9. Secrets and sensitive content
+## 10. Secrets and sensitive content
 
 Do not place passwords, tokens, API keys, or other authentication secrets in Bug descriptions, comments, or evidence.
 
