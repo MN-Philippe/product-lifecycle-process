@@ -19,7 +19,7 @@ When reasoning about the product lifecycle, read only the standards relevant to 
 
 - `standards/product-lifecycle.md` - intake, Business Requirements Complete, commitment, Product Complete, delivery, release, and exceptions
 - `standards/story-quality.md` - Story Summary and acceptance-criteria quality
-- `standards/bug-quality.md` - Bug classification, technical assessment, prioritization, and Bug-of-Story rules
+- `standards/bug-quality.md` - Bug classification, categorization, technical assessment, prioritization, and Bug-of-Story rules
 - `standards/ai-release-confidence.md` - scheduled AI Release Confidence experiment
 
 These standards are authoritative when older playbook wording conflicts with them.
@@ -111,11 +111,19 @@ Do not manually add Jira status, assignee, priority, release, or child-ticket in
 
 For Jira **Stories**, the Summary format is required:
 
-> **As a [specific actor], I want [clear behavior/capability], so that [clear outcome/value].**
+> **As a [specific actor], I want [clear behavior/capability] so that [clear outcome/value].**
+
+Do not place a comma before `so that`.
 
 The `I want` and `So that` must be clear enough that ELT can understand the Story from the Summary alone. Do not weaken this standard merely because the underlying work is technical; choose the clearest truthful actor, behavior, and outcome.
 
 Tasks, Spikes, and other non-Story issue types can use structures appropriate to their work.
+
+## Bug categorization rule
+
+Standalone Bugs should be categorized under the product area, feature, or initiative they impact. Do not use a generic **Bug Fixing** Epic as the default parent/container.
+
+When an appropriate area/feature is known, associate the Bug there so its product context is visible. If the correct categorization is unclear, determine it during triage rather than routing the Bug into a catch-all Bug Epic.
 
 ## Scheduled AI Release Confidence boundary
 
