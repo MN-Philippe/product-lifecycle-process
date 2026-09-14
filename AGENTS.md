@@ -19,7 +19,7 @@ When reasoning about the product lifecycle, read only the standards relevant to 
 
 - `standards/product-lifecycle.md` - intake, Business Requirements Complete, commitment, Product Complete, delivery, release, and exceptions
 - `standards/story-quality.md` - Story Summary and acceptance-criteria quality
-- `standards/bug-quality.md` - Bug classification, technical assessment, prioritization, and Bug-of-Story rules
+- `standards/bug-quality.md` - Bug classification, categorization, technical assessment, prioritization, and Bug-of-Story rules
 - `standards/ai-release-confidence.md` - scheduled AI Release Confidence experiment
 
 These standards are authoritative when older playbook wording conflicts with them.
@@ -86,6 +86,18 @@ For most tasks:
 9. Produce a concise recommendation or proposed change set.
 10. Perform writes only within the user's authorization or an explicitly approved automation write policy.
 
+## Jira item hyperlink rule
+
+Whenever a Jira item is mentioned in user-facing output, make the visible Jira key a hyperlink to the live issue. Do not present a bare Jira key when the output format supports hyperlinks.
+
+Preferred behavior:
+
+- use the issue `webUrl` returned by the live Jira connector when available;
+- otherwise link to `https://mathnasium.atlassian.net/browse/<JIRA-KEY>` after confirming the key refers to a real Jira item;
+- in Markdown, use the key as the link text, for example `[RAD-1234](https://mathnasium.atlassian.net/browse/RAD-1234)`;
+- in tables, documents, and slide decks, keep the short Jira key visible and make that text clickable rather than displaying the full URL;
+- apply the rule to every Jira item mentioned, including Stories, Bugs, Epics, Tasks, and Spikes.
+
 ## Helper examples
 
 ```bash
@@ -111,11 +123,19 @@ Do not manually add Jira status, assignee, priority, release, or child-ticket in
 
 For Jira **Stories**, the Summary format is required:
 
-> **As a [specific actor], I want [clear behavior/capability], so that [clear outcome/value].**
+> **As a [specific actor], I want [clear behavior/capability] so that [clear outcome/value].**
+
+Do not place a comma before `so that`.
 
 The `I want` and `So that` must be clear enough that ELT can understand the Story from the Summary alone. Do not weaken this standard merely because the underlying work is technical; choose the clearest truthful actor, behavior, and outcome.
 
 Tasks, Spikes, and other non-Story issue types can use structures appropriate to their work.
+
+## Bug categorization rule
+
+Standalone Bugs should be categorized under the product area, feature, or initiative they impact. Do not use a generic **Bug Fixing** Epic as the default parent/container.
+
+When an appropriate area/feature is known, associate the Bug there so its product context is visible. If the correct categorization is unclear, determine it during triage rather than routing the Bug into a catch-all Bug Epic.
 
 ## Scheduled AI Release Confidence boundary
 

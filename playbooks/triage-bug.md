@@ -2,7 +2,7 @@
 
 ## Goal
 
-Turn a reported symptom into the correct work item, understand the safest fix scope, and avoid treating every report as a standalone Bug by default.
+Turn a reported symptom into the correct work item, understand the safest fix scope, categorize it in the right product context, and avoid treating every report as a standalone Bug by default.
 
 Read `standards/bug-quality.md` first.
 
@@ -28,13 +28,14 @@ Read `standards/bug-quality.md` first.
    - broader architecture/integration/data implications;
    - how QA will verify the fix.
 8. If the defect was found while delivering a Story, decide jointly whether it should remain a Bug of Story or become a standalone Bug.
-9. For a ready standalone Bug, recommend prioritization treatment:
+9. For a standalone Bug, identify the impacted product area/feature and associate the Bug with that context. Do not use the generic **Bug Fixing** Epic as the default parent. If an existing Bug is under **Bug Fixing**, recommend moving it when the correct area/feature can be determined confidently.
+10. For a ready standalone Bug, recommend prioritization treatment:
    - routine team prioritization;
    - sprint-planning visibility;
    - business prioritization when impact/visibility warrants it;
    - expedite when urgency warrants it.
-10. If a Fix Version is assigned, treat it as a delivery commitment and apply the same delivery/release-confidence rules as a committed Story.
-11. Flag credential/secret-like content without repeating it.
+11. If a Fix Version is assigned, treat it as a delivery commitment and apply the same delivery/release-confidence rules as a committed Story.
+12. Flag credential/secret-like content without repeating it.
 
 ## Output
 
@@ -43,10 +44,11 @@ Read `standards/bug-quality.md` first.
 - **Observed vs expected**
 - **Repro confidence**
 - **Impact / affected scope**
+- **Product area / feature categorization**
 - **Technical fix-scope / regression concerns**
 - **QA verification needs**
 - **Bug of Story vs standalone recommendation**
 - **Prioritization recommendation**
 - **Recommended Jira changes**
 
-Do not turn implementation guesses into facts. Do not split a Story-related defect into future work merely to make the parent Story appear complete.
+Do not turn implementation guesses into facts. Do not split a Story-related defect into future work merely to make the parent Story appear complete. Do not route standalone Bugs into a generic Bug Fixing Epic when their impacted area/feature can be identified.

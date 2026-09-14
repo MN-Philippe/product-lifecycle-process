@@ -5,7 +5,11 @@
 - `RAD` - Radius
 - `MYM` - myMathnasium
 
+Jira site: `https://mathnasium.atlassian.net`
+
 Always query Jira live for current issues, field values, and history.
+
+Whenever a Jira item is mentioned in user-facing output, make its visible Jira key a hyperlink to the live issue. Prefer the connector-provided `webUrl`; otherwise use `https://mathnasium.atlassian.net/browse/<JIRA-KEY>` after confirming the key is valid. In tables, documents, and slide decks, keep the short key visible and make it clickable instead of showing the long URL.
 
 ## Working interpretation
 
@@ -22,6 +26,8 @@ The common practical hierarchy is:
 Some existing work does not follow this consistently. Evaluate hierarchy/context gaps when relevant, but the long-term Epic vs persistent-capability model is still an open design question.
 
 Do not enforce a new Epic taxonomy yet.
+
+One specific Bug rule is already decided: standalone Bugs should be categorized under the product area, feature, or initiative they impact rather than under a generic **Bug Fixing** Epic. This rule does not otherwise settle the broader Epic/capability taxonomy.
 
 ## Workflow interpretation
 
