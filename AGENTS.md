@@ -135,7 +135,7 @@ For multi-repository Epics/projects, implementation Stories should be repository
 
 MYM is a common multi-repository Jira project: do not assume a MYM Story belongs to one repository from the Jira key alone. Inspect the implementation context/PRs and use repository prefixes such as `[Radius]`, `[Scheduling]`, or `[Guardian Portal]` as appropriate.
 
-Use the canonical personas from `standards/personas.md`. **Center Director** is the default persona for normal center-level operational/admin work; do not use Center Admin, Radius User, Admin User, CD, or generic User when Center Director is the real actor.
+Use the canonical personas from `standards/personas.md`. Preserve the most specific real center role when known, including **Franchise Owner (FO)**, **Center Director (CD)**, and **Assistant Center Director (ACD)**. FO/CD/ACD are valid Story personas and valid abbreviations. Do not collapse them into vague labels such as Center Admin, Radius User, Admin User, Admin, or generic User.
 
 The `I want` and `So that` must be clear enough that ELT can understand the Story from the Summary alone. Do not weaken this standard merely because the underlying work is technical; choose the clearest truthful actor, behavior, and outcome.
 
