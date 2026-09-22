@@ -16,30 +16,38 @@ Example:
 
 > As a Guardian, I want Canadian address labels to use the correct terminology so that my profile reflects my local format.
 
-### Center Director
+### Center roles
 
-Use **Center Director** for normal center-level operational and administrative work in Radius or related center tools.
+Preserve the actual center role when it is known. Do **not** collapse center-facing work into one generic administrative persona.
 
-This is the canonical replacement for overlapping labels such as:
+Canonical center roles include:
 
-- Center Admin;
-- Radius User;
-- Admin User;
-- Admin;
-- CD;
-- generic User, when the real actor is center staff performing center operations.
+- **Franchise Owner (FO)** — ownership, financial responsibility, organization-level access, or owner-specific controls;
+- **Center Director (CD)** — day-to-day center leadership, scheduling, enrollment, staffing, and operational administration;
+- **Assistant Center Director (ACD)** — center operational work performed with ACD-specific permissions or responsibilities;
+- **Instructor** — instructional-session workflows and instructor-specific behavior.
 
-Use another persona instead when the requirement genuinely depends on a different role's permissions, responsibilities, or goals.
+The common abbreviations **FO**, **CD**, and **ACD** are valid persona names in Story Summaries. Full role names are also valid. Prefer whichever form is already standard in the relevant product/business context, but be consistent within related work.
 
-### Center Owner
+Use the most specific real role supported by the requirement. Do not rewrite a known FO, CD, or ACD requirement as a generic center persona.
 
-Use **Center Owner** when ownership-specific concerns materially matter, such as owner-level permissions, financial responsibility, organization access, or owner-only controls.
+Non-persona labels such as **Center Admin**, **Radius User**, **Admin User**, **Admin**, or generic **User** should be replaced with the actual role when it can be determined from the workflow, permissions, and business context.
 
-Do not collapse Center Owner into Center Director when the distinction affects behavior or authorization.
+### Franchise Owner (FO)
 
-### Instructor
+Use **Franchise Owner** or **FO** when ownership-specific concerns materially matter, such as owner-level permissions, financial responsibility, organization access, or owner-only controls.
 
-Use **Instructor** for instructional-session workflows, DWP/session execution, instructional notes, or other behavior performed specifically by instructional staff.
+Do not use **Center Owner** as the canonical term.
+
+### Center Director (CD)
+
+Use **Center Director** or **CD** when the capability belongs to the Center Director's operational responsibilities.
+
+### Assistant Center Director (ACD)
+
+Use **Assistant Center Director** or **ACD** when the capability specifically belongs to or must account for that role.
+
+Do not automatically substitute CD for ACD when permissions or responsibilities differ.
 
 ### Education Manager
 
@@ -96,7 +104,7 @@ Instead of:
 
 Prefer:
 
-> As a Center Director, I want Canadian tax behavior...
+> As an FO, I want Canadian tax behavior...
 
 or:
 
@@ -108,13 +116,13 @@ Instead of:
 
 Prefer the actual role:
 
-> As a Center Director, I want...
+> As a CD, I want...
 
 ## Avoid combined personas
 
 Avoid summaries such as:
 
-> As a Guardian or Center Director...
+> As a Guardian or CD...
 
 If the two personas perform materially different actions or have different permissions, split the work or choose the correct persona for each Story.
 
@@ -128,8 +136,9 @@ Avoid:
 - Admin;
 - Admin User;
 - Radius User;
-- CD;
-- vague role abbreviations.
+- vague or invented role abbreviations.
+
+Known business abbreviations such as **FO**, **CD**, and **ACD** are valid and should not be flagged merely because they are abbreviated.
 
 When reviewing an existing Story, infer the real actor from the behavior, permissions, UI surface, and acceptance criteria before rewriting the Summary.
 
