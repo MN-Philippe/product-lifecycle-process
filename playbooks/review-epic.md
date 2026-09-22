@@ -18,9 +18,10 @@ Do not treat an existing persistent/bucket Epic as invalid merely because it is 
 4. Evaluate whether the Epic provides enough useful context for the work it currently contains.
 5. For a clearly finite initiative, assess problem, outcome, scope, success, dependencies, and decomposition where useful.
 6. Inspect child Stories/Tasks/Bugs for coverage, overlap, missing work, and inconsistent lifecycle state.
-7. Inspect relevant code/artifacts only when technical truth is needed.
-8. Check for an initiative workspace in `initiatives/`; if one exists, use its durable decisions but do not trust it for live Jira state.
-9. Report concrete quality/context gaps without turning the review into an unapproved hierarchy redesign.
+7. If the Epic spans multiple implementation repositories, verify that child implementation Stories are repository-bounded where practical and that each Story Summary begins with the owning `[Repo]`. Check linked PRs/code rather than inferring repository ownership from the Jira project key.
+8. Inspect relevant code/artifacts only when technical truth is needed.
+9. Check for an initiative workspace in `initiatives/`; if one exists, use its durable decisions but do not trust it for live Jira state.
+10. Report concrete quality/context gaps without turning the review into an unapproved hierarchy redesign.
 
 ## Output
 
