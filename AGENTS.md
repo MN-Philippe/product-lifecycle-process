@@ -19,6 +19,7 @@ When reasoning about the product lifecycle, read only the standards relevant to 
 
 - `standards/product-lifecycle.md` - intake, Business Requirements Complete, commitment, Product Complete, delivery, release, and exceptions
 - `standards/story-quality.md` - Story Summary and acceptance-criteria quality
+- `standards/personas.md` - canonical Story personas, aliases, qualifiers, and technical-actor guidance
 - `standards/bug-quality.md` - Bug classification, categorization, technical assessment, prioritization, and Bug-of-Story rules
 - `standards/ai-release-confidence.md` - scheduled AI Release Confidence experiment
 
@@ -37,6 +38,7 @@ When reviewing an Epic:
 
 When reviewing or improving a Story:
 - read `standards/story-quality.md`
+- read `standards/personas.md`
 - read `playbooks/review-story.md`
 
 When triaging a Bug:
@@ -132,6 +134,8 @@ For multi-repository Epics/projects, implementation Stories should be repository
 > **[Repo] As a [specific actor], I want [clear behavior/capability] so that [clear outcome/value].**
 
 MYM is a common multi-repository Jira project: do not assume a MYM Story belongs to one repository from the Jira key alone. Inspect the implementation context/PRs and use repository prefixes such as `[Radius]`, `[Scheduling]`, or `[Guardian Portal]` as appropriate.
+
+Use the canonical personas from `standards/personas.md`. **Center Director** is the default persona for normal center-level operational/admin work; do not use Center Admin, Radius User, Admin User, CD, or generic User when Center Director is the real actor.
 
 The `I want` and `So that` must be clear enough that ELT can understand the Story from the Summary alone. Do not weaken this standard merely because the underlying work is technical; choose the clearest truthful actor, behavior, and outcome.
 
