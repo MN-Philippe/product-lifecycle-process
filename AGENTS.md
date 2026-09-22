@@ -127,6 +127,12 @@ For Jira **Stories**, the Summary format is required:
 
 Do not place a comma before `so that`.
 
+For multi-repository Epics/projects, implementation Stories should be repository-bounded whenever practical and the Summary must start with the owning repository:
+
+> **[Repo] As a [specific actor], I want [clear behavior/capability] so that [clear outcome/value].**
+
+MYM is a common multi-repository Jira project: do not assume a MYM Story belongs to one repository from the Jira key alone. Inspect the implementation context/PRs and use repository prefixes such as `[Radius]`, `[Scheduling]`, or `[Guardian Portal]` as appropriate.
+
 The `I want` and `So that` must be clear enough that ELT can understand the Story from the Summary alone. Do not weaken this standard merely because the underlying work is technical; choose the clearest truthful actor, behavior, and outcome.
 
 Tasks, Spikes, and other non-Story issue types can use structures appropriate to their work.
