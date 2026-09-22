@@ -27,7 +27,7 @@ Required pattern:
 
 Examples:
 
-> **[Radius] As a Center Admin, I want to configure enrollment booking-limit overrides so that guardian scheduling follows the center's approved limits.**
+> **[Radius] As a Center Director, I want to configure enrollment booking-limit overrides so that guardian scheduling follows the center's approved limits.**
 
 > **[Scheduling] As a Guardian, I want scheduling eligibility to honor enrollment booking limits so that I cannot create appointments beyond the allowed limits.**
 
@@ -41,7 +41,9 @@ This is not just formatting. The Summary should be good enough that an ELT membe
 
 Use the real actor who benefits from or performs the behavior when possible.
 
-Avoid vague actors such as `user` when a more specific role is known.
+Follow `standards/personas.md` for the canonical persona vocabulary. In particular, use **Center Director** for normal center-level operational/admin work rather than drifting between Center Admin, Radius User, Admin User, CD, or generic User.
+
+Avoid vague actors such as `user` when a more specific role is known. Market, product surface, and center configuration are normally qualifiers rather than separate personas.
 
 ### `I want`
 
