@@ -48,7 +48,8 @@ Flag when:
 - the Summary is not in the required format;
 - a Story under a known multi-repository Epic/project does not identify its owning repository at the start of the Summary;
 - one Story mixes separable work from multiple implementation repositories;
-- `As a` is unnecessarily vague or uses a non-canonical alias when the real persona is clear;
+- `As a` is unnecessarily vague or uses a non-canonical label when the real persona is clear;
+- a known center role such as FO, CD, or ACD has been flattened into a vague persona even though the requirement depends on that role;
 - a qualifier such as country, product surface, or center configuration is being used as the persona instead of the underlying actor;
 - `I want` does not make the actual behavior/capability clear;
 - `So that` is generic filler rather than real user/business value;
