@@ -33,6 +33,12 @@ The Jira Story Summary **must** use:
 
 Do not place a comma before `so that`.
 
+For an Epic/project whose implementation spans multiple code repositories, each implementation Story should normally be repository-bounded and its Summary **must start with the owning repository in square brackets**:
+
+> **[Repo] As a [specific actor], I want [clear behavior/capability] so that [clear outcome/value].**
+
+This is especially important in MYM, where one product capability may span Radius, Scheduling, Guardian Portal, and other repositories. The Jira parent can remain capability-oriented; the Story identifies where the implementation lives. Cross-repository Stories are allowed only when the work cannot be separated cleanly, and the repository boundary must then be explicit in both Summary and description.
+
 Quality test:
 
 > Can an ELT member understand who/what/why by reading the Summary alone?
@@ -40,6 +46,8 @@ Quality test:
 Flag when:
 
 - the Summary is not in the required format;
+- a Story under a known multi-repository Epic/project does not identify its owning repository at the start of the Summary;
+- one Story mixes separable work from multiple implementation repositories;
 - `As a` is unnecessarily vague;
 - `I want` does not make the actual behavior/capability clear;
 - `So that` is generic filler rather than real user/business value;
