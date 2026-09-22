@@ -10,6 +10,31 @@ The Jira Story Summary should use the full user-story format:
 
 Do not place a comma before `so that`.
 
+### Multi-repository Epics and projects
+
+A Jira project or Epic may represent one product capability while implementation spans multiple code repositories. **myMathnasium (MYM) is a common example:** a single capability may require coordinated changes in Radius, Scheduling, Guardian Portal, or another implementation repository.
+
+For these multi-repository initiatives:
+
+- keep the Epic/capability centered on the end-to-end business outcome;
+- decompose implementation into repository-bounded Stories whenever the work can be developed, reviewed, tested, and merged independently by repository;
+- do not combine changes from unrelated repositories into one Story merely because they contribute to the same capability;
+- start each implementation Story Summary with the owning repository in square brackets, followed by the normal user-story Summary.
+
+Required pattern:
+
+> **[Repo] As a [specific actor], I want [clear behavior/capability] so that [clear outcome/value].**
+
+Examples:
+
+> **[Radius] As a Center Admin, I want to configure enrollment booking-limit overrides so that guardian scheduling follows the center's approved limits.**
+
+> **[Scheduling] As a Guardian, I want scheduling eligibility to honor enrollment booking limits so that I cannot create appointments beyond the allowed limits.**
+
+> **[Guardian Portal] As a Guardian, I want unavailable scheduling actions to be blocked in the portal so that the UI matches the scheduling rules enforced by the backend.**
+
+Use the actual implementation repository name represented by the Story. If a Story truly cannot be separated across repositories, list the involved repositories explicitly and explain the cross-repository boundary in the description; this should be the exception, not the default.
+
 This is not just formatting. The Summary should be good enough that an ELT member can read it by itself and understand what the Story is about.
 
 ### `As a`
