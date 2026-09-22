@@ -29,6 +29,22 @@ Do not enforce a new Epic taxonomy yet.
 
 One specific Bug rule is already decided: standalone Bugs should be categorized under the product area, feature, or initiative they impact rather than under a generic **Bug Fixing** Epic. This rule does not otherwise settle the broader Epic/capability taxonomy.
 
+## Multi-repository product work
+
+Jira project boundaries do not necessarily match implementation-repository boundaries.
+
+In particular, **MYM is a product/project grouping, not a single code repository**. One MYM Epic or capability may require coordinated work in Radius, Scheduling, Guardian Portal, or another repository.
+
+Working rule:
+
+- keep the parent Epic/capability focused on the end-to-end product outcome;
+- split child implementation Stories by repository when the work can be independently developed/reviewed/tested there;
+- begin those Story Summaries with the owning repository in square brackets, for example `[Radius]`, `[Scheduling]`, or `[Guardian Portal]`;
+- do not infer implementation ownership from the Jira project key alone;
+- inspect linked PRs/code when the repository is unclear.
+
+See `standards/story-quality.md`.
+
 ## Workflow interpretation
 
 Issue status must be read live. Parent status is not currently guaranteed to roll up coherently from children, so never infer initiative health from Epic status alone. Inspect child work and release metadata when evaluating progress.
