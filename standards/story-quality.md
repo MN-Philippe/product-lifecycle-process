@@ -41,7 +41,7 @@ This is not just formatting. The Summary should be good enough that an ELT membe
 
 Use the real actor who benefits from or performs the behavior when possible.
 
-Follow `standards/personas.md` for the canonical persona vocabulary. In particular, use **Center Director** for normal center-level operational/admin work rather than drifting between Center Admin, Radius User, Admin User, CD, or generic User.
+Follow `standards/personas.md` for the canonical persona vocabulary. Preserve the actual center role when known—for example **Franchise Owner (FO)**, **Center Director (CD)**, or **Assistant Center Director (ACD)**. Common business abbreviations such as FO, CD, and ACD are valid. Do not replace a known role with vague labels such as Center Admin, Radius User, Admin User, Admin, or generic User.
 
 Avoid vague actors such as `user` when a more specific role is known. Market, product surface, and center configuration are normally qualifiers rather than separate personas.
 
