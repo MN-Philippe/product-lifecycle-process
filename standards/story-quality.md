@@ -99,6 +99,26 @@ Stronger:
 
 Keep the description as the durable product definition, not a dated implementation-status report. PR state, current assignee, temporary progress, and other live delivery state should stay in Jira fields, development links, or comments.
 
+### Minimum sufficient detail
+
+More detail is not automatically better Story quality.
+
+Use the **minimum detail needed to remove meaningful ambiguity** for Product, Engineering, and QA. Prefer short, direct language over exhaustive prose.
+
+Remove or avoid:
+
+- repeated rules already defined clearly at the Epic or in another authoritative Story;
+- speculative implementation detail that Engineering does not need as a requirement;
+- examples that do not clarify a real edge case;
+- explanatory prose that simply restates the Summary or acceptance criteria;
+- multiple terms for the same concept;
+- historical discussion that no longer affects implementation;
+- caveats for situations that are already covered by a broader rule.
+
+When the same rule applies everywhere, state it once at the highest useful level and let child Stories reference or consume that rule rather than rewriting it differently.
+
+A developer should not have to distinguish between important requirements and generated detail. If removing a sentence does not change what must be built, tested, or decided, it is a candidate for removal.
+
 Use the description for the detail that does not belong in the Summary, such as:
 
 - business context;
@@ -114,6 +134,8 @@ Use the description for the detail that does not belong in the Summary, such as:
 - explicit out-of-scope behavior and unresolved decisions.
 
 Do not bury the core purpose of the Story in the description. The Summary should already make the Story understandable.
+
+Prefer one clear term for each domain concept and use it consistently across the Epic, Stories, dependencies, and acceptance criteria. Avoid synonyms or architectural wording that can make one concept appear to be several different things.
 
 ## Acceptance criteria
 
