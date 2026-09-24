@@ -144,6 +144,8 @@ The `I want` and `So that` must be clear enough that ELT can understand the Stor
 
 Do not create Tasks/Sub-tasks merely to enumerate implementation steps. Reserve them for meaningful sequencing, parallel ownership, or separately tracked execution. When they are justified, prefer an action-oriented `[Repo]` Summary plus Scope / Done when / Blockers.
 
+More Jira text is not automatically better definition. Prefer the minimum sufficient detail that changes what must be built, tested, sequenced, or decided. Remove duplicated rules, redundant examples, speculative implementation notes, stale discussion, and competing terminology that add noise without resolving ambiguity.
+
 ## Bug categorization rule
 
 Standalone Bugs should be categorized under the product area, feature, or initiative they impact. Do not use a generic **Bug Fixing** Epic as the default parent/container.
