@@ -33,14 +33,15 @@ The Jira Story Summary **must** use:
 
 Do not place a comma before `so that`.
 
-Before reviewing Story wording, verify that the issue represents coherent user/business behavior rather than implementation-only work. A repository, PR, schema, API-plumbing, migration, cache, or refactor boundary alone does not justify Story type.
+Before reviewing Story wording, verify that the issue is a cohesive unit of work with clear implementation ownership.
 
 For an Epic/project whose implementation spans multiple code repositories:
 
-- keep product behavior at the Story level;
-- use repository-bounded Tasks/Sub-tasks for implementation slices when several repositories contribute to one behavior;
-- create separate repository-bounded Stories only when each repository owns distinct product behavior with meaningful acceptance criteria and lifecycle;
-- when the Story itself is genuinely repository-owned, its Summary **must start with the owning repository in square brackets**:
+- Stories should generally be limited to one implementation repository;
+- split a repository's work further when it contains multiple independently understandable/reviewable units;
+- represent cross-repository sequencing with Story dependencies rather than one cross-repository Story;
+- use Tasks/Sub-tasks only when they materially help sequencing or parallel execution;
+- each implementation Story Summary **must start with the owning repository in square brackets**:
 
 > **[Repo] As a [specific actor], I want [clear behavior/capability] so that [clear outcome/value].**
 
@@ -54,9 +55,9 @@ Flag when:
 
 - the Summary is not in the required format;
 - a Story under a known multi-repository Epic/project does not identify its owning repository at the start of the Summary;
-- a Story exists only because a repository/PR boundary exists and has no independent product behavior;
-- one Story mixes unrelated product behaviors;
-- cross-repository implementation work has been split into artificial Stories instead of Tasks/Sub-tasks even though the product behavior is shared;
+- a Story spans multiple implementation repositories without a strong reason;
+- one Story combines multiple independently reviewable units that would be clearer as smaller Stories;
+- a Story has unnecessary Tasks/Sub-tasks that merely restate implementation steps without a sequencing or parallel-execution purpose;
 - `As a` is unnecessarily vague or uses a non-canonical label when the real persona is clear;
 - a known center role such as FO, CD, or ACD has been flattened into a vague persona even though the requirement depends on that role;
 - a qualifier such as country, product surface, or center configuration is being used as the persona instead of the underlying actor;
