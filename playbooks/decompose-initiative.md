@@ -20,8 +20,14 @@ Break a bounded outcome into coherent delivery work without losing the business 
 12. When a hard deadline creates a genuine need for parallel tracks, introduce the minimum useful Tasks/Sub-tasks and collapse dependencies into a small number of execution waves.
 13. Propose work that is independently understandable and can later become Product Complete with clear acceptance criteria and QA coverage.
 14. Keep decomposition lean: prefer smaller cohesive Stories over both oversized Stories and lower-level ticket noise.
-15. Recommend conditional Engineering review where architecture, permissions, integrations, data, security, performance, deployment, or feasibility warrants it.
-16. Recommend durable artifacts only where the initiative needs design/decision material beyond Jira.
+15. Run a simplification pass across the Epic and proposed Stories:
+    - keep shared rules at the highest useful level;
+    - remove duplicated or implied detail from children;
+    - use one term consistently for each domain concept;
+    - remove examples and implementation notes that do not resolve real ambiguity;
+    - make each child readable without forcing developers to sort signal from generated noise.
+16. Recommend conditional Engineering review where architecture, permissions, integrations, data, security, performance, deployment, or feasibility warrants it.
+17. Recommend durable artifacts only where the initiative needs design/decision material beyond Jira.
 
 ## Output
 
