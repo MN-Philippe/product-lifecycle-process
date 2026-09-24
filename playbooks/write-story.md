@@ -2,7 +2,7 @@
 
 ## Goal
 
-Create Jira work at the right level of abstraction so Product, Engineering, QA, and ELT can understand the outcome without forcing technical implementation work into fake user Stories.
+Create Jira Stories that are cohesive, reviewable delivery units with clear repository ownership, while adding lower-level sequencing only when it materially helps execution.
 
 Read:
 
@@ -12,22 +12,23 @@ Read:
 
 ## Steps
 
-1. **Start with the product behavior, not the repository.**
+1. **Start with the outcome and implementation ownership.**
    - State the user/business behavior or outcome that must change.
    - Identify the real persona who performs or benefits from that behavior.
-   - Confirm the Story can be tested as product behavior rather than merely as code completion.
+   - Identify the implementation repository that owns the unit of work.
 
-2. **Choose the Jira issue type before writing the Summary.**
-   - Use a **Story** for a coherent user/business behavior with observable product acceptance.
-   - Use a **Task** or **Sub-task** for implementation-only work such as schema changes, service plumbing, contract propagation, migrations, caching, refactors, or repository-specific engineering work that exists only to enable a Story.
-   - Do not invent a persona to keep technical work classified as a Story.
-   - A repository or PR boundary is not automatically a Story boundary.
+2. **Choose a cohesive Story boundary.**
+   - A Story should generally stay within one implementation repository.
+   - Keep together work that forms one understandable, implementable, reviewable, testable unit.
+   - Split a repository's work into multiple Stories when there are multiple coherent units that would be easier to implement or review independently.
+   - A pull request may map naturally to a Story, but do not force the boundary solely because a PR exists.
+   - A cross-repository Story should be exceptional; prefer separate Stories with explicit dependencies.
 
-3. **Choose the boundary.**
-   - Keep one Story focused on one coherent product behavior.
-   - If several repositories implement that behavior, keep the product behavior at the Story level and split repository-specific execution into Tasks/Sub-tasks when practical.
-   - Create separate repository-bounded Stories only when each repository owns a distinct product behavior that has its own meaningful acceptance criteria and lifecycle.
-   - If a technical enabler supports several Stories, consider a Task under the Epic rather than duplicating it under each Story.
+3. **Do not add lower-level hierarchy by default.**
+   - A cohesive Story should normally be enough to drive implementation.
+   - Do not create Tasks/Sub-tasks merely to enumerate implementation steps.
+   - Add Tasks/Sub-tasks when they have a clear execution purpose: sequencing, parallel ownership, or separately tracked work needed to meet a compressed or otherwise constrained plan.
+   - When there is no meaningful parallelism or sequencing benefit, keep the work in the Story.
 
 4. **Write the Summary.**
    For a Story:
@@ -36,11 +37,11 @@ Read:
 
    Do not place a comma before `so that`.
 
-   If the Story itself is genuinely repository-owned in a multi-repository initiative, prefix it:
+   For implementation Stories in a multi-repository initiative, prefix it with the owning repository:
 
    > **[Repo] As a [specific actor], I want [clear behavior/capability] so that [clear outcome/value].**
 
-   For a Task/Sub-task, use an action-oriented implementation Summary such as:
+   When a Task/Sub-task is justified by execution sequencing, use an action-oriented implementation Summary such as:
 
    > **[Scheduling] Persist Pod identity on appointments and validate center ownership.**
 
@@ -69,7 +70,7 @@ Read:
    - what logic must not be duplicated;
    - backward/mixed-deployment expectations.
 
-   Put end-to-end rules at the highest useful level, then give each implementation item only the local contract it needs.
+   Put end-to-end rules at the highest useful level, then give each repository-bounded Story only the local contract it needs.
 
 7. **Write acceptance criteria at the product boundary.**
    - Make them observable and testable.
@@ -80,15 +81,15 @@ Read:
    For Tasks/Sub-tasks, use **Done when** or **Completion criteria** instead of fake user-facing acceptance criteria.
 
 8. **Make dependencies real.**
-   - Link actual blockers in Jira at the level where Engineering experiences them.
+   - Link actual blockers between Stories where Engineering experiences them.
    - Distinguish a true blocker from an integration gate. Work that can proceed against a frozen contract should not be marked blocked merely because another implementation is not merged yet.
-   - If a hard deadline exists, derive a small number of execution waves from the dependency graph after the work is decomposed.
+   - Introduce Tasks/Sub-tasks and execution waves only when the plan genuinely benefits from parallel tracks or explicit sequencing.
 
 9. **Keep decomposition lean.**
-   - Split work when it creates a useful ownership, review, testing, or sequencing boundary.
+   - Prefer smaller cohesive Stories over large repository Stories that contain several independently reviewable changes.
    - Do not create tickets merely to make every item tiny.
-   - For implementation Tasks/Sub-tasks, roughly 3-5 points is often a useful execution size, but this is a heuristic, not a rule.
-   - Combine coherent same-owner work when splitting it would create 1-point ticket noise without reducing delivery risk.
+   - Do not create Tasks/Sub-tasks merely because a Story contains several implementation steps.
+   - Use lower-level items when they unlock meaningful parallel work or clarify critical sequencing.
 
 10. **Resolve requirement decisions into the description.**
     - Comments may contain investigation, discussion, or implementation guidance.
@@ -104,10 +105,12 @@ Read:
 
 Before calling a Story ready, verify:
 
-- Is this actually a Story rather than technical work?
+- Is this one cohesive unit of work?
+- Is it generally limited to one implementation repository?
+- Would splitting it further materially improve implementation or review?
 - Can ELT understand who / what / why from the Summary alone?
 - Is the real persona used?
-- Is the Story boundary a product boundary rather than just a repo/PR boundary?
+- Are Tasks/Sub-tasks present only because sequencing or parallel execution genuinely benefits from them?
 - Are authority, trust, and cross-repository contracts clear where relevant?
 - Are acceptance criteria observable and testable?
 - Are important existing behaviors explicitly preserved?
