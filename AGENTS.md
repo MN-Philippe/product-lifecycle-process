@@ -36,10 +36,11 @@ When the task is about Jira structure, issue quality, hierarchy, or workflow:
 When reviewing an Epic:
 - read `playbooks/review-epic.md`
 
-When reviewing or improving a Story:
+When writing, reviewing, or improving a Story:
 - read `standards/story-quality.md`
 - read `standards/personas.md`
-- read `playbooks/review-story.md`
+- read `playbooks/write-story.md` for new/restructured work
+- read `playbooks/review-story.md` for review
 
 When triaging a Bug:
 - read `standards/bug-quality.md`
@@ -129,7 +130,9 @@ For Jira **Stories**, the Summary format is required:
 
 Do not place a comma before `so that`.
 
-For multi-repository Epics/projects, implementation Stories should be repository-bounded whenever practical and the Summary must start with the owning repository:
+A repository or PR boundary is not automatically a Story boundary. Keep coherent user/business behavior at the Story level and use Tasks/Sub-tasks for implementation-only slices when practical. Create separate repository-bounded Stories only when each repository owns distinct product behavior with meaningful acceptance criteria.
+
+When a Story itself is genuinely repository-owned in a multi-repository initiative, prefix it:
 
 > **[Repo] As a [specific actor], I want [clear behavior/capability] so that [clear outcome/value].**
 
@@ -139,7 +142,7 @@ Use the canonical personas from `standards/personas.md`. Preserve the most speci
 
 The `I want` and `So that` must be clear enough that ELT can understand the Story from the Summary alone. Do not weaken this standard merely because the underlying work is technical; choose the clearest truthful actor, behavior, and outcome.
 
-Tasks, Spikes, and other non-Story issue types can use structures appropriate to their work.
+Tasks, Sub-tasks, Spikes, and other non-Story issue types can use structures appropriate to their work. For implementation Tasks/Sub-tasks, prefer an action-oriented `[Repo]` Summary plus Scope / Done when / Blockers rather than forcing a user persona.
 
 ## Bug categorization rule
 
