@@ -38,8 +38,11 @@ In particular, **MYM is a product/project grouping, not a single code repository
 Working rule:
 
 - keep the parent Epic/capability focused on the end-to-end product outcome;
-- split child implementation Stories by repository when the work can be independently developed/reviewed/tested there;
-- begin those Story Summaries with the owning repository in square brackets, for example `[Radius]`, `[Scheduling]`, or `[Guardian Portal]`;
+- make each implementation Story a cohesive unit of work, generally limited to one repository;
+- split further within a repository when smaller Stories would be easier to implement, review, test, or merge independently;
+- begin implementation Story Summaries with the owning repository in square brackets, for example `[Radius]`, `[Scheduling]`, or `[Guardian Portal]`;
+- use Story dependencies for cross-repository sequencing;
+- reserve Tasks/Sub-tasks for cases where explicit sequencing or parallel execution materially helps delivery;
 - do not infer implementation ownership from the Jira project key alone;
 - inspect linked PRs/code when the repository is unclear.
 

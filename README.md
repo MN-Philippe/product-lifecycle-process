@@ -20,7 +20,7 @@ Humans should read [`GUIDE.md`](GUIDE.md) for the repository boundaries and [`st
 ## Canonical standards
 
 - [`standards/product-lifecycle.md`](standards/product-lifecycle.md) - intake through release, ownership, readiness, commitments, expedite path, and open questions
-- [`standards/story-quality.md`](standards/story-quality.md) - required Story Summary format, acceptance criteria, and Product Complete
+- [`standards/story-quality.md`](standards/story-quality.md) - cohesive Story boundaries, repository ownership, sequencing guidance, required Story Summary format, acceptance criteria, and Product Complete
 - [`standards/personas.md`](standards/personas.md) - canonical Story personas and rules for aliases, qualifiers, and technical actors
 - [`standards/bug-quality.md`](standards/bug-quality.md) - Bug classification, triage, technical assessment, prioritization, and Bug-of-Story handling
 - [`standards/ai-release-confidence.md`](standards/ai-release-confidence.md) - narrow daily AI Release Confidence experiment for committed Stories and Bugs
@@ -32,7 +32,7 @@ Humans should read [`GUIDE.md`](GUIDE.md) for the repository boundaries and [`st
 | [`standards/`](standards/) | Canonical product-lifecycle and Jira-work quality rules |
 | [`context/`](context/) | Stable product, Jira, and delivery context |
 | [`jira/`](jira/) | Jira shortcuts, interpretation rules, and supporting quality checks |
-| [`playbooks/`](playbooks/) | Repeatable agent workflows for common PM and delivery tasks |
+| [`playbooks/`](playbooks/) | Repeatable agent workflows for common PM and delivery tasks, including Story authoring and review |
 | [`artifacts/`](artifacts/) | Templates for durable product, architecture, and delivery artifacts |
 | [`initiatives/`](initiatives/) | Optional workspaces for initiatives that need durable artifacts beyond Jira |
 | [`tools/`](tools/) | Lightweight helpers that reduce repetitive agent work without mirroring Jira |

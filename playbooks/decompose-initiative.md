@@ -10,14 +10,24 @@ Break a bounded outcome into coherent delivery work without losing the business 
 2. Confirm the problem, desired outcome, scope, constraints, important non-scope, business priority, and due date when available.
 3. Identify major user/business capabilities and technical enablers required to reach the outcome.
 4. Identify every implementation repository touched by the initiative. Do not assume the Jira project key maps to one repository; MYM commonly spans Radius, Scheduling, Guardian Portal, and related repositories.
-5. Separate product Stories from Tasks/Spikes/other technical work.
-6. When implementation spans repositories, split Stories by repository whenever the work can be developed, reviewed, tested, and merged independently. Preserve the common business outcome at the Epic/capability level and express cross-repository dependencies explicitly.
-7. For every proposed Jira **Story**, follow `standards/story-quality.md`. In multi-repository work, start the Summary with `[Repo]`, then use the required `As a / I want / so that` format at ELT-readable quality.
-8. Identify dependencies, sequencing constraints, migration needs, observability/testing needs, and rollout concerns.
-9. Propose work that is independently understandable and can later become Product Complete with clear acceptance criteria and QA coverage.
-10. Avoid decomposition that merely mirrors teams. Repository boundaries are a valid decomposition boundary when they correspond to independently implemented/reviewed code, but do not split a coherent same-repository behavior into artificial fragments without delivery value.
-11. Recommend conditional Engineering review where architecture, permissions, integrations, data, security, performance, deployment, or feasibility warrants it.
-12. Recommend durable artifacts only where the initiative needs design/decision material beyond Jira.
+5. Decompose implementation into **cohesive, generally single-repository Stories**.
+6. Within a repository, split further when separate units would be easier to understand, implement, review, test, or merge independently. Do not keep a large Story together merely because all changes live in one repo.
+7. For every proposed Jira **Story**, follow `standards/story-quality.md` and prefix the owning repository with `[Repo]` for multi-repository initiatives.
+8. Use explicit Story-to-Story dependencies for cross-repository sequencing. A cross-repository Story should be exceptional.
+9. Do **not** create Tasks/Sub-tasks by default. Add them only when they materially support sequencing, parallel ownership, or separately tracked execution needed by the delivery plan.
+10. Identify source-of-truth, trust/validation boundaries, minimum cross-repository contracts, null/default semantics, compatibility expectations, and logic that must not be duplicated.
+11. Identify real blockers separately from integration gates. If work can proceed against a frozen contract, do not model it as blocked merely because the upstream implementation is not merged.
+12. When a hard deadline creates a genuine need for parallel tracks, introduce the minimum useful Tasks/Sub-tasks and collapse dependencies into a small number of execution waves.
+13. Propose work that is independently understandable and can later become Product Complete with clear acceptance criteria and QA coverage.
+14. Keep decomposition lean: prefer smaller cohesive Stories over both oversized Stories and lower-level ticket noise.
+15. Run a simplification pass across the Epic and proposed Stories:
+    - keep shared rules at the highest useful level;
+    - remove duplicated or implied detail from children;
+    - use one term consistently for each domain concept;
+    - remove examples and implementation notes that do not resolve real ambiguity;
+    - make each child readable without forcing developers to sort signal from generated noise.
+16. Recommend conditional Engineering review where architecture, permissions, integrations, data, security, performance, deployment, or feasibility warrants it.
+17. Recommend durable artifacts only where the initiative needs design/decision material beyond Jira.
 
 ## Output
 

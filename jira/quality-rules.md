@@ -33,11 +33,19 @@ The Jira Story Summary **must** use:
 
 Do not place a comma before `so that`.
 
-For an Epic/project whose implementation spans multiple code repositories, each implementation Story should normally be repository-bounded and its Summary **must start with the owning repository in square brackets**:
+Before reviewing Story wording, verify that the issue is a cohesive unit of work with clear implementation ownership.
+
+For an Epic/project whose implementation spans multiple code repositories:
+
+- Stories should generally be limited to one implementation repository;
+- split a repository's work further when it contains multiple independently understandable/reviewable units;
+- represent cross-repository sequencing with Story dependencies rather than one cross-repository Story;
+- use Tasks/Sub-tasks only when they materially help sequencing or parallel execution;
+- each implementation Story Summary **must start with the owning repository in square brackets**:
 
 > **[Repo] As a [specific actor], I want [clear behavior/capability] so that [clear outcome/value].**
 
-This is especially important in MYM, where one product capability may span Radius, Scheduling, Guardian Portal, and other repositories. The Jira parent can remain capability-oriented; the Story identifies where the implementation lives. Cross-repository Stories are allowed only when the work cannot be separated cleanly, and the repository boundary must then be explicit in both Summary and description.
+This is especially important in MYM, where one product capability may span Radius, Scheduling, Guardian Portal, and other repositories.
 
 Quality test:
 
@@ -47,15 +55,24 @@ Flag when:
 
 - the Summary is not in the required format;
 - a Story under a known multi-repository Epic/project does not identify its owning repository at the start of the Summary;
-- one Story mixes separable work from multiple implementation repositories;
+- a Story spans multiple implementation repositories without a strong reason;
+- one Story combines multiple independently reviewable units that would be clearer as smaller Stories;
+- a Story has unnecessary Tasks/Sub-tasks that merely restate implementation steps without a sequencing or parallel-execution purpose;
 - `As a` is unnecessarily vague or uses a non-canonical label when the real persona is clear;
 - a known center role such as FO, CD, or ACD has been flattened into a vague persona even though the requirement depends on that role;
 - a qualifier such as country, product surface, or center configuration is being used as the persona instead of the underlying actor;
 - `I want` does not make the actual behavior/capability clear;
 - `So that` is generic filler rather than real user/business value;
-- acceptance criteria are missing or too ambiguous to test confidently.
+- acceptance criteria are missing or too ambiguous to test confidently;
+- acceptance criteria are mostly code-design instructions rather than observable behavior;
+- authority/source-of-truth or trust/validation boundaries are unclear for cross-system work;
+- durable requirement decisions live only in comments while the description remains stale or contradictory;
+- transient PR/status information is embedded in the durable Story definition;
+- the description repeats parent rules, examples, or implementation commentary without changing the required behavior;
+- multiple terms are used for the same concept in ways that could confuse implementation;
+- detail volume makes the authoritative requirement harder rather than easier to identify.
 
-Acceptance criteria are required for Product Complete. Prefer Given / When / Then when it improves clarity, while allowing clear testable bullets when that is simpler.
+Acceptance criteria are required for Product Complete. Prefer Given / When / Then when it improves clarity, while allowing clear testable bullets when that is simpler. Do not reward verbosity: once a rule is clear and testable, avoid enumerating implied cases unless they expose a materially different behavior.
 
 See `standards/story-quality.md` and `standards/personas.md`.
 

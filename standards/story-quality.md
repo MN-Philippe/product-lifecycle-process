@@ -10,6 +10,18 @@ The Jira Story Summary should use the full user-story format:
 
 Do not place a comma before `so that`.
 
+### Choose the Story boundary before adding hierarchy
+
+A Story should generally represent **one cohesive unit of delivery in one implementation repository**.
+
+The repository boundary keeps implementation and review ownership clear. The cohesion test keeps the Story small enough to understand, implement, review, test, and merge as one unit.
+
+Do not make a Story large merely because all of the work lives in one repository. Split it when there are multiple independently understandable capabilities or reviewable units of work.
+
+Conversely, do not create Tasks/Sub-tasks simply to restate the implementation steps inside an otherwise cohesive Story. The Story should normally be enough.
+
+Use Tasks/Sub-tasks underneath a Story only when the additional execution structure has a clear delivery purpose, especially when work needs to be sequenced, assigned to parallel tracks, or independently tracked because of a compressed plan or other material coordination need.
+
 ### Multi-repository Epics and projects
 
 A Jira project or Epic may represent one product capability while implementation spans multiple code repositories. **myMathnasium (MYM) is a common example:** a single capability may require coordinated changes in Radius, Scheduling, Guardian Portal, or another implementation repository.
@@ -17,9 +29,12 @@ A Jira project or Epic may represent one product capability while implementation
 For these multi-repository initiatives:
 
 - keep the Epic/capability centered on the end-to-end business outcome;
-- decompose implementation into repository-bounded Stories whenever the work can be developed, reviewed, tested, and merged independently by repository;
-- do not combine changes from unrelated repositories into one Story merely because they contribute to the same capability;
-- start each implementation Story Summary with the owning repository in square brackets, followed by the normal user-story Summary.
+- split implementation into Stories that are generally bounded to a single repository;
+- within a repository, split further when the work contains multiple cohesive units that would be easier to implement, review, test, or reason about separately;
+- do not combine unrelated work merely because it contributes to the same capability;
+- start each implementation Story Summary with the owning repository in square brackets, followed by the normal user-story Summary;
+- use explicit dependencies between Stories when cross-repository sequencing matters;
+- add Tasks/Sub-tasks only when they materially help sequence or parallelize execution; do not use them as the default implementation decomposition.
 
 Required pattern:
 
@@ -33,7 +48,7 @@ Examples:
 
 > **[Guardian Portal] As a Guardian, I want unavailable scheduling actions to be blocked in the portal so that the UI matches the scheduling rules enforced by the backend.**
 
-Use the actual implementation repository name represented by the Story. If a Story truly cannot be separated across repositories, list the involved repositories explicitly and explain the cross-repository boundary in the description; this should be the exception, not the default.
+Use the actual implementation repository name represented by the Story. A cross-repository Story should be the exception; prefer separate cohesive Stories with explicit dependencies when implementation spans repositories.
 
 This is not just formatting. The Summary should be good enough that an ELT member can read it by itself and understand what the Story is about.
 
@@ -82,6 +97,28 @@ Stronger:
 
 ## Description
 
+Keep the description as the durable product definition, not a dated implementation-status report. PR state, current assignee, temporary progress, and other live delivery state should stay in Jira fields, development links, or comments.
+
+### Minimum sufficient detail
+
+More detail is not automatically better Story quality.
+
+Use the **minimum detail needed to remove meaningful ambiguity** for Product, Engineering, and QA. Prefer short, direct language over exhaustive prose.
+
+Remove or avoid:
+
+- repeated rules already defined clearly at the Epic or in another authoritative Story;
+- speculative implementation detail that Engineering does not need as a requirement;
+- examples that do not clarify a real edge case;
+- explanatory prose that simply restates the Summary or acceptance criteria;
+- multiple terms for the same concept;
+- historical discussion that no longer affects implementation;
+- caveats for situations that are already covered by a broader rule.
+
+When the same rule applies everywhere, state it once at the highest useful level and let child Stories reference or consume that rule rather than rewriting it differently.
+
+A developer should not have to distinguish between important requirements and generated detail. If removing a sentence does not change what must be built, tested, or decided, it is a candidate for removal.
+
 Use the description for the detail that does not belong in the Summary, such as:
 
 - business context;
@@ -90,9 +127,15 @@ Use the description for the detail that does not belong in the Summary, such as:
 - business rules;
 - important scenarios and exceptions;
 - references/evidence;
-- implementation constraints when they are truly requirements.
+- implementation constraints when they are truly requirements;
+- authority/source-of-truth boundaries;
+- cross-system contract semantics such as required inputs, null/default/inheritance behavior, validation ownership, and logic that must not be duplicated;
+- important existing behavior that must be preserved;
+- explicit out-of-scope behavior and unresolved decisions.
 
 Do not bury the core purpose of the Story in the description. The Summary should already make the Story understandable.
+
+Prefer one clear term for each domain concept and use it consistently across the Epic, Stories, dependencies, and acceptance criteria. Avoid synonyms or architectural wording that can make one concept appear to be several different things.
 
 ## Acceptance criteria
 
@@ -118,6 +161,10 @@ And the warning clearly explains the capacity conflict
 ```
 
 Clear bullet-point acceptance criteria are acceptable when Given / When / Then would add ceremony without clarity.
+
+Acceptance criteria should describe product-observable behavior. Do not turn them into a code-design checklist unless the technical constraint is required for correctness, security, compatibility, or operations.
+
+When Tasks/Sub-tasks are justified by sequencing or parallel execution, prefer **Done when** or **Completion criteria** rather than manufacturing additional user-facing acceptance criteria.
 
 ## Product Complete
 

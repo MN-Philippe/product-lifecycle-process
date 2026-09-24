@@ -36,10 +36,11 @@ When the task is about Jira structure, issue quality, hierarchy, or workflow:
 When reviewing an Epic:
 - read `playbooks/review-epic.md`
 
-When reviewing or improving a Story:
+When writing, reviewing, or improving a Story:
 - read `standards/story-quality.md`
 - read `standards/personas.md`
-- read `playbooks/review-story.md`
+- read `playbooks/write-story.md` for new/restructured work
+- read `playbooks/review-story.md` for review
 
 When triaging a Bug:
 - read `standards/bug-quality.md`
@@ -129,7 +130,9 @@ For Jira **Stories**, the Summary format is required:
 
 Do not place a comma before `so that`.
 
-For multi-repository Epics/projects, implementation Stories should be repository-bounded whenever practical and the Summary must start with the owning repository:
+A Story should generally be one cohesive unit of work in one implementation repository. Split further when one repository contains multiple independently understandable/reviewable units. A cross-repository Story should be exceptional.
+
+For implementation Stories in a multi-repository initiative, prefix the owning repository:
 
 > **[Repo] As a [specific actor], I want [clear behavior/capability] so that [clear outcome/value].**
 
@@ -139,7 +142,9 @@ Use the canonical personas from `standards/personas.md`. Preserve the most speci
 
 The `I want` and `So that` must be clear enough that ELT can understand the Story from the Summary alone. Do not weaken this standard merely because the underlying work is technical; choose the clearest truthful actor, behavior, and outcome.
 
-Tasks, Spikes, and other non-Story issue types can use structures appropriate to their work.
+Do not create Tasks/Sub-tasks merely to enumerate implementation steps. Reserve them for meaningful sequencing, parallel ownership, or separately tracked execution. When they are justified, prefer an action-oriented `[Repo]` Summary plus Scope / Done when / Blockers.
+
+More Jira text is not automatically better definition. Prefer the minimum sufficient detail that changes what must be built, tested, sequenced, or decided. Remove duplicated rules, redundant examples, speculative implementation notes, stale discussion, and competing terminology that add noise without resolving ambiguity.
 
 ## Bug categorization rule
 
