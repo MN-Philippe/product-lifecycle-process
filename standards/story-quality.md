@@ -10,13 +10,17 @@ The Jira Story Summary should use the full user-story format:
 
 Do not place a comma before `so that`.
 
-### Choose the right Jira level before writing the Story
+### Choose the Story boundary before adding hierarchy
 
-A repository, pull request, schema change, API contract, migration, cache change, or service-layer change is **not automatically a Story**.
+A Story should generally represent **one cohesive unit of delivery in one implementation repository**.
 
-Use a **Story** when the item represents a coherent user/business behavior with observable product acceptance. Use a **Task or Sub-task** when the work is implementation-only and exists to enable a Story, for example schema changes, service plumbing, contract propagation, migrations, caching, refactors, or repository-specific engineering work.
+The repository boundary keeps implementation and review ownership clear. The cohesion test keeps the Story small enough to understand, implement, review, test, and merge as one unit.
 
-Do not invent a persona simply to keep technical work classified as a Story.
+Do not make a Story large merely because all of the work lives in one repository. Split it when there are multiple independently understandable capabilities or reviewable units of work.
+
+Conversely, do not create Tasks/Sub-tasks simply to restate the implementation steps inside an otherwise cohesive Story. The Story should normally be enough.
+
+Use Tasks/Sub-tasks underneath a Story only when the additional execution structure has a clear delivery purpose, especially when work needs to be sequenced, assigned to parallel tracks, or independently tracked because of a compressed plan or other material coordination need.
 
 ### Multi-repository Epics and projects
 
@@ -25,12 +29,12 @@ A Jira project or Epic may represent one product capability while implementation
 For these multi-repository initiatives:
 
 - keep the Epic/capability centered on the end-to-end business outcome;
-- first identify coherent product behaviors, then identify the technical/repository work needed to implement them;
-- keep one Story focused on one coherent product behavior;
-- use repository-bounded Tasks/Sub-tasks for implementation slices when several repositories contribute to the same Story;
-- create separate repository-bounded Stories only when each repository owns a distinct product behavior with its own meaningful acceptance criteria and lifecycle;
-- do not combine unrelated repository work merely because it contributes to the same capability;
-- when a Story itself is genuinely repository-owned, start its Summary with the owning repository in square brackets, followed by the normal user-story Summary.
+- split implementation into Stories that are generally bounded to a single repository;
+- within a repository, split further when the work contains multiple cohesive units that would be easier to implement, review, test, or reason about separately;
+- do not combine unrelated work merely because it contributes to the same capability;
+- start each implementation Story Summary with the owning repository in square brackets, followed by the normal user-story Summary;
+- use explicit dependencies between Stories when cross-repository sequencing matters;
+- add Tasks/Sub-tasks only when they materially help sequence or parallelize execution; do not use them as the default implementation decomposition.
 
 Required pattern:
 
@@ -44,7 +48,7 @@ Examples:
 
 > **[Guardian Portal] As a Guardian, I want unavailable scheduling actions to be blocked in the portal so that the UI matches the scheduling rules enforced by the backend.**
 
-Use the actual implementation repository name represented by the Story. If one product Story spans repositories, keep the Story centered on the behavior and make repository ownership explicit in its child Tasks/Sub-tasks and dependencies rather than forcing one Story per PR.
+Use the actual implementation repository name represented by the Story. A cross-repository Story should be the exception; prefer separate cohesive Stories with explicit dependencies when implementation spans repositories.
 
 This is not just formatting. The Summary should be good enough that an ELT member can read it by itself and understand what the Story is about.
 
@@ -138,7 +142,7 @@ Clear bullet-point acceptance criteria are acceptable when Given / When / Then w
 
 Acceptance criteria should describe product-observable behavior. Do not turn them into a code-design checklist unless the technical constraint is required for correctness, security, compatibility, or operations.
 
-For Tasks/Sub-tasks, prefer **Done when** or **Completion criteria** rather than manufacturing user-facing acceptance criteria.
+When Tasks/Sub-tasks are justified by sequencing or parallel execution, prefer **Done when** or **Completion criteria** rather than manufacturing additional user-facing acceptance criteria.
 
 ## Product Complete
 
