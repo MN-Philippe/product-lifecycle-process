@@ -67,9 +67,12 @@ Flag when:
 - acceptance criteria are mostly code-design instructions rather than observable behavior;
 - authority/source-of-truth or trust/validation boundaries are unclear for cross-system work;
 - durable requirement decisions live only in comments while the description remains stale or contradictory;
-- transient PR/status information is embedded in the durable Story definition.
+- transient PR/status information is embedded in the durable Story definition;
+- the description repeats parent rules, examples, or implementation commentary without changing the required behavior;
+- multiple terms are used for the same concept in ways that could confuse implementation;
+- detail volume makes the authoritative requirement harder rather than easier to identify.
 
-Acceptance criteria are required for Product Complete. Prefer Given / When / Then when it improves clarity, while allowing clear testable bullets when that is simpler.
+Acceptance criteria are required for Product Complete. Prefer Given / When / Then when it improves clarity, while allowing clear testable bullets when that is simpler. Do not reward verbosity: once a rule is clear and testable, avoid enumerating implied cases unless they expose a materially different behavior.
 
 See `standards/story-quality.md` and `standards/personas.md`.
 
