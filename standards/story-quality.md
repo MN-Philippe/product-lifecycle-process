@@ -10,6 +10,14 @@ The Jira Story Summary should use the full user-story format:
 
 Do not place a comma before `so that`.
 
+### Choose the right Jira level before writing the Story
+
+A repository, pull request, schema change, API contract, migration, cache change, or service-layer change is **not automatically a Story**.
+
+Use a **Story** when the item represents a coherent user/business behavior with observable product acceptance. Use a **Task or Sub-task** when the work is implementation-only and exists to enable a Story, for example schema changes, service plumbing, contract propagation, migrations, caching, refactors, or repository-specific engineering work.
+
+Do not invent a persona simply to keep technical work classified as a Story.
+
 ### Multi-repository Epics and projects
 
 A Jira project or Epic may represent one product capability while implementation spans multiple code repositories. **myMathnasium (MYM) is a common example:** a single capability may require coordinated changes in Radius, Scheduling, Guardian Portal, or another implementation repository.
@@ -17,9 +25,12 @@ A Jira project or Epic may represent one product capability while implementation
 For these multi-repository initiatives:
 
 - keep the Epic/capability centered on the end-to-end business outcome;
-- decompose implementation into repository-bounded Stories whenever the work can be developed, reviewed, tested, and merged independently by repository;
-- do not combine changes from unrelated repositories into one Story merely because they contribute to the same capability;
-- start each implementation Story Summary with the owning repository in square brackets, followed by the normal user-story Summary.
+- first identify coherent product behaviors, then identify the technical/repository work needed to implement them;
+- keep one Story focused on one coherent product behavior;
+- use repository-bounded Tasks/Sub-tasks for implementation slices when several repositories contribute to the same Story;
+- create separate repository-bounded Stories only when each repository owns a distinct product behavior with its own meaningful acceptance criteria and lifecycle;
+- do not combine unrelated repository work merely because it contributes to the same capability;
+- when a Story itself is genuinely repository-owned, start its Summary with the owning repository in square brackets, followed by the normal user-story Summary.
 
 Required pattern:
 
@@ -33,7 +44,7 @@ Examples:
 
 > **[Guardian Portal] As a Guardian, I want unavailable scheduling actions to be blocked in the portal so that the UI matches the scheduling rules enforced by the backend.**
 
-Use the actual implementation repository name represented by the Story. If a Story truly cannot be separated across repositories, list the involved repositories explicitly and explain the cross-repository boundary in the description; this should be the exception, not the default.
+Use the actual implementation repository name represented by the Story. If one product Story spans repositories, keep the Story centered on the behavior and make repository ownership explicit in its child Tasks/Sub-tasks and dependencies rather than forcing one Story per PR.
 
 This is not just formatting. The Summary should be good enough that an ELT member can read it by itself and understand what the Story is about.
 
@@ -82,6 +93,8 @@ Stronger:
 
 ## Description
 
+Keep the description as the durable product definition, not a dated implementation-status report. PR state, current assignee, temporary progress, and other live delivery state should stay in Jira fields, development links, or comments.
+
 Use the description for the detail that does not belong in the Summary, such as:
 
 - business context;
@@ -90,7 +103,11 @@ Use the description for the detail that does not belong in the Summary, such as:
 - business rules;
 - important scenarios and exceptions;
 - references/evidence;
-- implementation constraints when they are truly requirements.
+- implementation constraints when they are truly requirements;
+- authority/source-of-truth boundaries;
+- cross-system contract semantics such as required inputs, null/default/inheritance behavior, validation ownership, and logic that must not be duplicated;
+- important existing behavior that must be preserved;
+- explicit out-of-scope behavior and unresolved decisions.
 
 Do not bury the core purpose of the Story in the description. The Summary should already make the Story understandable.
 
@@ -118,6 +135,10 @@ And the warning clearly explains the capacity conflict
 ```
 
 Clear bullet-point acceptance criteria are acceptable when Given / When / Then would add ceremony without clarity.
+
+Acceptance criteria should describe product-observable behavior. Do not turn them into a code-design checklist unless the technical constraint is required for correctness, security, compatibility, or operations.
+
+For Tasks/Sub-tasks, prefer **Done when** or **Completion criteria** rather than manufacturing user-facing acceptance criteria.
 
 ## Product Complete
 
