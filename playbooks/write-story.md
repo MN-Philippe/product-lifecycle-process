@@ -45,8 +45,8 @@ Read:
 
    > **[Scheduling] Persist Pod identity on appointments and validate center ownership.**
 
-5. **Write only the durable definition in the description.**
-   Prefer these sections when useful:
+5. **Write the minimum sufficient durable definition.**
+   Include enough detail to remove meaningful ambiguity, but no more. Prefer these sections when useful:
 
    - **Context / Goal**
    - **Scope**
@@ -58,6 +58,14 @@ Read:
    - **Technical constraints**, only when they are real requirements
 
    Do not turn the description into a dated status report. PR state, current assignee, temporary implementation progress, and other live delivery state belong in Jira fields, development links, or comments.
+
+   Then do a simplification pass:
+   - remove duplicated rules already stated at the Epic or another authoritative parent;
+   - remove examples that do not clarify a genuine edge case;
+   - remove speculative implementation suggestions that are not requirements;
+   - replace multiple terms for the same concept with one canonical term;
+   - remove prose that merely restates the Summary, Scope, or acceptance criteria;
+   - preserve only details that change what must be built, tested, sequenced, or decided.
 
 6. **Make authority and contracts explicit for cross-system work.**
    Identify, when relevant:
@@ -74,7 +82,8 @@ Read:
 
 7. **Write acceptance criteria at the product boundary.**
    - Make them observable and testable.
-   - Cover happy path, important branches, permissions, edge cases, and regression behavior.
+   - Cover the happy path and only the important branches, permissions, edge cases, and regression behavior needed to remove ambiguity.
+   - Do not enumerate every logically implied variation once a broader rule makes the expected behavior clear.
    - Prefer Given / When / Then when branching or state transitions benefit from it.
    - Do not use acceptance criteria as a code-design checklist unless the technical constraint is itself required for correctness, security, compatibility, or operations.
 
@@ -117,3 +126,5 @@ Before calling a Story ready, verify:
 - Are material open decisions resolved or clearly visible?
 - Are blockers linked at the actual execution level?
 - Is transient implementation status kept out of the durable definition?
+- Can anything be removed without changing what must be built, tested, sequenced, or decided?
+- Is each domain concept described with one clear, consistent term?
