@@ -48,7 +48,8 @@ Strong: *As a Center Director, I want to be warned before an appointment exceeds
 - **Maximum 5 Story Points.** A Story over 5 is split before it enters a sprint (`split-story.md`).
 - An unestimated Story cannot receive a Fix Version.
 - Use the **Story Points** field only. Do not use "Story point estimate". Field IDs are in `jira-conventions.md`.
-- Split along seams that keep each piece independently testable: a group of ACs, one persona, one repo, or backend rule vs. UI.
+- Split first on independently testable behavior, then on repo, persona or size. A button/action, sort/filter, tab behavior, input, validation, system response, API/data outcome, or other meaningful input → output is normally a Story candidate. See [Story decomposition](#story-decomposition-and-sub-tasks).
+- This is a decomposition lens, not a mechanical ticket-count rule. Closely coupled behavior may stay together when it serves one coherent outcome, is naturally tested/released together, and splitting would add handoffs without independent value.
 - Why: Stories over 2,500 characters averaged 0.95 Bugs of Story, against 0.16 for short ones.
 
 ## Personas
@@ -140,15 +141,19 @@ Not a constraint: naming which service class or stored procedure to use. That be
 
 Keep the description to the minimum that changes what must be built, tested, sequenced or decided. State a rule once, at the highest useful level (the Epic), use one term per concept, and leave out stale discussion and PR or progress status.
 
-## Multi-repo work and sub-tasks
+## Story decomposition and sub-tasks
 
-- A multi-repo feature is **an Epic with one Story per repo**, each 5 points or less, linked with "blocks" where order matters.
-- **Do not use sub-tasks for implementation steps or per-repo splits.**
-    - Sub-tasks share the parent's sprint and Fix Version, so they can't be committed separately.
-    - Sub-task points don't roll into velocity by default.
-    - Release notes have to fold them back together by hand.
-- **Bug of Story stays.** It is the one child type, and it rides the parent Story's release path (`bug.md`).
-- A step list that engineering or the vendor wants to track goes in the description as a checklist, or in the PR.
+The default decomposition unit is an **independently testable product or system behavior**, not a repo-sized implementation bundle.
+
+- Treat each meaningful user action/input and each distinct system response/outcome as a Story candidate. Typical seams include button or menu actions, tabs with distinct behavior, sorting/filtering, form input or submission, create/edit/delete actions, validations, authorization outcomes, API responses, persistence/data outcomes, asynchronous processing and notifications.
+- **Candidate is intentional.** Do not create a Story for static labels, layout-only elements or every internal UI event. Closely coupled controls and responses may stay together when they form one coherent outcome and have no useful independent acceptance, ownership, sequencing or release value.
+- Use behavior-first decomposition as a strong refinement preference, **not an automatic Ready for Dev blocker**. If a one-repo Story is coherent, 5 points or less, and the value of another split is unclear, it may proceed. Revisit the split when estimates, ownership, PR structure or testing reveal an independent seam.
+- A Story still belongs to **one implementation repo**. When the same feature requires production changes in several repos, create the necessary Story or Stories per repo and link with "blocks" only where order matters. A repo can contain multiple Stories for the same feature.
+- **Production implementation belongs in Stories, not sub-tasks.** If a child item changes runtime behavior, a UI interaction, an API/contract, persistence, or deployable application/service/database code, make it a Story.
+- Sub-tasks are optional **delivery-workflow** children used when separate ownership, sequencing or status adds value. Good examples include QA automation, test-data/setup work, pre-deployment or post-deployment steps, release/runbook work, and coordination/checklist execution.
+- QA automation may contain test code because it validates the Story; sub-tasks should not contain production implementation code.
+- Do not create a sub-task merely because a workflow phase exists. Keep simple steps as a checklist or in the PR.
+- **Bug of Story stays.** It rides the parent Story's release path (`bug.md`).
 - Every Story belongs to an Epic.
 
 ## Description vs. comments
@@ -167,7 +172,7 @@ Keep the description to the minimum that changes what must be built, tested, seq
 
 - This standard applies to every ticket, whoever writes it.
 - For MYM, Mathnasium's PM owns the Summary, the ACs and AC approval.
-- The vendor owns Tasks, estimates and the Pull Requests field.
+- The vendor owns Tasks, delivery-workflow sub-tasks, estimates and the Pull Requests field. Mathnasium PM still owns Story definition; production behavior and implementation are represented by Stories.
 - See `vendor-guide.md`.
 
 ## Checks
@@ -183,7 +188,7 @@ Used by `tools/jira_helper.py`. "Auto" means the helper detects it; other rules 
 | Code Dependency has more than one value (multi-repo signal) | Warning | Yes |
 | Retired persona in the Summary | Error | Yes |
 | Story Points over 5 with a committed Fix Version ([committed](jira-conventions.md#fix-versions); `N/A` and `FREEZE` do not count) | Error | Yes |
-| Sub-task created on a Story on or after the effective date (Bug of Story is exempt) | Error | Yes |
+| Sub-task appears to contain production implementation or independently testable product/system behavior | Warning | No — agent review; classification requires judgment |
 | Market adjective not in the market list | Warning | Yes |
 | Pull Requests field empty at Code Review or later | Warning | Yes |
 | AC text changed after the `ac-approved` label was added, with no Changelog line | Warning | Only when the helper receives issue changelog history; otherwise agent review |
