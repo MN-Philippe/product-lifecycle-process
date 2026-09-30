@@ -330,14 +330,6 @@ def audit_issue(
                 "Epic context appears too thin or mostly link-based; verify the outcome can be understood without chasing external context.",
             )
 
-    if issue_type in {"sub-task", "subtask"}:
-        if created is not None and created >= EFFECTIVE_DATE and compact.get("parent_type") in (None, "Story"):
-            add(
-                "error",
-                "subtask_on_new_story",
-                "Sub-task created on a Story after the effective date. Use one Story per repo or a checklist instead (Bug of Story is exempt).",
-            )
-
     if issue_type in {"story", "task", "spike"}:
         brackets = re.findall(r"\[([^\]]+)\]", summary)
         if len(brackets) > 1:
