@@ -4,6 +4,16 @@ The single source of truth for Jira Stories in RAD and MYM. It applies to every 
 
 Items marked `DEFAULT — TBC` are recommended defaults awaiting confirmation.
 
+## Applies to
+
+`DEFAULT — TBC`: effective date **2026-10-01**.
+
+- Stories created **on or after the effective date**.
+- Existing active Stories, **the next time they are refined**.
+- **Done tickets are never rewritten** to match this standard. Do not mechanically rename or edit historical tickets.
+
+Audit checks honor the effective date: they apply the full rule set to Stories created on or after it, and report older active Stories as informational until refined.
+
 ## The Story on one screen
 
 ```text
@@ -53,7 +63,7 @@ Strong: *As a Center Director, I want to be warned before an appointment exceeds
 
 `DEFAULT — TBC`: Regional Manager is folded into Admin.
 
-FO, CD, ACD and Admin are valid abbreviations. Pick the full name or the abbreviation and stay consistent within related work.
+FO, CD and ACD may be abbreviated. Pick the full name or the abbreviation and stay consistent within related work.
 
 **Retired, never use:** Center Admin, User, Radius User, Admin User, Center Owner, Support Admin (use Admin), Developer (technical work is a Task; see `standards/task.md`).
 
@@ -160,7 +170,7 @@ Keep the description to the minimum that changes what must be built, tested, seq
 
 ## Checks
 
-Used by `tools/jira_helper.py`. "Auto" means the helper detects it; other rules are for agent review.
+Used by `tools/jira_helper.py`. "Auto" means the helper detects it; other rules are for agent review. All rules respect the effective date in [Applies to](#applies-to).
 
 | Rule | Severity | Auto |
 | --- | --- | --- |
@@ -169,11 +179,11 @@ Used by `tools/jira_helper.py`. "Auto" means the helper detects it; other rules 
 | Summary not in `As a … I want … so that …` format | Error | Yes |
 | Bracket present but not in the repo list, or more than one bracket | Error | Yes |
 | Retired persona in the Summary | Error | Yes |
-| Story Points over 5 with a committed Fix Version | Error | Yes |
-| Implementation sub-task on a new Story | Error | Yes |
+| Story Points over 5 with a committed Fix Version ([committed](jira-conventions.md#fix-versions); `N/A` and `FREEZE` do not count) | Error | Yes |
+| Sub-task created on a Story on or after the effective date (Bug of Story is exempt) | Error | Yes |
 | Market adjective not in the market list | Warning | Yes |
 | Pull Requests field empty at Code Review or later | Warning | Yes |
-| `ac-approved` label present but no Changelog section | Warning | Yes |
+| AC text changed after the `ac-approved` label was added, with no Changelog line | Warning | Only when the helper receives issue changelog history; otherwise agent review |
 | Story with no Epic | Warning | Yes |
 | Unestimated with a Fix Version | Warning | Yes |
 | Open questions non-empty at AC approval | Warning | No |
