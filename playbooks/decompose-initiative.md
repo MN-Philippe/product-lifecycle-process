@@ -12,7 +12,7 @@ Break a bounded outcome into coherent delivery work without losing the business 
 4. Identify every implementation repository touched by the initiative. Do not assume the Jira project key maps to one repository; MYM commonly spans Radius, Scheduling, Guardian Portal, and related repositories.
 5. Decompose implementation into **cohesive, generally single-repository Stories**.
 6. Within a repository, split further when separate units would be easier to understand, implement, review, test, or merge independently. Do not keep a large Story together merely because all changes live in one repo.
-7. For every proposed Jira **Story**, follow `standards/story-quality.md` and prefix the owning repository with `[Repo]` for multi-repository initiatives.
+7. For every proposed Jira **Story**, follow `standards/story.md` and prefix the owning repository with `[Repo]` for multi-repository initiatives.
 8. Use explicit Story-to-Story dependencies for cross-repository sequencing. A cross-repository Story should be exceptional.
 9. Do **not** create Tasks/Sub-tasks by default. Add them only when they materially support sequencing, parallel ownership, or separately tracked execution needed by the delivery plan.
 10. Identify source-of-truth, trust/validation boundaries, minimum cross-repository contracts, null/default semantics, compatibility expectations, and logic that must not be duplicated.

@@ -46,7 +46,7 @@ Working rule:
 - do not infer implementation ownership from the Jira project key alone;
 - inspect linked PRs/code when the repository is unclear.
 
-See `standards/story-quality.md`.
+See `standards/story.md`.
 
 ## Workflow interpretation
 

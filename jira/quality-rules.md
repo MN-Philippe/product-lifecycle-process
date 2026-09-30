@@ -74,7 +74,7 @@ Flag when:
 
 Acceptance criteria are required for Product Complete. Prefer Given / When / Then when it improves clarity, while allowing clear testable bullets when that is simpler. Do not reward verbosity: once a rule is clear and testable, avoid enumerating implied cases unless they expose a materially different behavior.
 
-See `standards/story-quality.md` and `standards/personas.md`.
+See `standards/story.md`.
 
 ## Business Requirements Complete
 

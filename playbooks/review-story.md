@@ -4,7 +4,7 @@
 
 Make the Story understandable at an ELT glance, aligned to the approved business intent, testable by QA, and ready to move through the normal product lifecycle.
 
-Read `standards/story-quality.md` first.
+Read `standards/story.md` first.
 
 ## Steps
 

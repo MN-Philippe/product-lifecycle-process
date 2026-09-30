@@ -6,8 +6,7 @@ Create Jira Stories that are cohesive, reviewable delivery units with clear repo
 
 Read:
 
-- `standards/story-quality.md`
-- `standards/personas.md`
+- `standards/story.md`
 - the parent Epic/capability and relevant related work live from Jira
 
 ## Steps

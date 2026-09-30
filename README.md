@@ -20,8 +20,7 @@ Humans should read [`GUIDE.md`](GUIDE.md) for the repository boundaries and [`st
 ## Canonical standards
 
 - [`standards/lifecycle.md`](standards/lifecycle.md) - intake through release, ownership, readiness, commitments, expedite path, and open questions
-- [`standards/story-quality.md`](standards/story-quality.md) - cohesive Story boundaries, repository ownership, sequencing guidance, required Story Summary format, acceptance criteria, and Product Complete
-- [`standards/personas.md`](standards/personas.md) - canonical Story personas and rules for aliases, qualifiers, and technical actors
+- [`standards/story.md`](standards/story.md) - the single Story standard: format, size, personas, markets, acceptance criteria, and sub-task rules
 - [`standards/bug.md`](standards/bug.md) - Bug classification, triage, technical assessment, prioritization, and Bug-of-Story handling
 - [`standards/ai-release-confidence.md`](standards/ai-release-confidence.md) - narrow daily AI Release Confidence experiment for committed Stories and Bugs
 

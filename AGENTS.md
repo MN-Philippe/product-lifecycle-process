@@ -18,8 +18,7 @@ This repository is an operating guide, not a mirror of Jira.
 When reasoning about the product lifecycle, read only the standards relevant to the task:
 
 - `standards/lifecycle.md` - intake, Business Requirements Complete, commitment, Product Complete, delivery, release, and exceptions
-- `standards/story-quality.md` - Story Summary and acceptance-criteria quality
-- `standards/personas.md` - canonical Story personas, aliases, qualifiers, and technical-actor guidance
+- `standards/story.md` - Story Summary and acceptance-criteria quality
 - `standards/bug.md` - Bug classification, categorization, technical assessment, prioritization, and Bug-of-Story rules
 - `standards/ai-release-confidence.md` - scheduled AI Release Confidence experiment
 
@@ -37,8 +36,7 @@ When reviewing an Epic:
 - read `playbooks/review-epic.md`
 
 When writing, reviewing, or improving a Story:
-- read `standards/story-quality.md`
-- read `standards/personas.md`
+- read `standards/story.md`
 - read `playbooks/write-story.md` for new/restructured work
 - read `playbooks/review-story.md` for review
 
@@ -138,7 +136,7 @@ For implementation Stories in a multi-repository initiative, prefix the owning r
 
 MYM is a common multi-repository Jira project: do not assume a MYM Story belongs to one repository from the Jira key alone. Inspect the implementation context/PRs and use repository prefixes such as `[Radius]`, `[Scheduling]`, or `[Guardian Portal]` as appropriate.
 
-Use the canonical personas from `standards/personas.md`. Preserve the most specific real center role when known, including **Franchise Owner (FO)**, **Center Director (CD)**, and **Assistant Center Director (ACD)**. FO/CD/ACD are valid Story personas and valid abbreviations. Do not collapse them into vague labels such as Center Admin, Radius User, Admin User, Admin, or generic User.
+Use the canonical personas from `standards/story.md`. Preserve the most specific real center role when known, including **Franchise Owner (FO)**, **Center Director (CD)**, and **Assistant Center Director (ACD)**. FO/CD/ACD are valid Story personas and valid abbreviations. Do not collapse them into vague labels such as Center Admin, Radius User, Admin User, Admin, or generic User.
 
 The `I want` and `So that` must be clear enough that ELT can understand the Story from the Summary alone. Do not weaken this standard merely because the underlying work is technical; choose the clearest truthful actor, behavior, and outcome.
 
