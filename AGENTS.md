@@ -17,10 +17,10 @@ This repository is an operating guide, not a mirror of Jira.
 
 When reasoning about the product lifecycle, read only the standards relevant to the task:
 
-- `standards/product-lifecycle.md` - intake, Business Requirements Complete, commitment, Product Complete, delivery, release, and exceptions
+- `standards/lifecycle.md` - intake, Business Requirements Complete, commitment, Product Complete, delivery, release, and exceptions
 - `standards/story-quality.md` - Story Summary and acceptance-criteria quality
 - `standards/personas.md` - canonical Story personas, aliases, qualifiers, and technical-actor guidance
-- `standards/bug-quality.md` - Bug classification, categorization, technical assessment, prioritization, and Bug-of-Story rules
+- `standards/bug.md` - Bug classification, categorization, technical assessment, prioritization, and Bug-of-Story rules
 - `standards/ai-release-confidence.md` - scheduled AI Release Confidence experiment
 
 These standards are authoritative when older playbook wording conflicts with them.
@@ -43,11 +43,11 @@ When writing, reviewing, or improving a Story:
 - read `playbooks/review-story.md` for review
 
 When triaging a Bug:
-- read `standards/bug-quality.md`
+- read `standards/bug.md`
 - read `playbooks/triage-bug.md`
 
 When converting raw intake into actionable work:
-- read `standards/product-lifecycle.md`
+- read `standards/lifecycle.md`
 - read `playbooks/intake.md`
 
 When decomposing a project or large initiative:
@@ -57,7 +57,7 @@ When auditing a backlog or preparing an ELT/product review:
 - read `playbooks/backlog-review.md`
 
 When preparing a release:
-- read `standards/product-lifecycle.md`
+- read `standards/lifecycle.md`
 - read `playbooks/release-readiness.md`
 
 When running the scheduled AI Release Confidence assessment:

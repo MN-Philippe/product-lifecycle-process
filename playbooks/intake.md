@@ -4,7 +4,7 @@
 
 Capture legitimate requests early, then turn raw intake into clear business requirements without confusing Jira existence with approval or commitment.
 
-Read `standards/product-lifecycle.md` first.
+Read `standards/lifecycle.md` first.
 
 ## Operating rule
 

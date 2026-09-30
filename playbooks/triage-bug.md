@@ -4,7 +4,7 @@
 
 Turn a reported symptom into the correct work item, understand the safest fix scope, categorize it in the right product context, and avoid treating every report as a standalone Bug by default.
 
-Read `standards/bug-quality.md` first.
+Read `standards/bug.md` first.
 
 ## Steps
 

@@ -144,7 +144,7 @@ Standalone Bugs should be categorized under the product area, feature, or initia
 
 Dev + QA + PM jointly decide whether a defect found during Story delivery stays a Bug of Story or becomes a standalone Bug.
 
-See `standards/bug-quality.md`.
+See `standards/bug.md`.
 
 ## Spike
 

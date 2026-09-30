@@ -4,7 +4,7 @@
 
 Evaluate whether a planned release is ready to ship by combining live Jira scope with delivery, QA, dependency, and operational context while respecting the agreed ownership model.
 
-Read `standards/product-lifecycle.md` first.
+Read `standards/lifecycle.md` first.
 
 ## Normal pipeline
 
