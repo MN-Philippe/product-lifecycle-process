@@ -10,21 +10,12 @@ Useful when an initiative needs durable cross-cutting design or decisions:
 
 - `architecture/technical-design.md`
 - `architecture/adr.md`
-- `architecture/integration-contract.md`
 
 ## Delivery
 
 Useful when execution has meaningful sequencing, risk, or operational complexity:
 
 - `delivery/implementation-plan.md`
-- `delivery/test-strategy.md`
-- `delivery/rollout-plan.md`
-
-## Product
-
-Useful when discovery/problem framing is larger than a Jira description:
-
-- `product/problem-definition.md`
 
 ## Rules
 

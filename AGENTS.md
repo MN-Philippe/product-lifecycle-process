@@ -1,173 +1,49 @@
 # Agent Instructions
 
-This repository is an operating guide, not a mirror of Jira.
+This repository is an operating guide, not a mirror of Jira. This file only routes; every rule lives in exactly one file it links to. Read only what the task needs.
 
-## First principles
+## Principles
 
-1. Treat Jira as the source of truth for live work, commitments, and field history.
-2. Treat implementation repositories as the source of truth for code and runtime behavior.
-3. Use this repository for stable context, lifecycle standards, repeatable workflows, quality rules, shortcuts, and durable artifacts.
-4. Fetch live data before making conclusions about current work.
-5. Do not create or maintain a shadow copy of Jira.
-6. Prefer recommendations before writes unless the user explicitly asks for a change or an approved automation owns specific fields.
-7. Never copy secrets or credentials into generated Jira content or durable artifacts.
-8. Keep unresolved process questions unresolved; do not silently turn experiments into policy.
+- Jira is the source of truth for live work, commitments and history; implementation repos are the source of truth for code. Fetch live data before concluding anything about current work. Do not create a shadow copy of Jira. See [README](README.md#source-of-truth-boundaries).
+- Recommend before writing. Write only when the user asks or an approved automation owns the fields. See [README](README.md#agent-write-policy).
+- Every Jira key in output is a link. See [jira-conventions](standards/jira-conventions.md).
+- Never copy secrets into Jira content or artifacts. See [jira-conventions](standards/jira-conventions.md#security-hygiene).
+- Keep unresolved process questions unresolved. See [lifecycle](standards/lifecycle.md#10-open-questions-not-yet-standardized).
+- Standards win over older playbook wording. If a rule is missing from the standards, do not invent it.
 
-## Canonical standards
+## Router
 
-When reasoning about the product lifecycle, read only the standards relevant to the task:
-
-- `standards/lifecycle.md` - intake, Business Requirements Complete, commitment, Product Complete, delivery, release, and exceptions
-- `standards/story.md` - Story Summary and acceptance-criteria quality
-- `standards/bug.md` - Bug classification, categorization, technical assessment, prioritization, and Bug-of-Story rules
-- `standards/ai-release-confidence.md` - scheduled AI Release Confidence experiment
-
-These standards are authoritative when older playbook wording conflicts with them.
-
-## Routing
-
-When the task is about Jira structure, issue quality, hierarchy, or workflow:
-- read `context/jira.md`
-- read `jira/quality-rules.md`
-- use `jira/queries.yaml` for known query patterns
-- use `tools/jira_helper.py` when deterministic query resolution, compaction, redaction, or audit checks are useful
-
-When reviewing an Epic:
-- read `playbooks/review-epic.md`
-
-When writing, reviewing, or improving a Story:
-- read `standards/story.md`
-- read `playbooks/write-story.md` for new/restructured work
-- read `playbooks/review-story.md` for review
-
-When triaging a Bug:
-- read `standards/bug.md`
-- read `playbooks/triage-bug.md`
-
-When converting raw intake into actionable work:
-- read `standards/lifecycle.md`
-- read `playbooks/intake.md`
-
-When decomposing a project or large initiative:
-- read `playbooks/decompose-initiative.md`
-
-When auditing a backlog or preparing an ELT/product review:
-- read `playbooks/backlog-review.md`
-
-When preparing a release:
-- read `standards/lifecycle.md`
-- read `playbooks/release-readiness.md`
-
-When running the scheduled AI Release Confidence assessment:
-- read `standards/ai-release-confidence.md`
-- read `playbooks/assess-release-confidence.md`
-- use `committed_story_bugs` from `jira/queries.yaml`
-
-When technical design, architecture, rollout, testing, or integration detail is needed:
-- inspect `artifacts/README.md`
-- scaffold only the artifacts that add durable value
-
-When an initiative workspace exists:
-- inspect `ARTIFACT_INDEX.md` first
-- inspect `initiatives/<JIRA-KEY>-*/` for relevant durable context
-- treat it as durable context only; still fetch Jira live
+| Task | Read |
+| --- | --- |
+| Write a Story | [story](standards/story.md), [jira-conventions](standards/jira-conventions.md), [write-story](playbooks/write-story.md), [template](templates/story.md) |
+| Refine a Story | [story](standards/story.md), [refine-story](playbooks/refine-story.md) |
+| Split a Story | [story](standards/story.md), [split-story](playbooks/split-story.md) |
+| Is a Story ready for dev | [lifecycle](standards/lifecycle.md), [ready-check](playbooks/ready-check.md) |
+| Review / audit a Story | [story](standards/story.md), [review-story](playbooks/review-story.md) |
+| Task or Spike | [task](standards/task.md), [template](templates/task.md) |
+| Triage a Bug | [bug](standards/bug.md), [triage-bug](playbooks/triage-bug.md), [template](templates/bug.md) |
+| Raw intake | [lifecycle](standards/lifecycle.md), [intake](playbooks/intake.md) |
+| Decompose an initiative | [story](standards/story.md), [decompose-initiative](playbooks/decompose-initiative.md) |
+| Review an Epic | [review-epic](playbooks/review-epic.md) |
+| Backlog / ELT review | [backlog-review](playbooks/backlog-review.md) |
+| Prepare a release | [lifecycle](standards/lifecycle.md), [release-readiness](playbooks/release-readiness.md) |
+| Monthly release notes and Manual log | [release-docs](playbooks/release-docs.md) |
+| Retire replaced tickets | [cleanup](playbooks/cleanup.md) |
+| Scheduled AI Release Confidence | [ai-release-confidence](standards/ai-release-confidence.md), [assess-release-confidence](playbooks/assess-release-confidence.md) |
+| Vendor (MYM) onboarding | [vendor-guide](templates/vendor-guide.md) |
+| Jira fields, Fix Versions, Code Dependency, markets | [jira-conventions](standards/jira-conventions.md) |
+| Design, architecture, rollout detail | [artifacts/README](artifacts/README.md) |
+| An initiative workspace exists | [ARTIFACT_INDEX](ARTIFACT_INDEX.md), then `initiatives/<JIRA-KEY>-*/` (durable context only; still fetch Jira live) |
 
 ## Working pattern
 
-For most tasks:
-
-1. Understand the user's goal.
-2. Resolve a known query shortcut when one applies.
-3. Fetch live Jira data relevant to that goal through the available connector/client.
-4. Read only the repo standards/playbooks needed for the task.
-5. Optionally compact/audit the live payload with `tools/jira_helper.py`; never treat the helper as the data source.
-6. Inspect code or other repositories when technical truth matters.
-7. Inspect durable initiative artifacts when they exist.
-8. Identify gaps, conflicts, risks, and missing decisions.
-9. Produce a concise recommendation or proposed change set.
-10. Perform writes only within the user's authorization or an explicitly approved automation write policy.
-
-## Jira item hyperlink rule
-
-Whenever a Jira item is mentioned in user-facing output, make the visible Jira key a hyperlink to the live issue. Do not present a bare Jira key when the output format supports hyperlinks.
-
-Preferred behavior:
-
-- use the issue `webUrl` returned by the live Jira connector when available;
-- otherwise link to `https://mathnasium.atlassian.net/browse/<JIRA-KEY>` after confirming the key refers to a real Jira item;
-- in Markdown, use the key as the link text, for example `[RAD-1234](https://mathnasium.atlassian.net/browse/RAD-1234)`;
-- in tables, documents, and slide decks, keep the short Jira key visible and make that text clickable rather than displaying the full URL;
-- apply the rule to every Jira item mentioned, including Stories, Bugs, Epics, Tasks, and Spikes.
-
-## Helper examples
-
-```bash
-python tools/jira_helper.py list
-python tools/jira_helper.py query committed_story_bugs
-python tools/jira_helper.py query active_epics
-python tools/jira_helper.py query release_scope --param project=MYM --param fix_version=OCT-2026
-python tools/jira_helper.py context jira-result.json
-python tools/jira_helper.py audit jira-result.json
-```
-
-The JSON passed to `context` or `audit` must come from a current Jira read. Do not check that JSON into the repository.
-
-The artifact index is generated from repository files:
-
-```bash
-python tools/artifact_index.py --write
-```
-
-Do not manually add Jira status, assignee, priority, release, or child-ticket information to that index.
-
-## Story quality rule
-
-For Jira **Stories**, the Summary format is required:
-
-> **As a [specific actor], I want [clear behavior/capability] so that [clear outcome/value].**
-
-Do not place a comma before `so that`.
-
-A Story should generally be one cohesive unit of work in one implementation repository. Split further when one repository contains multiple independently understandable/reviewable units. A cross-repository Story should be exceptional.
-
-For implementation Stories in a multi-repository initiative, prefix the owning repository:
-
-> **[Repo] As a [specific actor], I want [clear behavior/capability] so that [clear outcome/value].**
-
-MYM is a common multi-repository Jira project: do not assume a MYM Story belongs to one repository from the Jira key alone. Inspect the implementation context/PRs and use repository prefixes such as `[Radius]`, `[Scheduling]`, or `[Guardian Portal]` as appropriate.
-
-Use the canonical personas from `standards/story.md`. Preserve the most specific real center role when known, including **Franchise Owner (FO)**, **Center Director (CD)**, and **Assistant Center Director (ACD)**. FO/CD/ACD are valid Story personas and valid abbreviations. Do not collapse them into vague labels such as Center Admin, Radius User, Admin User, Admin, or generic User.
-
-The `I want` and `So that` must be clear enough that ELT can understand the Story from the Summary alone. Do not weaken this standard merely because the underlying work is technical; choose the clearest truthful actor, behavior, and outcome.
-
-Do not create Tasks/Sub-tasks merely to enumerate implementation steps. Reserve them for meaningful sequencing, parallel ownership, or separately tracked execution. When they are justified, prefer an action-oriented `[Repo]` Summary plus Scope / Done when / Blockers.
-
-More Jira text is not automatically better definition. Prefer the minimum sufficient detail that changes what must be built, tested, sequenced, or decided. Remove duplicated rules, redundant examples, speculative implementation notes, stale discussion, and competing terminology that add noise without resolving ambiguity.
-
-## Bug categorization rule
-
-Standalone Bugs should be categorized under the product area, feature, or initiative they impact. Do not use a generic **Bug Fixing** Epic as the default parent/container.
-
-When an appropriate area/feature is known, associate the Bug there so its product context is visible. If the correct categorization is unclear, determine it during triage rather than routing the Bug into a catch-all Bug Epic.
-
-## Scheduled AI Release Confidence boundary
-
-The early-morning scheduled assessment is intentionally narrow:
-
-- assess only **Stories and standalone Bugs with a Fix Version**;
-- maintain only **AI Release Confidence** and **AI Release Confidence Reason**;
-- read but never edit **AI Release Confidence Feedback**;
-- use Jira changelog/history rather than creating a parallel history in Git;
-- do not add Epic/release aggregation or dashboard scoring yet.
-
-Broader lifecycle standards do not imply that the scheduled AI job should scan every Jira item.
+1. Understand the goal. Resolve a known query from `jira/queries.yaml` when one applies.
+2. Fetch live Jira data through the connector.
+3. Read the routed standard and playbook.
+4. Optionally compact or audit the payload with `tools/jira_helper.py` (see [tools/README](tools/README.md)); the helper is never the data source.
+5. Inspect code or initiative artifacts when technical truth matters.
+6. Recommend or propose a change set; write only within authorization.
 
 ## Avoid
 
-- stale cached Jira snapshots;
-- one-file-per-ticket synchronization;
-- invented architecture or repository relationships;
-- process ceremony that does not improve ownership, shared context, or delivery quality;
-- duplicating information simply because an agent can generate it;
-- treating Jira existence as approval or commitment;
-- treating a single weak delivery signal as automatic risk.
+Stale Jira snapshots, one-file-per-ticket sync, invented repo relationships, ceremony that does not improve ownership or delivery quality, treating Jira existence as approval, and treating one weak signal as automatic risk.
