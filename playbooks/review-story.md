@@ -1,42 +1,21 @@
 # Playbook: Review a Story
 
-## Goal
+Read: [`standards/story.md`](../standards/story.md)
 
-Make the Story understandable at an ELT glance, aligned to the approved business intent, testable by QA, and ready to move through the normal product lifecycle.
-
-Read `standards/story.md` first.
+Audit an existing Story against the standard. To fix a Story rather than audit it, use `playbooks/refine-story.md`; to check readiness only, use `playbooks/ready-check.md`.
 
 ## Steps
 
-1. Fetch the Story live.
-2. Fetch its parent/related context when useful to understand the intended outcome.
-3. Check that the Story is one cohesive, generally single-repository unit of work. If it spans repositories or contains multiple independently reviewable units, recommend splitting it into Stories.
-4. Check the Summary against the required format:
-   - `As a [specific actor], I want [clear behavior/capability] so that [clear outcome/value]`
-   - do not place a comma before `so that`.
-5. Apply the ELT test: can someone understand who / what / why from the Summary alone?
-6. Check whether the Story is small enough to implement and review coherently without unnecessary internal decomposition.
-7. Check whether the description captures the durable business context/rules/scenarios actually needed for implementation, authority/source-of-truth boundaries, important invariants, out-of-scope behavior, and cross-system contract semantics when relevant. Flag transient PR/progress status embedded in the durable definition.
-8. Perform a noise pass: remove duplicated rules, redundant examples, speculative implementation detail, stale discussion, repeated explanations, and competing terminology that do not change what must be built or tested.
-9. Evaluate acceptance criteria for specificity, observability, and testability. Prefer Given / When / Then when it improves clarity. Flag both ambiguity and over-specification: code-design checklists, exhaustive implied cases, or criteria that repeat broader rules without adding information.
-10. Check whether comments contain requirement decisions that should be folded into the description and whether obsolete guidance is clearly superseded.
-11. If the Story has Tasks/Sub-tasks, verify they exist for a real sequencing or parallel-execution need rather than simply restating implementation steps.
-12. Check real blockers between Stories and distinguish them from integration gates.
-13. Determine whether Product Complete is supportable: Product definition is precise and QA test coverage is defined.
-14. Flag Engineering review only when technical uncertainty/complexity warrants it; do not invent a universal technical gate.
-15. Look for duplicate work, hidden dependencies, or material scope changes after commitment.
-16. If a Fix Version exists, treat it as the delivery commitment. Material scope changes are risk evidence to assess, not automatic confidence downgrades.
-17. Inspect code or durable artifacts when technical truth matters.
-18. Recommend the smallest useful improvement.
+1. Fetch the Story live, with its parent and related context.
+2. Check the effective date in `standards/story.md#applies-to`. For Stories created before it, review for information only.
+3. Walk the Checks table in `standards/story.md`, plus the ELT test on the Summary.
+4. Check the description for stale content: comments that contradict it, superseded guidance, duplicated rules, implementation ideas outside a comment or PR.
+5. Check size and repo scope. Recommend `playbooks/split-story.md` when warranted.
+6. Recommend the smallest useful improvement.
 
 ## Output
 
-- **Summary quality / ELT readability**
-- **Business intent clarity**
-- **Acceptance criteria**
-- **Product Complete gaps**
-- **Engineering review needed?**
-- **Dependencies / scope-change concerns**
-- **Proposed Jira wording/changes**, if needed
-
-Do not weaken the required Story Summary format. Do not add ceremony that does not improve clarity or delivery quality.
+- Summary quality / ELT readability
+- Acceptance criteria and test-case coverage
+- Findings by severity (Error / Warning / Suggestion)
+- Proposed wording or Jira changes, if needed

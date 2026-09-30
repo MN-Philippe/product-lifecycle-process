@@ -1,5 +1,7 @@
 # Playbook: Review an Epic
 
+Read: [`standards/story.md`](../standards/story.md), [`standards/jira-conventions.md`](../standards/jira-conventions.md)
+
 ## Goal
 
 Assess whether an Epic provides useful context for its current work without imposing an Epic/capability taxonomy that has not yet been decided.
@@ -18,7 +20,7 @@ Do not treat an existing persistent/bucket Epic as invalid merely because it is 
 4. Evaluate whether the Epic provides enough useful context for the work it currently contains.
 5. For a clearly finite initiative, assess problem, outcome, scope, success, dependencies, and decomposition where useful.
 6. Inspect child Stories/Tasks/Bugs for coverage, overlap, missing work, and inconsistent lifecycle state.
-7. If the Epic spans multiple implementation repositories, verify that child implementation Stories are repository-bounded where practical and that each Story Summary begins with the owning `[Repo]`. Check linked PRs/code rather than inferring repository ownership from the Jira project key.
+7. If the Epic spans multiple repos, check that child Stories are repo-bounded (`standards/story.md#multi-repo-work-and-sub-tasks`) using linked PRs and Code Dependency, not the Jira key.
 8. Inspect relevant code/artifacts only when technical truth is needed.
 9. Check for an initiative workspace in `initiatives/`; if one exists, use its durable decisions but do not trust it for live Jira state.
 10. Report concrete quality/context gaps without turning the review into an unapproved hierarchy redesign.

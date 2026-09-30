@@ -1,43 +1,28 @@
 # Playbook: Decompose an Initiative
 
-## Goal
+Read: [`standards/story.md`](../standards/story.md), [`standards/task.md`](../standards/task.md), [`standards/jira-conventions.md`](../standards/jira-conventions.md)
 
-Break a bounded outcome into coherent delivery work without losing the business intent or prematurely over-specifying implementation.
+Break a bounded outcome into delivery work without losing business intent.
 
 ## Steps
 
-1. Fetch the initiative/Epic live and inspect current children.
-2. Confirm the problem, desired outcome, scope, constraints, important non-scope, business priority, and due date when available.
-3. Identify major user/business capabilities and technical enablers required to reach the outcome.
-4. Identify every implementation repository touched by the initiative. Do not assume the Jira project key maps to one repository; MYM commonly spans Radius, Scheduling, Guardian Portal, and related repositories.
-5. Decompose implementation into **cohesive, generally single-repository Stories**.
-6. Within a repository, split further when separate units would be easier to understand, implement, review, test, or merge independently. Do not keep a large Story together merely because all changes live in one repo.
-7. For every proposed Jira **Story**, follow `standards/story.md` and prefix the owning repository with `[Repo]` for multi-repository initiatives.
-8. Use explicit Story-to-Story dependencies for cross-repository sequencing. A cross-repository Story should be exceptional.
-9. Do **not** create Tasks/Sub-tasks by default. Add them only when they materially support sequencing, parallel ownership, or separately tracked execution needed by the delivery plan.
-10. Identify source-of-truth, trust/validation boundaries, minimum cross-repository contracts, null/default semantics, compatibility expectations, and logic that must not be duplicated.
-11. Identify real blockers separately from integration gates. If work can proceed against a frozen contract, do not model it as blocked merely because the upstream implementation is not merged.
-12. When a hard deadline creates a genuine need for parallel tracks, introduce the minimum useful Tasks/Sub-tasks and collapse dependencies into a small number of execution waves.
-13. Propose work that is independently understandable and can later become Product Complete with clear acceptance criteria and QA coverage.
-14. Keep decomposition lean: prefer smaller cohesive Stories over both oversized Stories and lower-level ticket noise.
-15. Run a simplification pass across the Epic and proposed Stories:
-    - keep shared rules at the highest useful level;
-    - remove duplicated or implied detail from children;
-    - use one term consistently for each domain concept;
-    - remove examples and implementation notes that do not resolve real ambiguity;
-    - make each child readable without forcing developers to sort signal from generated noise.
-16. Recommend conditional Engineering review where architecture, permissions, integrations, data, security, performance, deployment, or feasibility warrants it.
-17. Recommend durable artifacts only where the initiative needs design/decision material beyond Jira.
+1. Fetch the Epic live and inspect current children.
+2. Confirm problem, outcome, scope, constraints, non-scope, business priority and due date when available.
+3. Identify every implementation repo touched. Do not infer repos from the Jira key.
+4. Produce **one Story per repo under the Epic**, each 5 points or less, linked with "blocks" where order matters. Split further where `standards/story.md#size` applies. **Do not propose implementation sub-tasks.**
+5. Use a Task (`standards/task.md`) for technical work with no observable behavior.
+6. State cross-repo contracts, source of truth and trust boundaries at the Epic level; give each Story only the local contract it needs (`standards/story.md#requirements-constraints-and-implementation-ideas`).
+7. Separate real blockers from integration gates. Work that can proceed against a frozen contract is not blocked.
+8. Run a simplification pass: shared rules at the Epic, one term per concept, no duplicated detail in children.
+9. Recommend conditional Engineering review (`standards/lifecycle.md`) and durable artifacts (`artifacts/README.md`) only where warranted.
 
 ## Output
 
-- **Outcome and scope recap**
-- **Proposed work breakdown**
-- **Proposed Story Summaries in required format**
-- **Dependencies / sequencing**
-- **Engineering-review candidates**
-- **Open decisions**
-- **Recommended Jira changes**
-- **Recommended artifacts**, if any
+- Outcome and scope recap
+- Proposed Epic → Story breakdown, with Summaries in the standard format
+- Dependencies and sequencing
+- Engineering-review candidates
+- Open decisions
+- Recommended Jira changes and artifacts, if any
 
-Do not create all proposed Jira work unless authorized. Do not assume a new Epic/capability taxonomy while that design question remains open.
+Do not create Jira work unless authorized.
