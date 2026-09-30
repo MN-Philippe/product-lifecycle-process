@@ -1,0 +1,16 @@
+{
+  "name": "mathnasium",
+  "owner": {
+    "name": "Mathnasium Product"
+  },
+  "metadata": {
+    "description": "Mathnasium product lifecycle plugins, synced from the product-lifecycle-process repository."
+  },
+  "plugins": [
+    {
+      "name": "mathnasium-product-lifecycle",
+      "source": "./plugins/mathnasium-product-lifecycle",
+      "description": "Write, refine, split and ready-check Jira Stories for RAD and MYM against the Mathnasium product lifecycle standard."
+    }
+  ]
+}
