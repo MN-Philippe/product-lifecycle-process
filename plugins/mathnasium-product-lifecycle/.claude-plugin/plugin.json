@@ -1,6 +1,6 @@
 {
   "name": "mathnasium-product-lifecycle",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Write, refine, split and ready-check Jira Stories for RAD and MYM against the Mathnasium product lifecycle standard.",
   "author": {
     "name": "Mathnasium Product"

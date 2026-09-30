@@ -38,7 +38,12 @@ SOURCES: dict[str, str] = {
     "playbooks/ready-check.md": "ready-check.md",
     "playbooks/review-story.md": "review-story.md",
     "playbooks/cleanup.md": "cleanup.md",
+    "playbooks/decompose-initiative.md": "decompose-initiative.md",
+    "playbooks/intake.md": "intake.md",
+    "playbooks/triage-bug.md": "triage-bug.md",
     "templates/story.md": "story-template.md",
+    "templates/task.md": "task-template.md",
+    "templates/vendor-guide.md": "vendor-guide.md",
 }
 
 _LINK = re.compile(r"\[([^\]]+)\]\(([^)\s]+)\)")

@@ -168,7 +168,7 @@ Keep the description to the minimum that changes what must be built, tested, seq
 - This standard applies to every ticket, whoever writes it.
 - For MYM, Mathnasium's PM owns the Summary, the ACs and AC approval.
 - The vendor owns Tasks, estimates and the Pull Requests field.
-- See `templates/vendor-guide.md`.
+- See `vendor-guide.md`.
 
 ## Checks
 

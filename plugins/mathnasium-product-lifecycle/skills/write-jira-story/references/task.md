@@ -9,10 +9,10 @@ Technical work with no product-observable behavior is a **Task**, never a Story 
 - **Summary:** `[Repo] Verb + object`. Example: *[Scheduling] Add OTLP metrics to the Fanout service*. The repo bracket is optional, as for Stories, and is exactly one of the Code Dependency values in `jira-conventions.md#code-dependency`.
 - **Description:** Objective / Why / Done when.
 - **Size:** 5 points maximum.
-- **Fields:** the same Pull Requests and Code Dependency rules as Stories. Ownership of Tasks in MYM sits with the vendor (`templates/vendor-guide.md`).
+- **Fields:** the same Pull Requests and Code Dependency rules as Stories. Ownership of Tasks in MYM sits with the vendor (`vendor-guide.md`).
 - A Task belongs to an Epic. It does not need acceptance criteria; "Done when" replaces them.
 
-The copy-paste version is `templates/task.md`.
+The copy-paste version is `task-template.md`.
 
 ## Spike
 
