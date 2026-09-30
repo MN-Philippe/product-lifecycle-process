@@ -142,10 +142,13 @@ class StandardV2Tests(unittest.TestCase):
         self.assertEqual("warning", codes(make_issue(fixVersions=[{"name": "OCT-2026-SR"}]))["unestimated_with_fix_version"])
         self.assertNotIn("unestimated_with_fix_version", codes(make_issue(fixVersions=[{"name": "FREEZE"}])))
 
-    def test_subtask_only_for_new_stories(self):
-        new = make_issue(issue_type="Sub-task", summary="[Radius] Wire the endpoint")
-        self.assertEqual("error", codes(new)["subtask_on_new_story"])
-        self.assertNotIn("subtask_on_new_story", codes(make_issue(issue_type="Sub-task", created=OLD)))
+    def test_subtasks_are_not_blanket_rejected(self):
+        workflow = make_issue(
+            issue_type="Sub-task",
+            summary="Automate AC3 regression coverage",
+            description="QA automation for the parent Story.",
+        )
+        self.assertNotIn("subtask_on_new_story", codes(workflow))
         self.assertNotIn("subtask_on_new_story", codes(make_issue(issue_type="Bug of Story")))
 
     def test_pull_requests_field_required_from_code_review(self):
