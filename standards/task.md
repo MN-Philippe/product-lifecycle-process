@@ -1,14 +1,15 @@
 # Task and Spike Standard
 
-Technical work with no product-observable behavior is a **Task**, never a Story with a Developer persona. Work with observable behavior is a Story (`standards/story.md`).
+A **Task** is standalone technical, operational or delivery work that does not introduce independently testable product/system behavior. If the work changes runtime behavior or produces deployable application/service/database implementation, prefer a Story even when the work is technical (`standards/story.md`). A Task is not an escape hatch for production implementation that should be decomposed as Stories.
 
 ## Task
 
-- **Summary:** `[Repo] Verb + object`. Example: *[Scheduling] Add OTLP metrics to the Fanout service*. The repo bracket is optional, as for Stories, and is exactly one of the Code Dependency values in `standards/jira-conventions.md#code-dependency`.
+- **Summary:** `[Repo] Verb + object`. Example: *[Scheduling Microservice] Prepare the Fanout production configuration checklist*. The repo bracket is optional, as for Stories, and is exactly one of the Code Dependency values in `standards/jira-conventions.md#code-dependency`.
 - **Description:** Objective / Why / Done when.
 - **Size:** 5 points maximum.
 - **Fields:** the same Pull Requests and Code Dependency rules as Stories. Ownership of Tasks in MYM sits with the vendor (`templates/vendor-guide.md`).
 - A Task belongs to an Epic. It does not need acceptance criteria; "Done when" replaces them.
+- Use a Story when the work creates or changes a product/system response, even if no new UI is involved. Use a workflow sub-task instead when this work exists only to deliver a specific parent Story (`standards/story.md#story-decomposition-and-sub-tasks`).
 
 The copy-paste version is `templates/task.md`.
 
