@@ -1,56 +1,63 @@
 # Product Lifecycle Process
 
-This repository is the operating layer for AI-assisted product and delivery work across Jira, GitHub, and durable project artifacts.
+The operating layer for AI-assisted product and delivery work across Jira, GitHub and durable project artifacts. Agents start at [`AGENTS.md`](AGENTS.md); people start here.
 
-It is **not a copy of Jira**. Jira remains the live system of record for work, status, assignees, priority, releases, and issue relationships. This repository gives an AI agent the durable context, rules, shortcuts, playbooks, and artifact scaffolding it needs to work with Jira well.
+It is **not a copy of Jira**. Jira stays the live system of record. This repository gives an agent the durable context, rules, shortcuts and playbooks it needs to work with Jira well.
 
-## Core model
+## What this repo is
 
-- **Jira owns live work.** Fetch current issues, status, hierarchy, ownership, dates, release data, and field history from Jira at runtime.
-- **Product and engineering repositories own implementation reality.** Inspect the relevant code when technical context matters.
-- **This repo owns durable operating context.** Keep lifecycle standards, agent instructions, repeatable queries, playbooks, templates, and durable initiative artifacts here.
-- **The agent connects them at runtime.** Do not create a synchronization layer unless there is a specific, proven need.
+- canonical lifecycle and Jira-work standards ([`standards/`](standards/));
+- repeatable agent playbooks ([`playbooks/`](playbooks/)) and templates ([`templates/`](templates/));
+- reusable JQL ([`jira/queries.yaml`](jira/queries.yaml)) and small stateless helpers ([`tools/`](tools/));
+- the source of the Mathnasium product lifecycle Claude plugin, generated into [`plugins/`](plugins/);
+- durable artifact templates and initiative workspaces for material that Jira is not a good home for ([`artifacts/`](artifacts/), [`initiatives/`](initiatives/)).
 
-## Start here
+## What this repo is not
 
-AI agents should read [`AGENTS.md`](AGENTS.md) first.
+Do not turn it into a Jira export, one Markdown file per ticket, a cache of status, assignee, sprint, Fix Version, priority, comments or confidence, a second backlog, a synchronization service, a dump of data that can be fetched live, an agent memory dump, or a place to standardize unresolved process questions early.
 
-Humans should read [`GUIDE.md`](GUIDE.md) for the repository boundaries and [`standards/product-lifecycle.md`](standards/product-lifecycle.md) for the current product lifecycle.
+If information can be fetched reliably from Jira or a code repo and changes often, fetch it at runtime.
 
-## Canonical standards
+## Source-of-truth boundaries
 
-- [`standards/product-lifecycle.md`](standards/product-lifecycle.md) - intake through release, ownership, readiness, commitments, expedite path, and open questions
-- [`standards/story-quality.md`](standards/story-quality.md) - cohesive Story boundaries, repository ownership, sequencing guidance, required Story Summary format, acceptance criteria, and Product Complete
-- [`standards/personas.md`](standards/personas.md) - canonical Story personas and rules for aliases, qualifiers, and technical actors
-- [`standards/bug-quality.md`](standards/bug-quality.md) - Bug classification, triage, technical assessment, prioritization, and Bug-of-Story handling
-- [`standards/ai-release-confidence.md`](standards/ai-release-confidence.md) - narrow daily AI Release Confidence experiment for committed Stories and Bugs
-
-## Repository map
-
-| Area | Purpose |
+| Owner | Owns |
 | --- | --- |
-| [`standards/`](standards/) | Canonical product-lifecycle and Jira-work quality rules |
-| [`context/`](context/) | Stable product, Jira, and delivery context |
-| [`jira/`](jira/) | Jira shortcuts, interpretation rules, and supporting quality checks |
-| [`playbooks/`](playbooks/) | Repeatable agent workflows for common PM and delivery tasks, including Story authoring and review |
-| [`artifacts/`](artifacts/) | Templates for durable product, architecture, and delivery artifacts |
-| [`initiatives/`](initiatives/) | Optional workspaces for initiatives that need durable artifacts beyond Jira |
-| [`tools/`](tools/) | Lightweight helpers that reduce repetitive agent work without mirroring Jira |
+| **Jira** | Issues and hierarchy, status, assignee, priority and due dates, Fix Versions, comments, workflow and field history, current ACs and ticket decisions, AI Release Confidence field values |
+| **Implementation repos** | Source code, tests, runtime config, infrastructure-as-code, implementation docs close to the code |
+| **This repo** | The agreed lifecycle, how agents interpret live systems, what good Stories/Bugs look like, repeatable reviews, stable cross-repo context, cross-cutting artifacts |
 
-## Current scope
+A Fix Version is the current delivery commitment. Use Jira changelog to understand how it changed; do not copy the history here.
 
-The initial Jira scope is:
+## Standards
 
-- `RAD` - Radius
-- `MYM` - myMathnasium
+| Standard | Covers |
+| --- | --- |
+| [`story.md`](standards/story.md) | The Story: format, size, personas, markets, brackets, ACs and test cases, constraints, sub-tasks, PR field |
+| [`task.md`](standards/task.md) | Tasks and Spikes |
+| [`bug.md`](standards/bug.md) | Bug classification, categorization, Watchlist, triage, Bug of Story |
+| [`lifecycle.md`](standards/lifecycle.md) | Intake to release, Ready for Dev, Fix Version, expedite path, open questions |
+| [`jira-conventions.md`](standards/jira-conventions.md) | Site, field IDs, Fix Versions, Code Dependency, statuses |
+| [`ai-release-confidence.md`](standards/ai-release-confidence.md) | The scheduled AI Release Confidence experiment |
 
-The repository supports broad product-lifecycle guidance, but the first scheduled AI delivery-risk experiment is intentionally narrow:
+## Agent write policy
 
-> **Early each morning, assess only Stories and standalone Bugs with a Fix Version and maintain the AI-owned Release Confidence and Reason fields.**
+Read-first and propose-first: fetch live state, read the relevant standard, analyze with the playbook, recommend, and write to Jira or GitHub only when explicitly authorized or when an approved automation has a bounded write policy. The AI Release Confidence job is the example: it owns only its AI-owned fields and never edits human Feedback.
 
-The human-owned AI Release Confidence Feedback field is read as context and never edited by the agent.
+## Standards vs. scheduled automation
 
-Release/Epic aggregation and the final Google Sheet dashboard remain outside this repository's automation scope for now.
+Broad good-practice standards are not automation scope. The scheduled job assesses only committed Stories, Tasks and standalone Bugs; see [`ai-release-confidence.md`](standards/ai-release-confidence.md).
+
+## Initiative workspaces
+
+An initiative does not need a folder because it has a Jira Epic. Create one under [`initiatives/`](initiatives/) only for durable material such as architecture, ADRs, integration contracts, migration plans, dependency maps, test strategy or rollout plans. Reference the Jira key; never copy Jira state.
+
+## Updating the standard
+
+1. Edit the file in [`standards/`](standards/) (or the playbook or template). A rule lives in exactly one file; link to it from everywhere else.
+2. Run `python tools/build_plugin.py`. It regenerates the plugin's references and bumps its version.
+3. Run `python -m unittest discover -s tests -p 'test_*.py'`.
+4. Open a PR. CI checks that the plugin is in sync (`python tools/build_plugin.py --check`).
+5. On merge to `main`, the GitHub-synced org marketplace updates the plugin automatically.
 
 ## Principle
 

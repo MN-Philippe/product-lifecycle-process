@@ -49,7 +49,11 @@ Run deterministic quality checks:
 python tools/jira_helper.py audit jira-result.json
 ```
 
-The audit is intentionally advisory. It flags obvious structural/quality concerns such as empty Epic context, unparented active Stories, unclear completion criteria, weak Bug reproduction detail, past-due active work, hierarchy/status inconsistencies when the parent is present in the payload, and possible credentials/secrets. It does not decide business priority or replace human/product judgment.
+The audit implements the **Checks** tables at the end of each standard (`standards/story.md`, `task.md`, `bug.md`, `lifecycle.md`) at Error / Warning / Suggestion severity. It is advisory: it does not decide business priority or replace product judgment.
+
+Checks honor the effective date in `standards/story.md#applies-to`: Stories, Tasks and Bugs created before it are reported at `info` severity. Pass `--refined` to apply the full rule set to an older item that is being refined. Possible secrets are always errors.
+
+The `ac-approved` changelog check runs only when the payload includes the issue changelog (Jira `expand=changelog`); otherwise it is left to agent review.
 
 Secret-like values are redacted from compact output and are never echoed in audit findings.
 

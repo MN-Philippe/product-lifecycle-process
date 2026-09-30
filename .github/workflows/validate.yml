@@ -22,3 +22,5 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_*.py'
       - name: Check generated artifact index
         run: python tools/artifact_index.py --check
+      - name: Check generated plugin
+        run: python tools/build_plugin.py --check

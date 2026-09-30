@@ -56,7 +56,7 @@ The business due date is when the business wants or needs the outcome. It is not
 
 Once Business Requirements are Complete, the work can be properly prioritized and planned.
 
-Product + Engineering jointly assign the **Target Release / Fix Version** based on:
+Product + Engineering jointly assign the **Target Release / Fix Version**, normally at Ready for Dev. Before assigning one, the business must have supplied a **business priority** and a **business due date** (section 2), and the Story must be estimated at 5 points or less (`standards/story.md#size`). Base the choice on:
 
 - business priority;
 - business due date;
@@ -64,23 +64,36 @@ Product + Engineering jointly assign the **Target Release / Fix Version** based 
 - actual team capacity and delivery reality;
 - competing commitments and dependencies.
 
-**The Fix Version is the initial delivery commitment.**
+**The Fix Version is the delivery commitment.** Which Fix Versions count as commitments is in `standards/jira-conventions.md#fix-versions`.
 
 If Product + Engineering cannot resolve competing priorities or the required tradeoff crosses business functions, escalate to ELT.
 
-## 4. Product Complete
+## 4. Product Complete and Ready for Dev
 
 After business requirements are approved and the work is planned, the work must become **Product Complete** before normal development.
 
-Product Complete means the approved business requirement has been translated into precise, testable product behavior.
+Product Complete means the approved business requirement has been translated into precise, testable product behavior:
 
-Ownership:
+- PM/Product owns the acceptance criteria and detailed product behavior;
+- QA owns the test cases, mapped to ACs;
+- **AC approval** is defined in `standards/story.md#acceptance-criteria-and-test-cases`; it is not restated here.
 
-- PM/Product owns acceptance criteria and detailed product behavior;
-- QA owns QA test cases / validation coverage;
-- Product + QA together determine Product Complete.
+The business does not need to approve every detailed AC. If the detailed work materially changes the approved business requirement, route the change back to the business.
 
-The business does not need to approve every detailed acceptance criterion. If the detailed work materially changes the previously approved business requirement, route the change back to the business for approval.
+### Ready for Dev checklist
+
+A Story is Ready for Dev when all are true:
+
+- Summary in format, with the correct persona (and repo bracket if used);
+- Epic set;
+- description non-empty;
+- ACs approved;
+- open questions empty;
+- Story Points 5 or less;
+- Code Dependency set;
+- test cases attached and mapped to ACs.
+
+Tasks are Ready for Dev when they have a description with Done when, Story Points of 5 or less, and Code Dependency set (`standards/task.md`).
 
 ## 5. Conditional Engineering review
 
@@ -168,7 +181,7 @@ Material scope changes after commitment are also meaningful signals, but **scope
 
 ## 10. Open questions not yet standardized
 
-The following areas are intentionally unresolved and should not be turned into hard rules yet:
+The following areas are intentionally unresolved and should not be turned into hard rules yet. Items that carry a `DEFAULT — TBC` marker in other standards are recommended defaults awaiting confirmation, not open process questions.
 
 - whether persistent capability/product-area buckets should continue to be modeled as Epics;
 - how Story/Bug confidence should aggregate into Epic- or release-level confidence;
@@ -177,3 +190,13 @@ The following areas are intentionally unresolved and should not be turned into h
 - stronger automated post-release verification.
 
 Document experiments and observations, but do not prematurely codify these as policy.
+
+## Checks
+
+Used by `tools/jira_helper.py`. Story and Task field rules live in `standards/story.md` and `standards/task.md`.
+
+| Rule | Severity | Auto |
+| --- | --- | --- |
+| Item with a committed Fix Version that is not Ready for Dev | Warning | Yes (via Story and Task checks) |
+| Fix Version assigned to an unestimated item | Warning | Yes |
+| Item moved to a placeholder Fix Version (`N/A`, `FREEZE`) while active | Suggestion | Yes |
