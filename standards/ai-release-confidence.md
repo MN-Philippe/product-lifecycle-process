@@ -4,18 +4,19 @@ This document defines the initial AI delivery-risk experiment. Keep it deliberat
 
 ## Scope
 
-The daily AI assessment scans **only Jira Stories and standalone Bugs that have a Fix Version**.
+The daily AI assessment scans **Stories, Tasks and standalone Bugs whose Fix Version is a delivery commitment**.
 
-- Story + Fix Version -> assess.
-- Standalone Bug + Fix Version -> assess.
-- No Fix Version -> do not assess; leave AI release-confidence fields blank.
+- Story, Task or standalone Bug + committed Fix Version -> assess.
+- No Fix Version, or `N/A` or `FREEZE` -> do not assess; leave AI fields blank. Which versions are commitments is defined in `standards/jira-conventions.md#fix-versions`. Before this rule, those two placeholders alone pulled 54 uncommitted items into scope.
 - Bug of Story -> rides with the parent Story unless Dev + QA + PM promote it to a standalone Bug.
 
-The Fix Version is the delivery commitment, so it is the boundary that makes release-confidence assessment meaningful.
+The Fix Version is the delivery commitment, so it is the boundary that makes release-confidence assessment meaningful. Fetch scope with the `committed_work` query in `jira/queries.yaml`.
 
-Do not turn this experiment into a general Jira hygiene scanner. Broader quality standards can exist in this repository, but the scheduled release-confidence automation remains limited to committed Stories and Bugs.
+Do not turn this experiment into a general Jira hygiene scanner. Broader quality standards exist in this repository, but the scheduled automation stays limited to committed work.
 
 ## Jira fields
+
+> **TODO (`DEFAULT — TBC`): confirm the write fields before changing the job's scope.** The fields "AI Release Confidence / Reason / Feedback" were not found on MYM-565, but **Delivery Risk** (`customfield_11382`) exists. Confirm with the Jira admin which fields the job writes, then update this section and `playbooks/assess-release-confidence.md`.
 
 ### AI Release Confidence
 
@@ -91,6 +92,21 @@ Use all relevant available evidence, including when accessible:
 - team/engineering judgment or relevant current discussion when available;
 - AI Release Confidence Feedback.
 
+### Signals added in v2
+
+| Signal | Source | What it catches |
+| --- | --- | --- |
+| PR state vs. Jira status | Pull Requests + Development fields | Work further along or behind than its status says |
+| Open Bugs of Story | Child items | Defects found close to release |
+| Size | Story Points | Over 5 or unestimated, with a Fix Version |
+| AC changes after commitment | Changelog section + description history | Late scope change |
+| Blocked siblings | "blocks" links within the Epic | A repo Story waiting on another repo |
+| Vendor vs. Mathnasium QA | Statuses | Work stuck at the handoff (`In QA - HTD` vs. `IN QA - MATHNASIUM`) |
+| Release milestones | Release calendar: code freeze, branch cut | Time left measured to the real cutoff |
+| Readiness | `ac-approved` label + test cases present | Committed work that was never Ready for Dev |
+
+Each is evidence, not an automatic downgrade. A single weak signal is still not a warning.
+
 **Proximity to release is a major weighting factor.** The same status or remaining work can be healthy far from release and concerning close to release.
 
 Do not create warnings merely because a single weak signal exists. The objective is to surface meaningful risk early enough to act without warning on everything all the time.
@@ -161,12 +177,12 @@ Avoid polluting the changelog: the agent should not rewrite semantically equival
 
 ## Experiment evaluation
 
-After releases, use the history to evaluate whether the AI is useful. Useful measures include:
+After each release, use the history to evaluate whether the AI is useful. Useful measures include:
 
 - whether missed items were flagged at all;
-- how many days before release the first meaningful warning appeared;
+- **lead time of the first warning** on items that slipped, in days before release;
 - whether Watch and At Risk transitions were appropriately timed;
-- false-alarm rate for items that delivered normally;
+- **false-alarm rate** for items that shipped normally;
 - whether the stated Reason identified the signal that actually drove the miss or recovery;
 - whether human Feedback improved subsequent assessment quality.
 

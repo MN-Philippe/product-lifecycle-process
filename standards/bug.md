@@ -4,17 +4,7 @@ Bugs are a major product-quality input, but a reported problem should not automa
 
 ## 1. Bugs can come from anywhere
 
-Potential Bugs may be surfaced through:
-
-- Support escalations;
-- Engineering;
-- QA;
-- Product/PM;
-- business users;
-- franchisees/customers;
-- monitoring or other operational signals.
-
-The source does not determine whether the item is actually a Bug.
+Bugs can be raised by Support, Engineering, QA, PM, business users, franchisees or monitoring. The source does not determine whether the item is actually a Bug.
 
 ## 2. Classify before committing to the fix
 
@@ -47,7 +37,7 @@ During triage:
 - if the correct categorization is unclear, resolve that as part of triage rather than automatically routing the Bug to a catch-all Bug Epic;
 - when encountering an existing Bug under the generic **Bug Fixing** Epic, recommend moving it to the appropriate impacted area/feature when that categorization can be determined confidently.
 
-This rule does not resolve the broader long-term Epic/capability taxonomy. It establishes only that **Bug Fixing is not the desired product categorization for Bugs**.
+This does not settle the broader Epic/capability taxonomy; it establishes only that **Bug Fixing is not the desired categorization**.
 
 ## 4. Watchlist Bugs
 
@@ -79,19 +69,16 @@ Do not confuse Jira's **Watchlist issue** state with **AI Release Confidence = W
 
 ## 5. Functional triage
 
-A useful Bug should make the issue understandable and investigable.
+A standalone Bug needs a **non-empty description** with:
 
-Capture as applicable:
-
-- **Observed behavior**;
-- **Expected behavior**;
-- **Steps to reproduce / trigger**, when reproducible;
-- **Environment and affected scope**;
+- **Observed** behavior;
+- **Expected** behavior;
+- **Steps** to reproduce or trigger, when reproducible;
+- **Environment** and affected scope;
 - **Impact**;
-- **Evidence**, such as logs/screenshots/data examples, when useful;
-- relevant prior work or requirement context.
+- evidence (logs, screenshots, data examples) and relevant prior work, when useful.
 
-A screenshot by itself is not a complete Bug if the issue cannot be understood without guessing.
+A screenshot by itself is not a complete Bug if the issue cannot be understood without guessing. Template: `templates/bug.md`.
 
 ## 6. Technical assessment
 
@@ -138,16 +125,19 @@ Do not split defects away merely to make the parent Story appear complete while 
 
 When promoted to a standalone Bug, categorize it under the impacted product area/feature rather than a generic Bug Fixing Epic.
 
-## 9. Delivery pipeline
+## 9. Delivery and secrets
 
-Standalone Bugs use the same normal delivery pipeline as Stories:
+Standalone Bugs use the same delivery pipeline as Stories (`standards/lifecycle.md`). Never place secrets in Bug content; see the security hygiene rule in `standards/jira-conventions.md`.
 
-**Development -> Code Review -> QA in DEV -> Release Branch -> STG -> QA in STG -> Ready for Release -> Release**
+## Checks
 
-QA owns Ready for Release. Business + PM own the release decision.
+Used by `tools/jira_helper.py`. All rules respect the effective date in `standards/story.md#applies-to`.
 
-## 10. Secrets and sensitive content
-
-Do not place passwords, tokens, API keys, or other authentication secrets in Bug descriptions, comments, or evidence.
-
-If detected, do not echo the value. Flag it generically and recommend removal/rotation as appropriate.
+| Rule | Severity | Auto |
+| --- | --- | --- |
+| Standalone Bug description empty or near-empty | Error | Yes |
+| No Observed / Expected / Steps / Environment / Impact signal | Warning | Yes |
+| Standalone Bug parented to a generic Bug Fixing Epic | Warning | No |
+| Watchlist issue with a Fix Version | Warning | Yes |
+| Bug promoted from a Story with no impacted-area categorization | Warning | No |
+| Possible secret in content | Error | Yes |
