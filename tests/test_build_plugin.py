@@ -20,8 +20,8 @@ class RewriteLinksTests(unittest.TestCase):
         self.assertEqual("[t](story-template.md)", result)
 
     def test_links_that_leave_the_plugin_are_unwrapped(self):
-        result = build_plugin.rewrite_links("[guide](../templates/vendor-guide.md)", "standards/story.md")
-        self.assertEqual("guide", result)
+        result = build_plugin.rewrite_links("[queries](../jira/queries.yaml)", "standards/story.md")
+        self.assertEqual("queries", result)
 
     def test_external_and_in_page_links_are_kept(self):
         text = "[x](https://example.com/a) and [y](#size)"
