@@ -67,7 +67,7 @@ A Bug that is still marked **Watchlist issue** but has a Fix Version should be t
 Do not confuse Jira's **Watchlist issue** state with **AI Release Confidence = Watch**. They are different concepts:
 
 - **Watchlist issue** = pre-commitment Bug triage / observation;
-- **AI Release Confidence = Watch** = delivery risk on an already committed Story or standalone Bug with a Fix Version.
+- **AI Release Confidence = Watch** = delivery risk on an already committed Story, Task or standalone Bug with a committed Fix Version.
 
 ## 5. Functional triage
 
