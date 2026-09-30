@@ -88,8 +88,8 @@ The market is an adjective on the persona:
 
 ## Brackets
 
-- A repo bracket is **optional** in both projects. When used, it is the **only** bracket and comes from the repo list in `standards/jira-conventions.md`.
-- The repo is always recorded in **Code Dependency** (required by Ready for Dev). A bracket, when present, must match it.
+- A repo bracket is **optional** in both projects. When used, it is the **only** bracket and is exactly one of the Code Dependency values in `standards/jira-conventions.md#code-dependency` (`DEFAULT — TBC`), for example `[GP API]`.
+- The repo is always recorded in **Code Dependency** (required by Ready for Dev). A bracket, when present, must be one of its values. More than one value signals a multi-repo Story to split.
 - Not allowed in the Summary:
     - Feature names such as [Calendar 2.0]. The feature is the Epic.
     - [SPIKE] or [PoC]. Use the Spike issue type.
@@ -177,7 +177,8 @@ Used by `tools/jira_helper.py`. "Auto" means the helper detects it; other rules 
 | Description empty or near-empty | Error | Yes |
 | No numbered AC | Error | Yes |
 | Summary not in `As a … I want … so that …` format | Error | Yes |
-| Bracket present but not in the repo list, or more than one bracket | Error | Yes |
+| Bracket present but not exactly a Code Dependency value, or more than one bracket | Error | Yes |
+| Code Dependency has more than one value (multi-repo signal) | Warning | Yes |
 | Retired persona in the Summary | Error | Yes |
 | Story Points over 5 with a committed Fix Version ([committed](jira-conventions.md#fix-versions); `N/A` and `FREEZE` do not count) | Error | Yes |
 | Sub-task created on a Story on or after the effective date (Bug of Story is exempt) | Error | Yes |

@@ -25,7 +25,7 @@ Verified on MYM-565.
 | Story point estimate | customfield_10909 | Do not use |
 | Pull Requests | customfield_11279 | Required once a PR exists |
 | Development (GitHub) | customfield_10500 | Read-only PR signal from the GitHub integration |
-| Code Dependency | customfield_11147 | Repo(s) touched; required by Ready for Dev |
+| Code Dependency | customfield_11147 | Repo(s) touched, multi-value; required by Ready for Dev (see [Code Dependency](#code-dependency)) |
 | Test plan | customfield_10956 | Test cases (`DEFAULT — TBC`) |
 | Delivery Risk | customfield_11382 | Possibly the AI Release Confidence target (`DEFAULT — TBC`) |
 | Business Requirements Finalized | customfield_11383 | Business approval |
@@ -48,23 +48,26 @@ The Fix Version is the delivery commitment once Product and Engineering have pla
 
 "Committed" everywhere in these standards means a Fix Version in the first three rows. Always take release dates from the Jira version record, not from the name.
 
-## Repo list
+## Code Dependency
 
-`DEFAULT — TBC`. Bracket name → GitHub repo. Record the **Code Dependency** option name for each where known (for example "Scheduling Microservice"); the option names below are `TODO: confirm`.
+The repo(s) a ticket touches. The field allows several values. Verified options (option IDs in parentheses):
 
-| Bracket | Repo | Code Dependency option |
-| --- | --- | --- |
-| [Radius] | mathnasium/Radius | TODO: confirm |
-| [Radius API DataService] | mathnasium/Radius-API-DataService | TODO: confirm |
-| [AWSToRadius] | mathnasium/AWSToRadius | TODO: confirm |
-| [Scheduling] | mathnasium/Scheduling-Microservice | Scheduling Microservice |
-| [Guardian Portal] | the Guardian Portal front end | TODO: confirm |
-| [Guardian Portal API] | mathnasium/guardian-portal-api | TODO: confirm |
-| [Notifications] | the Notifications microservice | TODO: confirm |
-| [Fanout] | the Fanout service | TODO: confirm |
-| [DAL] | the Data Access Layer | TODO: confirm |
-| [Parent Reports] | the parent-reports microservice | TODO: confirm |
-| [Database] | schema-only changes | TODO: confirm |
+| Option | ID |
+| --- | --- |
+| Radius | 10971 |
+| Scheduling Microservice | 10972 |
+| Notifications Microservice | 10973 |
+| GP APP | 10974 |
+| GP API | 10975 |
+| Data Access Layer | 10976 |
+| Database | 10977 |
+| Scheduling Fanout | 10980 |
+| Radius Emails | 11253 |
+
+- **Summary bracket** (`DEFAULT — TBC`): when a bracket is used, its text is **exactly one of these values**, for example `[GP API]` or `[Scheduling Microservice]`. One vocabulary, no mapping table.
+- **More than one value** is a multi-repo signal: the Story probably needs splitting (`playbooks/split-story.md`).
+- **RAD does not currently use Code Dependency.** All recent tickets with a value were in MYM. Requiring it at Ready for Dev is new practice for RAD.
+- **TODO: add to Code Dependency in Jira, or drop.** Radius-API-DataService, AWSToRadius and Parent Reports have no option yet.
 
 ## Markets
 

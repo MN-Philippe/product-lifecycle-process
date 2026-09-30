@@ -56,7 +56,7 @@ The business due date is when the business wants or needs the outcome. It is not
 
 Once Business Requirements are Complete, the work can be properly prioritized and planned.
 
-Product + Engineering jointly assign the **Target Release / Fix Version**, normally at Ready for Dev and only once the Story is estimated at 5 points or less (`standards/story.md#size`), based on:
+Product + Engineering jointly assign the **Target Release / Fix Version**, normally at Ready for Dev. Before assigning one, the business must have supplied a **business priority** and a **business due date** (section 2), and the Story must be estimated at 5 points or less (`standards/story.md#size`). Base the choice on:
 
 - business priority;
 - business due date;
