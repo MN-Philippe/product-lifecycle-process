@@ -10,7 +10,7 @@ Rules: [`task.md`](task.md).
 [Code Dependency value, optional] <Verb> <object>
 ```
 
-Example: `[Scheduling Microservice] Add OTLP metrics to the Fanout service`
+Example: `[Scheduling Microservice] Prepare the Fanout production configuration checklist`
 
 **Description**
 
