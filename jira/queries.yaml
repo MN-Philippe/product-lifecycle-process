@@ -5,13 +5,52 @@ projects:
   primary: [RAD, MYM]
 
 queries:
-  committed_story_bugs:
-    description: Stories and standalone Bugs with a Fix Version; the scope boundary for the AI Release Confidence experiment.
+  committed_work:
+    description: Stories, Tasks and Bugs whose Fix Version is a delivery commitment (N/A and FREEZE excluded); the scope boundary for the AI Release Confidence experiment. Commitment rules are in standards/jira-conventions.md.
     jql: >
       project in (RAD, MYM)
-      AND issuetype in (Story, Bug)
+      AND issuetype in (Story, Task, Bug)
       AND fixVersion is not EMPTY
+      AND fixVersion not in ("N/A", "FREEZE")
+      AND statusCategory != Done
       ORDER BY fixVersion ASC, priority DESC, key ASC
+
+  oversized_or_unestimated_committed:
+    description: Committed work with more than 5 Story Points or no estimate. Same scope as committed_work.
+    jql: >
+      project in (RAD, MYM)
+      AND issuetype in (Story, Task, Bug)
+      AND fixVersion is not EMPTY
+      AND fixVersion not in ("N/A", "FREEZE")
+      AND statusCategory != Done
+      AND (cf[10021] > 5 OR cf[10021] is EMPTY)
+      ORDER BY fixVersion ASC, priority DESC, key ASC
+
+  empty_descriptions:
+    description: Active Stories, Tasks and Bugs with an empty description.
+    jql: >
+      project in (RAD, MYM)
+      AND issuetype in (Story, Task, Bug)
+      AND statusCategory != Done
+      AND description is EMPTY
+      ORDER BY updated DESC
+
+  missing_pr_field:
+    description: Work at Code Review or later with an empty Pull Requests field.
+    jql: >
+      project in (RAD, MYM)
+      AND issuetype in (Story, Task, Bug)
+      AND status in ("CODE REVIEW", "IN CODE REVIEW", "In QA - HTD", "IN QA - MATHNASIUM", "IN PROGRESS - QA", "READY FOR STG", "READY FOR QA in STG", "READY FOR PROD")
+      AND cf[11279] is EMPTY
+      ORDER BY updated DESC
+
+  placeholder_fix_versions:
+    description: Active items whose Fix Version is a non-commitment placeholder (N/A or FREEZE). Review whether the placeholder is still right.
+    jql: >
+      project in (RAD, MYM)
+      AND statusCategory != Done
+      AND fixVersion in ("N/A", "FREEZE")
+      ORDER BY fixVersion ASC, updated DESC
 
   watchlist_bugs:
     description: Active pre-commitment Bugs explicitly marked as Watchlist issues. These normally have no Fix Version and are reviewed for new evidence, reproduction, promotion to Confirmed issue, consolidation, or closure.
@@ -41,8 +80,8 @@ queries:
       AND statusCategory != Done
       ORDER BY updated DESC
 
-  orphan_stories:
-    description: Active Stories without a Jira parent.
+  stories_without_epic:
+    description: Active Stories without a Jira parent Epic.
     jql: >
       project in (RAD, MYM)
       AND issuetype = Story
