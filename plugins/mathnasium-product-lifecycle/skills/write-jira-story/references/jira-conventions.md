@@ -83,6 +83,22 @@ To Do, In Progress, CODE REVIEW / IN CODE REVIEW, In QA - HTD, IN QA - MATHNASIU
 
 `In QA - HTD` is the vendor's QA; `IN QA - MATHNASIUM` is internal QA.
 
+## Write policy
+
+**GitHub is read-only.** Read repos, code and pull requests when technical truth matters. Never create, comment on, edit or close GitHub issues or pull requests, and never push, through a connector, the command line or a browser. A "repo" in these standards means a Code Dependency value on a Jira ticket, never a reason to act on GitHub. If asked for GitHub work, say you won't do it and stop.
+
+**Jira: draft, approve, then write.** A Jira write is any create, edit, comment, transition, link or label.
+
+1. Show the full draft, or a before/after for an edit.
+2. Wait for a clear "create it" or "approved" in a **later** reply.
+3. Write only what was approved.
+
+Not approval: "looks good so far", answering an open question, or "just draft it" (which means draft, not create). With several Stories, approve each one; once the full list of proposed Summaries is approved, the user may approve the rest as a batch.
+
+An approved automation with a bounded write policy (the AI Release Confidence job, `ai-release-confidence.md`) writes only its own fields.
+
+The plugin also ships a hook (`plugins/mathnasium-product-lifecycle/hooks/`) that blocks GitHub writes and asks for confirmation before each Jira write. It backs up this policy; it does not replace it.
+
 ## Security hygiene
 
 Jira content can contain raw intake, screenshots, payloads and occasionally credential-like data. Never reproduce a secret in Jira content, generated output or a durable artifact. Flag likely credentials, tokens or passwords generically, without echoing the value, and recommend removal or rotation.

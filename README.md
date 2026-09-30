@@ -41,7 +41,7 @@ A Fix Version is the current delivery commitment. Use Jira changelog to understa
 
 ## Agent write policy
 
-Read-first and propose-first: fetch live state, read the relevant standard, analyze with the playbook, recommend, and write to Jira or GitHub only when explicitly authorized or when an approved automation has a bounded write policy. The AI Release Confidence job is the example: it owns only its AI-owned fields and never edits human Feedback.
+Read-first and propose-first: fetch live state, read the relevant standard, analyze with the playbook, and recommend. The rules for writing (GitHub read-only; Jira draft, approve, then write) are in [`standards/jira-conventions.md`](standards/jira-conventions.md#write-policy).
 
 ## Standards vs. scheduled automation
 

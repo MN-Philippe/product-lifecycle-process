@@ -12,7 +12,7 @@ Use when a ticket is replaced by a split, a decomposition or a consolidation.
 2. Add an **"is replaced by"** link to the replacement.
 3. Strip the Fix Version, sprint and assignee.
 4. Remove bracket status markers ([Absorbed…], [Consolidated…], [Duplicate]) from the Summary.
-5. Show the list of proposed changes first; write only with authorization.
+5. Show the list of proposed changes first; write to Jira only after approval (`jira-conventions.md#write-policy`).
 
 ## Worked example: [MYM-529](https://mathnasium.atlassian.net/browse/MYM-529)
 

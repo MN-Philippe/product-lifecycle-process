@@ -29,8 +29,8 @@ The PM gives a plain request ("write a story for…"). Run a short Q&A, draft, a
     - Default accepted → AC, marked **(default)** in the draft so the PM can see which behaviors they never stated.
     - Unknown or skipped → an Open question tagged `[Business]`, `[Engineering]` or `[QA]`.
 4. **Flag a likely split** early if the scope looks over 5 points, crosses repos, or contains clearly independent behaviors, as an `[Engineering]` open question. Behavior-first decomposition is a strong preference, not an automatic blocker when the additional split has no clear independent value.
-5. **Show the full draft** (Summary, Context, ACs, Constraints if any, Open questions) and wait for "create it".
-6. **Create it** in To Do with the description, the Epic, Code Dependency (if known) and the market label (`standards/story.md#international-markets`). No Fix Version and no points unless provided.
+5. **Show the full draft** (Summary, Context, ACs, Constraints if any, Open questions) and wait for an explicit "create it" in a later reply (`standards/jira-conventions.md#write-policy`).
+6. **Create it in Jira** (never GitHub) in To Do with the description, the Epic, Code Dependency (if known) and the market label (`standards/story.md#international-markets`). No Fix Version and no points unless provided.
 7. **Fast path:** if the PM says "just draft it", ask nothing and put every gap into Open questions.
 
 Then hand off: AC approval and test cases follow the lifecycle in `standards/story.md`; check readiness with `playbooks/ready-check.md`.

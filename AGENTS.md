@@ -5,7 +5,7 @@ This repository is an operating guide, not a mirror of Jira. This file only rout
 ## Principles
 
 - Jira is the source of truth for live work, commitments and history; implementation repos are the source of truth for code. Fetch live data before concluding anything about current work. Do not create a shadow copy of Jira. See [README](README.md#source-of-truth-boundaries).
-- Recommend before writing. Write only when the user asks or an approved automation owns the fields. See [README](README.md#agent-write-policy).
+- GitHub is read-only. Jira writes follow draft, approve, then write. See [write policy](standards/jira-conventions.md#write-policy).
 - Every Jira key in output is a link. See [jira-conventions](standards/jira-conventions.md).
 - Never copy secrets into Jira content or artifacts. See [jira-conventions](standards/jira-conventions.md#security-hygiene).
 - Keep unresolved process questions unresolved. See [lifecycle](standards/lifecycle.md#10-open-questions-not-yet-standardized).

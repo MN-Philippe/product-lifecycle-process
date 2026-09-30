@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the mathnasium-product-lifecycle plugin's references from standards/ and playbooks/.
 
-The plugin's SKILL.md is hand-written. Everything under ``references/`` is generated, so a
+The plugin's SKILL.md and hooks/ are hand-written (both feed the version digest). Everything under ``references/`` is generated, so a
 rule lives in exactly one file in this repository and the plugin can never drift from it.
 
     python tools/build_plugin.py           # regenerate references, bump version if content changed
@@ -99,6 +99,11 @@ def _digest(references: dict[str, str]) -> str:
     sha = hashlib.sha256()
     skill = SKILL_DIR / "SKILL.md"
     sha.update(skill.read_bytes() if skill.exists() else b"")
+    hooks_dir = PLUGIN_DIR / "hooks"
+    for hook_file in sorted(hooks_dir.rglob("*")) if hooks_dir.exists() else []:
+        if hook_file.is_file() and "__pycache__" not in hook_file.parts:
+            sha.update(hook_file.relative_to(hooks_dir).as_posix().encode())
+            sha.update(hook_file.read_bytes())
     for name in sorted(references):
         sha.update(name.encode())
         sha.update(references[name].encode())

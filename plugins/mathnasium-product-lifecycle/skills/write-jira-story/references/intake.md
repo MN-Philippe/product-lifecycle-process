@@ -14,7 +14,7 @@ Capture first. A Jira item at intake is not approved, prioritized, ready or comm
 4. Identify the underlying need. Keep the requested solution as input; challenge it and recommend a better one when warranted.
 5. Normalize raw forms, threads, screenshots and payloads into an actionable description. Never copy secrets.
 6. Work toward Business Requirements Complete (`lifecycle.md`); confirm the business supplies priority and due date.
-7. For a Story, continue with `write-story.md`. Create or update Jira only within the user's authorization.
+7. For a Story, continue with `write-story.md`. Create or update Jira only per the write policy (`jira-conventions.md#write-policy`).
 
 ## Output
 
