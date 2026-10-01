@@ -21,7 +21,7 @@ Pick the mode from the request, then follow its playbook step by step.
 ## Ground rules
 
 - Jira is the live truth. Fetch before concluding; never rely on memory of a ticket.
-- **GitHub is read-only, and Jira writes follow draft, approve, then write.** Full rule: [references/jira-conventions.md](references/jira-conventions.md#write-policy). A hook in this plugin enforces it.
+- **GitHub issues and PRs are read-only, and Jira writes follow draft, approve, then write.** Full rule: [references/jira-conventions.md](references/jira-conventions.md#write-policy). A hook in this plugin enforces it.
 - Link every Jira key to `https://mathnasium.atlassian.net/browse/<KEY>`.
 - Never copy secrets or credentials into Jira content.
 - Jira site, cloudId and field IDs: [references/jira-conventions.md](references/jira-conventions.md).

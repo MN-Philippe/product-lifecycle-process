@@ -1,24 +1,26 @@
-import importlib.util
 import json
 import re
+import shutil
 import subprocess
-import sys
 import unittest
-from pathlib import Path
 
 from tools import build_plugin
 
-GUARD_PATH = build_plugin.PLUGIN_DIR / "hooks" / "guard.py"
-spec = importlib.util.spec_from_file_location("guard", GUARD_PATH)
-guard = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(guard)
+GUARD = build_plugin.PLUGIN_DIR / "hooks" / "guard.sh"
+
+
+def run_guard(tool_name, **tool_input):
+    payload = json.dumps({"hook_event_name": "PreToolUse", "tool_name": tool_name, "tool_input": tool_input})
+    return subprocess.run(["bash", str(GUARD)], input=payload, capture_output=True, text=True)
 
 
 def kind(tool_name, **tool_input):
-    result = guard.decide({"tool_name": tool_name, "tool_input": tool_input})
-    return result["hookSpecificOutput"]["permissionDecision"] if result else None
+    result = run_guard(tool_name, **tool_input)
+    assert result.returncode == 0, result.stderr
+    return json.loads(result.stdout)["hookSpecificOutput"]["permissionDecision"] if result.stdout.strip() else None
 
 
+@unittest.skipUnless(shutil.which("bash"), "bash required")
 class GitHubIsReadOnlyTests(unittest.TestCase):
     def test_connector_writes_are_denied(self):
         for tool in (
@@ -35,21 +37,24 @@ class GitHubIsReadOnlyTests(unittest.TestCase):
     def test_other_connector_naming_is_still_caught(self):
         self.assertEqual("deny", kind("mcp__claude_ai_GitHub__create_issue"))
 
-    def test_command_line_writes_are_denied(self):
+    def test_command_line_issue_and_pr_writes_are_denied(self):
         for command in (
             "gh issue create --title x",
             "gh pr comment 6 --body hi",
             "gh pr merge 6",
+            "cd repo && gh pr edit 6 --title y",
             "gh api repos/o/r/issues -f title=x",
             "gh api -X POST repos/o/r/issues",
-            "git push origin main",
-            "cd repo && git push --dry-run",
+            "gh api --method PATCH repos/o/r/pulls/6",
             'curl -X POST https://api.github.com/repos/o/r/issues -d "{}"',
         ):
             self.assertEqual("deny", kind("Bash", command=command), command)
 
-    def test_command_line_reads_are_allowed(self):
-        for command in ("gh pr view 6", "gh issue list", "gh api repos/o/r/pulls/6", "git status", "git log --oneline"):
+    def test_reads_and_local_git_are_allowed(self):
+        for command in (
+            "gh pr view 6", "gh issue list", "gh api repos/o/r/pulls/6", "git status", "git log --oneline",
+            "git push origin claude/my-branch", "git push -u origin HEAD", "ls",
+        ):
             self.assertIsNone(kind("Bash", command=command), command)
 
     def test_browser_interaction_on_github_is_denied_but_reading_is_not(self):
@@ -59,6 +64,7 @@ class GitHubIsReadOnlyTests(unittest.TestCase):
         self.assertIsNone(kind("mcp__Claude_in_Chrome__read_page", url="https://example.com"))
 
 
+@unittest.skipUnless(shutil.which("bash"), "bash required")
 class JiraWritesAskTests(unittest.TestCase):
     def test_writes_ask(self):
         for tool in ("createJiraIssue", "editJiraIssue", "addCommentToJiraIssue", "transitionJiraIssue", "createIssueLink", "addWorklogToJiraIssue"):
@@ -72,24 +78,24 @@ class JiraWritesAskTests(unittest.TestCase):
         self.assertIsNone(kind("Read", file_path="/tmp/x"))
         self.assertIsNone(kind("Bash", command="ls"))
 
+    def test_prompt_explains_batch_behavior(self):
+        out = json.loads(run_guard("mcp__Atlassian__createJiraIssue").stdout)
+        self.assertIn("once per Story", out["hookSpecificOutput"]["permissionDecisionReason"])
 
+
+@unittest.skipUnless(shutil.which("bash"), "bash required")
 class HookWiringTests(unittest.TestCase):
-    def test_hooks_json_points_at_the_guard(self):
-        config = json.loads((GUARD_PATH.parent / "hooks.json").read_text(encoding="utf-8"))
+    def test_hooks_json_runs_the_bash_guard_without_python(self):
+        config = json.loads((GUARD.parent / "hooks.json").read_text(encoding="utf-8"))
         command = config["hooks"]["PreToolUse"][0]["hooks"][0]["command"]
-        self.assertIn("${CLAUDE_PLUGIN_ROOT}/hooks/guard.py", command)
+        self.assertEqual('bash "${CLAUDE_PLUGIN_ROOT}/hooks/guard.sh"', command)
+        self.assertNotIn("python", GUARD.read_text(encoding="utf-8").lower().replace("no python", ""))
 
-    def test_script_emits_a_decision_and_fails_open_on_bad_input(self):
-        denied = subprocess.run(
-            [sys.executable, str(GUARD_PATH)],
-            input=json.dumps({"tool_name": "mcp__github__create_issue", "tool_input": {}}),
-            capture_output=True, text=True,
-        )
-        self.assertEqual(0, denied.returncode)
-        self.assertEqual("deny", json.loads(denied.stdout)["hookSpecificOutput"]["permissionDecision"])
-        broken = subprocess.run([sys.executable, str(GUARD_PATH)], input="not json", capture_output=True, text=True)
-        self.assertEqual(0, broken.returncode)
-        self.assertEqual("", broken.stdout)
+    def test_bad_input_fails_open(self):
+        for payload in ("not json", "", "{}"):
+            result = subprocess.run(["bash", str(GUARD)], input=payload, capture_output=True, text=True)
+            self.assertEqual(0, result.returncode)
+            self.assertEqual("", result.stdout)
 
     def test_hook_changes_require_a_plugin_rebuild(self):
         self.assertTrue(build_plugin.is_current(), "Run: python tools/build_plugin.py")
@@ -100,7 +106,13 @@ class WritePolicyTests(unittest.TestCase):
         source = (build_plugin.ROOT / "standards" / "jira-conventions.md").read_text(encoding="utf-8")
         self.assertIn("## Write policy", source)
         bundled = (build_plugin.REFERENCES_DIR / "jira-conventions.md").read_text(encoding="utf-8")
-        self.assertIn("GitHub is read-only", bundled)
+        self.assertIn("read-only", bundled)
+
+    def test_policy_leaves_local_git_alone_and_states_batch_rule_once(self):
+        source = (build_plugin.ROOT / "standards" / "jira-conventions.md").read_text(encoding="utf-8")
+        self.assertIn("`git push` to a working branch, is not covered", source)
+        self.assertIn("every Story's full draft", source)
+        self.assertNotIn("approved as a batch", source)
 
     def test_skill_points_at_the_policy_instead_of_restating_it(self):
         skill = (build_plugin.SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")

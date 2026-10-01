@@ -13,6 +13,6 @@ Use when an estimate is over 5 points, the scope spans repos, or one ticket bund
 3. Apply repo boundaries next: production changes in different repos belong in different Stories, linked with "blocks" only where order matters.
 4. Keep every resulting Story at 5 points or less. Do not use implementation sub-tasks as a substitute for a Story split.
 5. Move each AC to the Story it belongs to; keep workflow sub-tasks with the Story whose delivery they support.
-6. Show the proposed Stories and get approval for each before creating it in Jira (`jira-conventions.md#write-policy`).
+6. Show the proposed Stories and show each Story's full draft and get approval before creating it in Jira (`jira-conventions.md#write-policy`).
 7. If the original Story has comments, PRs or history, **keep its key for the first piece** and create new Stories only for the rest.
 8. Retire the original per `cleanup.md` only if no piece remains.
