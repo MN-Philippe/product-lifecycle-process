@@ -43,8 +43,26 @@ class CheckTests(unittest.TestCase):
         self.assertEqual(["2162999999"], [r["pageId"] for r in self.report["not_in_index"]])
         self.assertEqual(["2162393089"], [r["pageId"] for r in self.report["changed_since_verified"]])
         self.assertEqual(["2162888888"], [r["pageId"] for r in self.report["duplicates_ignored"]])
-        self.assertEqual([], self.report["renamed"])  # "Glossary" within "Glossary of Terms" is not a rename
+        self.assertEqual("2162720809", self.report["renamed"][0]["pageId"])  # "Glossary of Terms" is a different title
         self.assertTrue(handbook_index.has_drift(self.report))
+
+    def test_retired_page_is_reported_not_swallowed_by_a_substring_title(self):
+        live = {"results": [{"id": "2162393089", "title": "ZZ — Retired — Story Standard", "lastModified": "2026-08-01T00:00:00Z"}]}
+        report = handbook_index.check(INDEX, live)
+        self.assertEqual("2162393089", report["retired"][0]["pageId"])
+        self.assertEqual([], report["renamed"])
+        self.assertTrue(handbook_index.has_drift(report))
+
+    def test_same_day_edit_after_a_timed_verified_stamp_is_detected(self):
+        index = INDEX.replace("2026-09-01", "2026-09-20T12:00Z")
+        before = {"results": [{"id": "2162393089", "title": "Story Standard", "lastModified": "2026-09-20T11:59:00.000Z"}]}
+        after = {"results": [{"id": "2162393089", "title": "Story Standard", "lastModified": "2026-09-20T12:30:00.000Z"}]}
+        self.assertEqual([], handbook_index.check(index, before)["changed_since_verified"])
+        self.assertEqual(1, len(handbook_index.check(index, after)["changed_since_verified"]))
+
+    def test_since_overrides_the_verified_stamp(self):
+        report = handbook_index.check(INDEX, LIVE, since="2026-10-01")
+        self.assertEqual([], report["changed_since_verified"])
 
     def test_real_rename_is_reported(self):
         live = {"results": [{"id": "2162393089", "title": "Totally Different Title", "lastModified": "2026-08-01T00:00:00Z"}]}
@@ -56,7 +74,7 @@ class CheckTests(unittest.TestCase):
         self.assertEqual([], report["missing_from_confluence"])
 
     def test_clean_index_has_no_drift(self):
-        clean = INDEX.replace("| Old Name | 2162000001 | S | real | gone page |\n", "").replace("Glossary |", "Glossary of Terms |")
+        clean = INDEX.replace("| Old Name | 2162000001 | S | real | gone page |\n", "").replace("| Glossary |", "| Glossary of Terms |")
         live = {"results": [LIVE["results"][0], LIVE["results"][1]]}
         report = handbook_index.check(clean.replace("2026-09-01", "2026-10-01"), live)
         self.assertFalse(handbook_index.has_drift(report), report)
@@ -72,18 +90,19 @@ class UpdateTests(unittest.TestCase):
             {"pageId": "2162720809", "title": "Glossary", "chars": 350, "placeholder": True, "gist": "ignored"},
             {"pageId": "2162393089", "title": "Story Standard", "chars": 14000, "placeholder": False, "gist": "Story rules | with a pipe"},
         ]
-        out = handbook_index.update(INDEX, profile, today=date(2026, 10, 2))
+        out = handbook_index.update(INDEX, profile, today=handbook_index._parse_stamp("2026-10-02"))
         rows = handbook_index.parse_rows(out)
         self.assertEqual(("S", "stub", "placeholder"), (rows["2162720809"]["size"], rows["2162720809"]["status"], rows["2162720809"]["gist"]))
         self.assertEqual(("M", "real"), (rows["2162393089"]["size"], rows["2162393089"]["status"]))
         self.assertNotIn("|  with", rows["2162393089"]["gist"])
+        self.assertEqual("2026-10-02T00:00Z", out.split("**Verified:** ")[1].split("\n")[0])
         self.assertEqual(date(2026, 10, 2), handbook_index.verified_date(out))
         self.assertEqual("gone page", rows["2162000001"]["gist"])  # unprofiled rows untouched
 
     def test_update_is_idempotent(self):
         profile = [{"pageId": "2162393089", "title": "Story Standard", "chars": 14000, "placeholder": False, "gist": "Story rules"}]
-        once = handbook_index.update(INDEX, profile, today=date(2026, 10, 2))
-        self.assertEqual(once, handbook_index.update(once, profile, today=date(2026, 10, 2)))
+        once = handbook_index.update(INDEX, profile, today=handbook_index._parse_stamp("2026-10-02"))
+        self.assertEqual(once, handbook_index.update(once, profile, today=handbook_index._parse_stamp("2026-10-02")))
 
 
 class CliTests(unittest.TestCase):
