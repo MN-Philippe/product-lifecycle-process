@@ -1,43 +1,5 @@
 # Architecture Decision Record
 
-## Decision
+This document is maintained in [Confluence](https://mathnasium.atlassian.net/wiki/spaces/IPD/pages/2162425877). Confluence is authoritative.
 
-`<short decision title>`
-
-Jira initiative: `<KEY>`
-
-Status: Proposed / Accepted / Superseded
-
-## Context
-
-What decision is needed and why does it matter?
-
-## Options Considered
-
-### Option A
-
-Pros:
-- 
-
-Cons:
-- 
-
-### Option B
-
-Pros:
-- 
-
-Cons:
-- 
-
-## Decision
-
-What was chosen?
-
-## Rationale
-
-Why is this the best fit given the constraints?
-
-## Consequences
-
-What becomes easier, harder, required, or intentionally deferred because of this decision?
+Fetch the current page body and its linked standards before using this guidance. This file is a navigation pointer, not a cached policy. If Confluence is unavailable, report that limitation rather than applying a historical Git copy as current.

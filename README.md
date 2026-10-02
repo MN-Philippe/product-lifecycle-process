@@ -1,64 +1,33 @@
-# Product Lifecycle Process
+# Product Lifecycle Tooling
 
-The operating layer for AI-assisted product and delivery work across Jira, GitHub and durable project artifacts. Agents start at [`AGENTS.md`](AGENTS.md); people start here.
+Confluence is the authoritative home for Mathnasium product lifecycle standards, playbooks, templates and durable handbook content.
 
-It is **not a copy of Jira**. Jira stays the live system of record. This repository gives an agent the durable context, rules, shortcuts and playbooks it needs to work with Jira well.
+- [Technology & Product Handbook](https://mathnasium.atlassian.net/wiki/spaces/IPD/pages/2162262120)
+- [Product Lifecycle Process](https://mathnasium.atlassian.net/wiki/spaces/IPD/pages/2162327553)
+- [Agent Router](https://mathnasium.atlassian.net/wiki/spaces/IPD/pages/2162065429)
+- [Handbook Index](https://mathnasium.atlassian.net/wiki/spaces/IPD/pages/2162819145)
 
-## What this repo is
+The handbook is still under collective review. Confluence authority does not make a proposed rule approved: preserve each page's status, evidence, scope and unresolved decisions.
 
-- canonical lifecycle and Jira-work standards ([`standards/`](standards/));
-- repeatable agent playbooks ([`playbooks/`](playbooks/)) and templates ([`templates/`](templates/));
-- reusable JQL ([`jira/queries.yaml`](jira/queries.yaml)) and small stateless helpers ([`tools/`](tools/));
-- the source of the Mathnasium product lifecycle Claude plugin, generated into [`plugins/`](plugins/);
-- durable artifact templates and initiative workspaces for material that Jira is not a good home for ([`artifacts/`](artifacts/), [`initiatives/`](initiatives/)).
+## What remains here
 
-## What this repo is not
+This repository maintains executable tooling, reusable JQL, tests and the Claude plugin package. Former policy paths contain links only, so old bookmarks continue to work without maintaining a competing copy. Git history preserves prior content.
 
-Do not turn it into a Jira export, one Markdown file per ticket, a cache of status, assignee, sprint, Fix Version, priority, comments or confidence, a second backlog, a synchronization service, a dump of data that can be fetched live, an agent memory dump, or a place to standardize unresolved process questions early.
+Jira owns live work and commitments. Implementation repositories own code/tests/runtime configuration. Confluence owns durable business definitions and process rules.
 
-If information can be fetched reliably from Jira or a code repo and changes often, fetch it at runtime.
+## Plugin
 
-## Source-of-truth boundaries
+The plugin's references contain Confluence pointers. The agent fetches live page bodies through the Atlassian connector and follows the relevant standards. An unavailable page is an evidence gap, not permission to fall back to outdated policy.
 
-| Owner | Owns |
-| --- | --- |
-| **Jira** | Issues and hierarchy, status, assignee, priority and due dates, Fix Versions, comments, workflow and field history, current ACs and ticket decisions, AI Release Confidence field values |
-| **Implementation repos** | Source code, tests, runtime config, infrastructure-as-code, implementation docs close to the code |
-| **This repo** | The agreed lifecycle, how agents interpret live systems, what good Stories/Bugs look like, repeatable reviews, stable cross-repo context, cross-cutting artifacts |
+Editing Confluence text does not require rebuilding the plugin. Changes to routing pointers or the skill bootstrap require `python tools/build_plugin.py`; this refreshes pointers and bumps the plugin version. It does not download or bundle page bodies.
 
-A Fix Version is the current delivery commitment. Use Jira changelog to understand how it changed; do not copy the history here.
+## Tooling changes
 
-## Standards
+1. Read AGENTS.md and the relevant live Confluence standard.
+2. Change tools, queries or routing as needed.
+3. Run `python -m unittest discover -s tests -p 'test_*.py'` and `python tools/build_plugin.py --check`.
+4. Open a PR using the normal repository workflow.
 
-| Standard | Covers |
-| --- | --- |
-| [`story.md`](standards/story.md) | The Story: format, size, personas, markets, brackets, ACs and test cases, constraints, sub-tasks, PR field |
-| [`task.md`](standards/task.md) | Tasks and Spikes |
-| [`bug.md`](standards/bug.md) | Bug classification, categorization, Watchlist, triage, Bug of Story |
-| [`lifecycle.md`](standards/lifecycle.md) | Intake to release, Ready for Dev, Fix Version, expedite path, open questions |
-| [`jira-conventions.md`](standards/jira-conventions.md) | Site, field IDs, Fix Versions, Code Dependency, statuses |
-| [`ai-release-confidence.md`](standards/ai-release-confidence.md) | The scheduled AI Release Confidence experiment |
+The Jira helper is advisory. Its deterministic checks implement a versioned subset of the standard; read current Confluence before treating a result as a policy finding. Unconfirmed defaults must not become release blockers just because a helper emits a warning/error.
 
-## Agent write policy
-
-Read-first and propose-first: fetch live state, read the relevant standard, analyze with the playbook, recommend, and write to Jira or GitHub only when explicitly authorized or when an approved automation has a bounded write policy. The AI Release Confidence job is the example: it owns only its AI-owned fields and never edits human Feedback.
-
-## Standards vs. scheduled automation
-
-Broad good-practice standards are not automation scope. The scheduled job assesses only committed Stories, Tasks and standalone Bugs; see [`ai-release-confidence.md`](standards/ai-release-confidence.md).
-
-## Initiative workspaces
-
-An initiative does not need a folder because it has a Jira Epic. Create one under [`initiatives/`](initiatives/) only for durable material such as architecture, ADRs, integration contracts, migration plans, dependency maps, test strategy or rollout plans. Reference the Jira key; never copy Jira state.
-
-## Updating the standard
-
-1. Edit the file in [`standards/`](standards/) (or the playbook or template). A rule lives in exactly one file; link to it from everywhere else.
-2. Run `python tools/build_plugin.py`. It regenerates the plugin's references and bumps its version.
-3. Run `python -m unittest discover -s tests -p 'test_*.py'`.
-4. Open a PR. CI checks that the plugin is in sync (`python tools/build_plugin.py --check`).
-5. On merge to `main`, the GitHub-synced org marketplace updates the plugin automatically.
-
-## Principle
-
-> Keep live state where it already belongs. Put only durable knowledge and reusable operating logic in Git.
+The artifact-index helper remains available for existing repo-local technical artifacts. New cross-system initiative documentation belongs in Confluence; the local index is not the handbook index and does not list Confluence pages.

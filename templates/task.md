@@ -1,45 +1,5 @@
 # Task template
 
-Rules: [`standards/task.md`](../standards/task.md).
+This document is maintained in [Confluence](https://mathnasium.atlassian.net/wiki/spaces/IPD/pages/2162262091). Confluence is authoritative.
 
-**Summary**
-
-```text
-[Code Dependency value, optional] <Verb> <object>
-```
-
-Example: `[Scheduling Microservice] Prepare the Fanout production configuration checklist`
-
-**Description**
-
-```text
-Objective
-<What will exist or be true when this is finished.>
-
-Why
-<The reason this is needed and what it unblocks.>
-
-Done when
-- <Verifiable condition>
-- <Verifiable condition>
-```
-
-**Fields:** Story Points (5 or less) · Code Dependency · Pull Requests · Epic
-
-## Spike variant
-
-Issue type **Spike**; no bracket for the type.
-
-```text
-Question to answer
-<The decision or unknown.>
-
-Scope
-<What is in and out of the investigation.>
-
-Expected output
-<The written answer, recommendation or decision.>
-
-Timebox
-<Duration.>
-```
+Fetch the current page body and its linked standards before using this guidance. This file is a navigation pointer, not a cached policy. If Confluence is unavailable, report that limitation rather than applying a historical Git copy as current.
