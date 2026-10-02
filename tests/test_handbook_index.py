@@ -86,23 +86,7 @@ class UpdateTests(unittest.TestCase):
         self.assertEqual(once, handbook_index.update(once, profile, today=date(2026, 10, 2)))
 
 
-@unittest.skipUnless(handbook_index.DEFAULT_INDEX.exists(), "draft index page not in the repo")
-class RealIndexTests(unittest.TestCase):
-    def test_draft_page_declares_contract_and_is_findable(self):
-        text = handbook_index.DEFAULT_INDEX.read_text(encoding="utf-8")
-        self.assertIn("**Plugin contract:** 1", text)
-        self.assertIn("plugin-index", text)
-        self.assertRegex(text, r"\*\*Verified:\*\* \d{4}-\d{2}-\d{2}")
-        for heading in ("## Reading rules", "## Intent router", "## Page map"):
-            self.assertIn(heading, text)
-
-    def test_repo_index_parses_and_has_unique_ids(self):
-        text = handbook_index.DEFAULT_INDEX.read_text(encoding="utf-8")
-        rows = handbook_index.parse_rows(text)
-        self.assertGreater(len(rows), 60)
-        ids = [line for line in text.splitlines() if handbook_index.ROW.match(line)]
-        self.assertEqual(len(ids), len(rows), "duplicate page IDs in handbook/index-page.md")
-
+class CliTests(unittest.TestCase):
     def test_cli_check_reads_a_listing_file(self):
         import tempfile, pathlib
         with tempfile.TemporaryDirectory() as temp:

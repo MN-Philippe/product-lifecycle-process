@@ -9,7 +9,7 @@ The handbook in Confluence is the **only** reference. Do not answer from memory 
 
 ## Start here
 
-1. Find the index with the Atlassian connector: `searchConfluenceUsingCql` with `label = "plugin-index" AND space = "IPD"` (cloudId `abd26ef1-c908-455d-8b20-516e025731b2`, site `https://mathnasium.atlassian.net`). Read that page once per session with `getConfluencePage`, `contentFormat: markdown`.
+1. Find the index with the Atlassian connector: `searchConfluenceUsingCql` with `(label = "plugin-index" OR title = "Handbook Index") AND space = "IPD" AND type = page` (cloudId `abd26ef1-c908-455d-8b20-516e025731b2`, site `https://mathnasium.atlassian.net`). Read that page once per session with `getConfluencePage`, `contentFormat: markdown`.
 2. Check its **Plugin contract** line. This plugin supports contract **1**. If the page says a higher number, tell the user to update the plugin and stop.
 3. Follow the index's **Reading rules** and **Intent router** to find the page you need. The index decides what to read; this file does not.
 4. Answer from the page, link it, and report its owner, status and last-verified date when it has them.

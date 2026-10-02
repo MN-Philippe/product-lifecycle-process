@@ -53,13 +53,13 @@ An initiative does not need a folder because it has a Jira Epic. Create one unde
 
 ## The Claude plugin
 
-[`plugins/mathnasium-product-lifecycle/`](plugins/mathnasium-product-lifecycle/) is a **standalone install**, not synced from this repo. It is five small files: two skills, a hook, and a manifest. It holds no handbook content. At runtime it finds the **Handbook Index** page in Confluence by its label (`plugin-index`), reads it, and follows it to the Technology & Product Handbook, using each person's own Confluence access.
+[`plugins/mathnasium-product-lifecycle/`](plugins/mathnasium-product-lifecycle/) is a **standalone install**, not synced from this repo. It is five small files: two skills, a hook, and a manifest. It holds no handbook content. At runtime it finds the **Handbook Index** page in Confluence by its label (`plugin-index`) or title, reads it, and follows it to the Technology & Product Handbook, using each person's own Confluence access.
 
 So Confluence changes reach everyone immediately: edit the handbook or the index page and nothing else needs to happen. Re-share the plugin only when a skill or the hook changes.
 
 - **Package:** `python tools/package_plugin.py` writes `dist/mathnasium-product-lifecycle-<version>.zip`. Bump `version` in `plugin.json` first; an install only updates when the version increases.
 - **Contract:** the index page declares `Plugin contract: 1`. Bump it only for a breaking change to the page's structure; older plugins then tell their users to update.
-- **Index page:** maintained in Confluence. [`handbook/index-page.md`](handbook/index-page.md) is the draft until it is published; delete it afterwards. Refresh the page's sizes, statuses and gists with [`playbooks/refresh-handbook-index.md`](playbooks/refresh-handbook-index.md).
+- **Index page:** maintained in Confluence. The page is "Handbook Index" in the IPD space (label `plugin-index`, page 2162819145). Refresh the page's sizes, statuses and gists with [`playbooks/refresh-handbook-index.md`](playbooks/refresh-handbook-index.md).
 
 `standards/`, `playbooks/` and `templates/` in this repo currently duplicate the handbook's Product Lifecycle pages and feed `tools/jira_helper.py` and `AGENTS.md`. Until one side is declared the source, a change to one must be made in the other.
 

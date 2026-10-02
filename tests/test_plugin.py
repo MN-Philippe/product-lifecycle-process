@@ -41,7 +41,7 @@ class LeanPluginTests(unittest.TestCase):
         for skill in ("handbook", "write-jira-story"):
             text = (SKILLS / skill / "SKILL.md").read_text(encoding="utf-8")
             self.assertTrue(text.startswith("---\nname: " + skill + "\n"), skill)
-            self.assertIn('label = "plugin-index" AND space = "IPD"', text)
+            self.assertIn('(label = "plugin-index" OR title = "Handbook Index") AND space = "IPD"', text)
             self.assertIn(CLOUD_ID, text)
             self.assertIn("contract **1**", text)
             self.assertNotRegex(text, r"\b\d{10}\b", f"{skill} hard-codes a page ID")

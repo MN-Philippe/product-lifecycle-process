@@ -9,7 +9,7 @@ The standards, playbooks and templates live in the Technology & Product Handbook
 
 ## Start here
 
-1. Find the index with the Atlassian connector: `searchConfluenceUsingCql` with `label = "plugin-index" AND space = "IPD"` (cloudId `abd26ef1-c908-455d-8b20-516e025731b2`, site `https://mathnasium.atlassian.net`). Read that page once per session with `getConfluencePage`, `contentFormat: markdown`.
+1. Find the index with the Atlassian connector: `searchConfluenceUsingCql` with `(label = "plugin-index" OR title = "Handbook Index") AND space = "IPD" AND type = page` (cloudId `abd26ef1-c908-455d-8b20-516e025731b2`, site `https://mathnasium.atlassian.net`). Read that page once per session with `getConfluencePage`, `contentFormat: markdown`.
 2. Check its **Plugin contract** line. This plugin supports contract **1**. If the page says a higher number, tell the user to update the plugin and stop.
 3. Use the index's **Intent router** to pick the playbook for the request. Read that playbook, then the standards it names, and follow its steps. The Story Standard is the authority for Stories.
 

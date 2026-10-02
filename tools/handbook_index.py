@@ -26,7 +26,6 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_INDEX = ROOT / "handbook" / "index-page.md"
 
 ROW = re.compile(r"^\|\s*(?P<title>[^|]+?)\s*\|\s*(?P<id>\d{10})\s*\|\s*(?P<size>[^|]*?)\s*\|\s*(?P<status>[^|]*?)\s*\|\s*(?P<gist>[^|]*?)\s*\|\s*$")
 VERIFIED = re.compile(r"^(?P<prefix>\*\*Verified:\*\*\s*)(?P<date>\d{4}-\d{2}-\d{2}|never)", re.M)
@@ -130,7 +129,7 @@ def update(index_text: str, profile: Any, today: date | None = None) -> str:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--index", type=Path, default=DEFAULT_INDEX)
+    parser.add_argument("--index", type=Path, required=True, help="File holding the Handbook Index page body (markdown)")
     sub = parser.add_subparsers(dest="command", required=True)
     check_cmd = sub.add_parser("check", help="Report drift between the index and a live page listing")
     check_cmd.add_argument("listing", help="JSON from getConfluencePageDescendants, or - for stdin")
