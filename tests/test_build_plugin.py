@@ -3,47 +3,63 @@ import unittest
 
 from tools import build_plugin
 
+REQUIRED_TOPICS = (
+    "Product Lifecycle - Agent Router",
+    "Product Lifecycle - Story Standard",
+    "Product Lifecycle - Jira Conventions",
+    "Product Lifecycle Playbook - Write Story",
+    "Radius Database Reference",
+    "Radius DB Reference - Overview and Conventions",
+    "SQL, DAL & Data Access Standard",
+)
 
-class RewriteLinksTests(unittest.TestCase):
-    def test_links_between_mapped_files_point_at_siblings(self):
-        text = "See [story](../standards/story.md#size) and `standards/lifecycle.md#ready-for-dev-checklist`."
-        result = build_plugin.rewrite_links(text, "playbooks/split-story.md")
-        self.assertIn("[story](story.md#size)", result)
-        self.assertIn("`lifecycle.md#ready-for-dev-checklist`", result)
 
-    def test_sibling_links_inside_standards_resolve(self):
-        result = build_plugin.rewrite_links("[c](jira-conventions.md#code-dependency)", "standards/story.md")
-        self.assertEqual("[c](jira-conventions.md#code-dependency)", result)
+class IndexTests(unittest.TestCase):
+    def setUp(self):
+        self.source = build_plugin.INDEX_SOURCE.read_text(encoding="utf-8")
 
-    def test_template_gets_a_distinct_name(self):
-        result = build_plugin.rewrite_links("[t](../templates/story.md)", "playbooks/write-story.md")
-        self.assertEqual("[t](story-template.md)", result)
+    def test_index_states_site_and_cloud_id(self):
+        self.assertIn("abd26ef1-c908-455d-8b20-516e025731b2", self.source)
+        self.assertIn("https://mathnasium.atlassian.net", self.source)
 
-    def test_links_that_leave_the_plugin_are_unwrapped(self):
-        result = build_plugin.rewrite_links("[queries](../jira/queries.yaml)", "standards/story.md")
-        self.assertEqual("queries", result)
+    def test_required_topics_are_mapped_to_numeric_page_ids(self):
+        for title in REQUIRED_TOPICS:
+            row = next((line for line in self.source.splitlines() if title in line and "|" in line), None)
+            self.assertIsNotNone(row, title)
+            self.assertRegex(row, r"\b\d{10}\b", title)
 
-    def test_external_and_in_page_links_are_kept(self):
-        text = "[x](https://example.com/a) and [y](#size)"
-        self.assertEqual(text, build_plugin.rewrite_links(text, "standards/story.md"))
+    def test_page_ids_are_unique_per_topic_row(self):
+        ids = re.findall(r"\|\s*(\d{10})\s*\|?\s*$", self.source, flags=re.M)
+        self.assertEqual(len(ids), len(set(ids)), "duplicate page IDs in the index")
+
+    def test_index_contains_no_secrets_or_jira_state(self):
+        lowered = self.source.lower()
+        for word in ("password", "api key", "token", "fixversion", "assignee"):
+            self.assertNotIn(word, lowered)
 
 
 class PluginInSyncTests(unittest.TestCase):
-    def test_generated_plugin_is_current(self):
+    def test_generated_copies_and_version_are_current(self):
         self.assertTrue(build_plugin.is_current(), "Run: python tools/build_plugin.py")
 
-    def test_no_reference_links_escape_the_folder(self):
-        for name, content in build_plugin.generate().items():
-            for target in re.findall(r"\]\(([^)\s]+)\)", content):
-                if target.startswith(("http", "#")):
+    def test_every_skill_has_an_index_copy_and_resolves_its_links(self):
+        for skill in build_plugin.SKILLS_WITH_INDEX:
+            folder = build_plugin.SKILLS_DIR / skill
+            self.assertTrue((folder / build_plugin.INDEX_NAME).exists(), skill)
+            text = (folder / "SKILL.md").read_text(encoding="utf-8")
+            for target in re.findall(r"\]\(([^)#\s]+)", text):
+                if target.startswith("http"):
                     continue
-                path = target.split("#")[0]
-                self.assertIn(path, build_plugin.SOURCES.values(), f"{name} links to {target}")
+                self.assertTrue((folder / target).exists(), f"{skill} links to {target}")
 
-    def test_skill_links_resolve_to_references(self):
-        skill = (build_plugin.SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
-        for target in re.findall(r"\]\(references/([^)#\s]+)", skill):
-            self.assertTrue((build_plugin.REFERENCES_DIR / target).exists(), target)
+    def test_plugin_no_longer_bundles_standards(self):
+        self.assertEqual([], list(build_plugin.SKILLS_DIR.rglob("references")))
+
+    def test_skills_describe_confluence_as_the_only_source(self):
+        handbook = (build_plugin.SKILLS_DIR / "handbook" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("only** reference", handbook)
+        self.assertIn("SELECT", handbook)
+        self.assertIn("Draft placeholder", (build_plugin.SKILLS_DIR / "write-jira-story" / "SKILL.md").read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

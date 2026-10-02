@@ -9,7 +9,7 @@ It is **not a copy of Jira**. Jira stays the live system of record. This reposit
 - canonical lifecycle and Jira-work standards ([`standards/`](standards/));
 - repeatable agent playbooks ([`playbooks/`](playbooks/)) and templates ([`templates/`](templates/));
 - reusable JQL ([`jira/queries.yaml`](jira/queries.yaml)) and small stateless helpers ([`tools/`](tools/));
-- the source of the Mathnasium product lifecycle Claude plugin, generated into [`plugins/`](plugins/);
+- the Mathnasium Claude plugin ([`plugins/`](plugins/)), which reads the Confluence Technology & Product Handbook live; [`handbook/index.md`](handbook/index.md) maps topics to its page IDs;
 - durable artifact templates and initiative workspaces for material that Jira is not a good home for ([`artifacts/`](artifacts/), [`initiatives/`](initiatives/)).
 
 ## What this repo is not
@@ -51,13 +51,16 @@ Broad good-practice standards are not automation scope. The scheduled job assess
 
 An initiative does not need a folder because it has a Jira Epic. Create one under [`initiatives/`](initiatives/) only for durable material such as architecture, ADRs, integration contracts, migration plans, dependency maps, test strategy or rollout plans. Reference the Jira key; never copy Jira state.
 
-## Updating the standard
+## Updating the plugin and the handbook
 
-1. Edit the file in [`standards/`](standards/) (or the playbook or template). A rule lives in exactly one file; link to it from everywhere else.
-2. Run `python tools/build_plugin.py`. It regenerates the plugin's references and bumps its version.
-3. Run `python -m unittest discover -s tests -p 'test_*.py'`.
-4. Open a PR. CI checks that the plugin is in sync (`python tools/build_plugin.py --check`).
-5. On merge to `main`, the GitHub-synced org marketplace updates the plugin automatically.
+The plugin does not bundle standards or playbooks. It reads the [Technology & Product Handbook](https://mathnasium.atlassian.net/wiki/spaces/IPD/pages/2162262120) in Confluence at runtime, using each person's own Confluence access.
+
+- **Handbook content** is edited in Confluence.
+- **Page IDs** live in [`handbook/index.md`](handbook/index.md). When a page is added, renamed or recreated, update the index.
+- **Plugin changes** (the two `SKILL.md` files, the hook, the index): run `python tools/build_plugin.py`. It copies the index into each skill and bumps the plugin version. Then run `python -m unittest discover -s tests -p 'test_*.py'` and open a PR. CI checks that the plugin is in sync (`python tools/build_plugin.py --check`).
+- On merge to `main`, the GitHub-synced org marketplace updates the plugin automatically.
+
+`standards/`, `playbooks/` and `templates/` in this repo currently duplicate the handbook's Product Lifecycle pages and feed `tools/jira_helper.py` and `AGENTS.md`. Until one side is declared the source, a change to one must be made in the other.
 
 ## Principle
 

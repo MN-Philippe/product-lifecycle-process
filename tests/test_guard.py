@@ -78,6 +78,12 @@ class JiraWritesAskTests(unittest.TestCase):
         self.assertIsNone(kind("Read", file_path="/tmp/x"))
         self.assertIsNone(kind("Bash", command="ls"))
 
+    def test_confluence_writes_ask_and_reads_do_not(self):
+        for tool in ("createConfluencePage", "updateConfluencePage", "createConfluenceFooterComment", "createConfluenceInlineComment"):
+            self.assertEqual("ask", kind(f"mcp__Atlassian__{tool}"), tool)
+        for tool in ("getConfluencePage", "searchConfluenceUsingCql", "getConfluencePageDescendants", "getConfluenceSpaces"):
+            self.assertIsNone(kind(f"mcp__Atlassian__{tool}"), tool)
+
     def test_prompt_explains_batch_behavior(self):
         out = json.loads(run_guard("mcp__Atlassian__createJiraIssue").stdout)
         self.assertIn("once per Story", out["hookSpecificOutput"]["permissionDecisionReason"])
@@ -102,22 +108,16 @@ class HookWiringTests(unittest.TestCase):
 
 
 class WritePolicyTests(unittest.TestCase):
-    def test_policy_is_in_one_standard_and_bundled(self):
+    def test_repo_standard_keeps_the_full_policy(self):
         source = (build_plugin.ROOT / "standards" / "jira-conventions.md").read_text(encoding="utf-8")
         self.assertIn("## Write policy", source)
-        bundled = (build_plugin.REFERENCES_DIR / "jira-conventions.md").read_text(encoding="utf-8")
-        self.assertIn("read-only", bundled)
-
-    def test_policy_leaves_local_git_alone_and_states_batch_rule_once(self):
-        source = (build_plugin.ROOT / "standards" / "jira-conventions.md").read_text(encoding="utf-8")
         self.assertIn("`git push` to a working branch, is not covered", source)
         self.assertIn("every Story's full draft", source)
-        self.assertNotIn("approved as a batch", source)
 
-    def test_skill_points_at_the_policy_instead_of_restating_it(self):
-        skill = (build_plugin.SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("references/jira-conventions.md#write-policy", skill)
-        self.assertNotIn("looks good so far", skill)
+    def test_skill_carries_the_short_rule_until_the_handbook_has_it(self):
+        skill = (build_plugin.SKILLS_DIR / "write-jira-story" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("GitHub issues and PRs are read-only", skill)
+        self.assertIn("draft, approve, then write", skill)
 
     def test_no_playbook_tells_the_agent_to_create_github_items(self):
         for path in (build_plugin.ROOT / "playbooks").glob("*.md"):

@@ -6,6 +6,7 @@
 #   * GitHub issues and pull requests are read-only: GitHub connector writes, gh issue/PR
 #     writes, GitHub API writes, and browser interaction on github.com are denied.
 #     Local git (including git push) is not touched.
+#   * Every Confluence write asks first: the handbook is the plugin's read-only reference.
 #   * Every Jira write (create, edit, comment, transition, link, worklog) asks the user to
 #     confirm, even when the connector is set to "always allow". A batch approval in chat
 #     still produces one prompt per Jira write.
@@ -25,7 +26,9 @@ emit() { # decision reason
 }
 
 GITHUB_DENY="GitHub issues and pull requests are read-only in this plugin. Reading repos, code and pull requests is fine; creating, commenting on, editing or closing GitHub issues or pull requests is not. Tell the user you will not do it and stop. Jira Stories are the work items here; a repo means a Code Dependency value."
-JIRA_ASK="Jira write: confirm only if the user approved this exact draft or before/after in a later reply. A batch approval in chat still prompts once per Story. See standards/jira-conventions.md#write-policy."
+JIRA_ASK="Jira write: confirm only if the user approved this exact draft or before/after in a later reply. A batch approval in chat still prompts once per Story. See the Write policy in the Jira Conventions page of the handbook."
+
+CONFLUENCE_ASK="Confluence write: the Technology and Product Handbook is read-only for this plugin. Confirm only if the user explicitly asked to edit or create this page or comment."
 
 server=""
 name="$tool"
@@ -71,6 +74,13 @@ if printf '%s' "$tool_lc" | grep -Eq 'chrome|browser|playwright|puppeteer|comput
      printf '%s %s' "$tool_lc" "$input_lc" | grep -Eq 'click|type|fill|form_input|press|submit|key|select|upload|drag|write'; then
     emit deny "$GITHUB_DENY"
   fi
+fi
+
+# Confluence writes: the handbook is read-only here, so always ask.
+if [ -n "$server" ] &&
+   printf '%s' "$name_lc" | grep -Eq 'confluence' &&
+   printf '%s' "$name_lc" | grep -Eq '^(create|edit|update|add|delete|remove|set)'; then
+  emit ask "$CONFLUENCE_ASK"
 fi
 
 # Jira writes: always ask.
