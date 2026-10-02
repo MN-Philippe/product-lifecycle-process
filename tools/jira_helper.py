@@ -22,7 +22,9 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_QUERY_FILE = ROOT / "jira" / "queries.yaml"
 
-# Standard v2 rules. Keep in sync with standards/story.md and standards/jira-conventions.md.
+# Advisory rule implementation; live Confluence standards are authoritative.
+# Story: https://mathnasium.atlassian.net/wiki/spaces/IPD/pages/2162393089
+# Jira: https://mathnasium.atlassian.net/wiki/spaces/IPD/pages/2162130987
 EFFECTIVE_DATE = date(2026, 10, 1)  # DEFAULT — TBC: standards/story.md#applies-to
 MAX_STORY_POINTS = 5
 STORY_POINTS_FIELD = "customfield_10021"
@@ -565,3 +567,4 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

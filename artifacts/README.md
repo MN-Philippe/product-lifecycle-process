@@ -1,25 +1,5 @@
 # Durable Artifact Scaffolding
 
-Use these templates only when the work needs durable information that does not belong in a Jira ticket.
+This document is maintained in [Confluence](https://mathnasium.atlassian.net/wiki/spaces/IPD/pages/2162098239). Confluence is authoritative.
 
-Do not create artifacts by default. Prefer Jira for ticket-level context and implementation repositories for code-local documentation.
-
-## Architecture / technical design
-
-Useful when an initiative needs durable cross-cutting design or decisions:
-
-- `architecture/technical-design.md`
-- `architecture/adr.md`
-
-## Delivery
-
-Useful when execution has meaningful sequencing, risk, or operational complexity:
-
-- `delivery/implementation-plan.md`
-
-## Rules
-
-- Link the artifact to its Jira initiative; do not copy live Jira state into it.
-- Record durable decisions, constraints, interfaces, and rationale.
-- Avoid restating information already available in code or Jira unless the artifact needs it for comprehension.
-- Keep artifacts close to the initiative that uses them when initiative-specific.
+Fetch the current page body and its linked standards before using this guidance. This file is a navigation pointer, not a cached policy. If Confluence is unavailable, report that limitation rather than applying a historical Git copy as current.

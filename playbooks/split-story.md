@@ -1,16 +1,5 @@
 # Playbook: Split a Story
 
-Read: [`standards/story.md`](../standards/story.md), [`standards/jira-conventions.md`](../standards/jira-conventions.md)
+This document is maintained in [Confluence](https://mathnasium.atlassian.net/wiki/spaces/IPD/pages/2162262051). Confluence is authoritative.
 
-Use when an estimate is over 5 points, the scope spans repos, or one ticket bundles independently testable product/system behaviors that would benefit from separate acceptance, ownership, sequencing or release.
-
-## Steps
-
-1. Start with behavior seams from `standards/story.md#story-decomposition-and-sub-tasks`: meaningful user actions/inputs and distinct system responses/outcomes.
-2. Split when those behaviors can be understood and tested independently and there is useful value in separate acceptance, ownership, sequencing or release. Buttons, tabs, sorting/filtering and validations are common seams, but not every control needs its own ticket when it is inseparable from one coherent outcome.
-3. Apply repo boundaries next: production changes in different repos belong in different Stories, linked with "blocks" only where order matters.
-4. Keep every resulting Story at 5 points or less. Do not use implementation sub-tasks as a substitute for a Story split.
-5. Move each AC to the Story it belongs to; keep workflow sub-tasks with the Story whose delivery they support.
-6. Show the proposed Stories before creating them.
-7. If the original Story has comments, PRs or history, **keep its key for the first piece** and create new Stories only for the rest.
-8. Retire the original per `playbooks/cleanup.md` only if no piece remains.
+Fetch the current page body and its linked standards before using this guidance. This file is a navigation pointer, not a cached policy. If Confluence is unavailable, report that limitation rather than applying a historical Git copy as current.

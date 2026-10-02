@@ -1,6 +1,8 @@
+> Tooling implementation documentation. Durable policy is maintained in [Confluence](https://mathnasium.atlassian.net/wiki/spaces/IPD/pages/2162327553). Audit results are advisory and must be interpreted against the current live standard, including unconfirmed defaults.
+
 # Helper Tooling
 
-This directory contains small, stateless helpers that make agent workflows faster and more consistent without persisting a shadow copy of Jira.
+This repository tooling directory contains small, stateless helpers that make agent workflows faster and more consistent without persisting a shadow copy of Jira.
 
 ## Jira helper
 
@@ -97,3 +99,4 @@ Avoid tooling that:
 - requires a local database of Jira issues;
 - makes stale cached issue data the default source;
 - writes broad Jira changes without an explicit approval policy.
+

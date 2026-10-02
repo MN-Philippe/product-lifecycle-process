@@ -29,6 +29,13 @@ class RewriteLinksTests(unittest.TestCase):
 
 
 class PluginInSyncTests(unittest.TestCase):
+    def test_reference_bundle_contains_live_policy_pointers_only(self):
+        for name, content in build_plugin.generate().items():
+            self.assertRegex(content, r"https://mathnasium\.atlassian\.net/wiki/spaces/IPD/pages/\d+", name)
+            self.assertNotIn("| Check |", content, name)
+            self.assertNotIn("## Acceptance Criteria", content, name)
+            self.assertLess(len(content), 2500, f"{name} should route to policy, not bundle it")
+
     def test_generated_plugin_is_current(self):
         self.assertTrue(build_plugin.is_current(), "Run: python tools/build_plugin.py")
 

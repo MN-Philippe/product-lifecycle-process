@@ -1,52 +1,5 @@
 # Implementation Plan
 
-Jira initiative: `<KEY>`
+This document is maintained in [Confluence](https://mathnasium.atlassian.net/wiki/spaces/IPD/pages/2162229330). Confluence is authoritative.
 
-## Outcome
-
-What must be true when this work is complete?
-
-## Scope
-
-### In
-- 
-
-### Out
-- 
-
-## Workstreams
-
-### 1. `<workstream>`
-
-Goal:
-
-Key work:
-- 
-
-Dependencies:
-- 
-
-Completion evidence:
-- 
-
-## Sequencing
-
-Describe important ordering/dependencies. Avoid turning this into a duplicate Jira backlog.
-
-## Risks
-
-| Risk | Impact | Mitigation |
-| --- | --- | --- |
-| | | |
-
-## Validation
-
-How will we know the implementation works end-to-end?
-
-## Rollout / Backout
-
-Describe meaningful deployment, migration, feature-flag, rollback, or recovery considerations.
-
-## Open Decisions
-
-- [ ] Decision
+Fetch the current page body and its linked standards before using this guidance. This file is a navigation pointer, not a cached policy. If Confluence is unavailable, report that limitation rather than applying a historical Git copy as current.
