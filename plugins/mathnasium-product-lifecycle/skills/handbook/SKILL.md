@@ -17,7 +17,7 @@ The handbook in Confluence is the **only** reference for this skill. Do not answ
 
 ## SQL for the Radius database
 
-1. Read the Radius Database Reference hub, then **Overview and Conventions**, then only the domain page the query needs (all in the index).
+1. Read the Radius Database Reference hub (small). Fetch **Overview and Conventions** at most once per session, and only the single domain page the query needs. For one column or rule, search first (reading rules in the index) instead of fetching a large page.
 2. Follow the conventions and the query safety checklist on those pages. Keep the page's CONFIRMED and INFERRED labels, and say which assumptions a query rests on.
 3. Write read-only `SELECT` queries. Do not write inserts, updates, deletes or schema changes; point to the Data Repair & Reconciliation and Database & Data Migration runbook pages instead.
 4. You cannot run the query. Say so, and remind the user to verify object definitions as the reference page directs.

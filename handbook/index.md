@@ -9,13 +9,19 @@ Maps handbook topics to Confluence page IDs so the plugin can fetch exactly the 
 
 ## How to read a page
 
-1. Look up the topic below, then call `getConfluencePage` with the `cloudId`, the `pageId` and `contentFormat: markdown`. Read only the pages the task needs.
-2. Use the page body, not its summary field.
-3. If the ID fails or the title no longer matches, find it with `searchConfluenceUsingCql` (`title = "<title>" AND space = IPD`) and tell the user the index is stale.
-4. A body that starts with **"Draft placeholder"** has no content yet. Say so, name what the page says it will contain, and stop. Do not answer from memory.
-5. Follow numeric page-ID links inside a page when it points to the next page you need.
-6. Ignore pages titled `… (2)`: they are duplicates awaiting cleanup.
-7. The `Radius DB Reference` child pages are very large (70K+ characters). Fetch the hub, then only the one child you need. If the result is saved to a file, read it in sections.
+**Verified:** never
+
+Size bands: **S** under 4K characters, **M** under 20K, **L** under 60K, **XL** above. Status: **real** has content; **stub** is a "Draft placeholder".
+
+1. Pick the page from the tables below by title and gist. Do not browse: never fetch the root or a section page to look around.
+2. **Skip stubs.** Status `stub` means there is nothing to read yet. Say the topic is not documented in the handbook yet and quote the gist, then stop. Do not answer from memory.
+3. **Look up facts before reading pages.** For a single fact (a column, a rule, a name), call `searchConfluenceUsingCql` (`text ~ "<term>" AND space = IPD`) and answer from the excerpts. Fetch the whole page only when the excerpt is not enough.
+4. **Size L and XL pages are never fetched in full by default.** Search first; if you must fetch, fetch the one page that answers the question and nothing else from that family.
+5. **Read each page at most once per session.** Reuse what you already read instead of fetching it again.
+6. To read a page, call `getConfluencePage` with the `cloudId`, the `pageId` and `contentFormat: markdown`. Use the body, not the summary field. Follow numeric page-ID links inside a page only when they point at the next page you need.
+7. If an ID fails or the title no longer matches, find the page with `searchConfluenceUsingCql` (`title = "<title>" AND space = IPD`) and tell the user the index is stale.
+8. **Freshness.** `Verified` is the date this index's sizes, statuses and gists were last checked. If it is more than 30 days old, or the user says a page has changed, say so. One `getConfluencePageDescendants` call on the root returns every page's lastModified; use it to see what changed instead of re-reading pages.
+9. Ignore pages titled `… (2)`: they are duplicates awaiting cleanup.
 
 The handbook is a **draft** and does not yet supersede existing documentation. Where a page carries an owner, status or last-verified date, report it. Current implementation is not automatically an approved standard; keep the page's own legacy-versus-standard labels.
 
@@ -23,134 +29,136 @@ The handbook is a **draft** and does not yet supersede existing documentation. W
 
 Parent: [Product Lifecycle Process](https://mathnasium.atlassian.net/wiki/spaces/IPD/pages/2162327553) (`2162327553`). Start with the Agent Router.
 
-| Topic | Page | pageId |
-| --- | --- | --- |
-| Router: task → pages | Product Lifecycle - Agent Router | 2162065429 |
-| Story standard | Product Lifecycle - Story Standard | 2162393089 |
-| Task and Spike standard | Product Lifecycle - Task Standard | 2162425857 |
-| Bug standard | Product Lifecycle - Bug Standard | 2162458625 |
-| Lifecycle, Ready for Dev, Fix Version | Product Lifecycle - Lifecycle Standard | 2162229270 |
-| Jira fields, Fix Versions, Code Dependency, write policy | Product Lifecycle - Jira Conventions | 2162130987 |
-| AI Release Confidence | Product Lifecycle - AI Release Confidence Standard | 2162196502 |
-| Write a Story | Product Lifecycle Playbook - Write Story | 2162098199 |
-| Refine a Story | Product Lifecycle Playbook - Refine Story | 2162196542 |
-| Split a Story | Product Lifecycle Playbook - Split Story | 2162262051 |
-| Ready check | Product Lifecycle Playbook - Ready Check | 2162229290 |
-| Review a Story | Product Lifecycle Playbook - Review Story | 2162491413 |
-| Decompose an initiative | Product Lifecycle Playbook - Decompose Initiative | 2162524161 |
-| Intake | Product Lifecycle Playbook - Intake | 2162360341 |
-| Triage a Bug | Product Lifecycle Playbook - Triage Bug | 2162262071 |
-| Retire replaced tickets | Product Lifecycle Playbook - Cleanup | 2162196522 |
-| Release readiness | Product Lifecycle Playbook - Release Readiness | 2162327574 |
-| Monthly release docs | Product Lifecycle Playbook - Release Docs | 2162032662 |
-| Review an Epic | Product Lifecycle Playbook - Review Epic | 2162262031 |
-| Backlog review | Product Lifecycle Playbook - Backlog Review | 2162491393 |
-| Assess release confidence | Product Lifecycle Playbook - Assess Release Confidence | 2162098219 |
-| Story template | Product Lifecycle Template - Story | 2162032682 |
-| Task template | Product Lifecycle Template - Task | 2162262091 |
-| Bug template | Product Lifecycle Template - Bug | 2162491433 |
-| Vendor guide | Product Lifecycle Template - Vendor Guide | 2162032702 |
-| Technical design / ADR / implementation plan | Product Lifecycle Artifact - Technical Design / ADR / Implementation Plan | 2162229310 / 2162425877 / 2162229330 |
-| Initiative workspaces | Product Lifecycle - Initiatives | 2162524181 |
-| Jira query shortcuts | Product Lifecycle - Jira Query Shortcuts | 2162622465 |
+| Title | pageId | Size | Status | Gist |
+| --- | --- | --- | --- | --- |
+| Product Lifecycle - Agent Router | 2162065429 | ? | ? | ? |
+| Product Lifecycle - Story Standard | 2162393089 | ? | ? | ? |
+| Product Lifecycle - Task Standard | 2162425857 | ? | ? | ? |
+| Product Lifecycle - Bug Standard | 2162458625 | ? | ? | ? |
+| Product Lifecycle - Lifecycle Standard | 2162229270 | ? | ? | ? |
+| Product Lifecycle - Jira Conventions | 2162130987 | ? | ? | ? |
+| Product Lifecycle - AI Release Confidence Standard | 2162196502 | ? | ? | ? |
+| Product Lifecycle Playbook - Write Story | 2162098199 | ? | ? | ? |
+| Product Lifecycle Playbook - Refine Story | 2162196542 | ? | ? | ? |
+| Product Lifecycle Playbook - Split Story | 2162262051 | ? | ? | ? |
+| Product Lifecycle Playbook - Ready Check | 2162229290 | ? | ? | ? |
+| Product Lifecycle Playbook - Review Story | 2162491413 | ? | ? | ? |
+| Product Lifecycle Playbook - Decompose Initiative | 2162524161 | ? | ? | ? |
+| Product Lifecycle Playbook - Intake | 2162360341 | ? | ? | ? |
+| Product Lifecycle Playbook - Triage Bug | 2162262071 | ? | ? | ? |
+| Product Lifecycle Playbook - Cleanup | 2162196522 | ? | ? | ? |
+| Product Lifecycle Playbook - Release Readiness | 2162327574 | ? | ? | ? |
+| Product Lifecycle Playbook - Release Docs | 2162032662 | ? | ? | ? |
+| Product Lifecycle Playbook - Review Epic | 2162262031 | ? | ? | ? |
+| Product Lifecycle Playbook - Backlog Review | 2162491393 | ? | ? | ? |
+| Product Lifecycle Playbook - Assess Release Confidence | 2162098219 | ? | ? | ? |
+| Product Lifecycle Template - Story | 2162032682 | ? | ? | ? |
+| Product Lifecycle Template - Task | 2162262091 | ? | ? | ? |
+| Product Lifecycle Template - Bug | 2162491433 | ? | ? | ? |
+| Product Lifecycle Template - Vendor Guide | 2162032702 | ? | ? | ? |
+| Product Lifecycle Artifact - Technical Design | 2162229310 | ? | ? | ? |
+| Product Lifecycle Artifact - ADR | 2162425877 | ? | ? | ? |
+| Product Lifecycle Artifact - Implementation Plan | 2162229330 | ? | ? | ? |
+| Product Lifecycle - Initiatives | 2162524181 | ? | ? | ? |
+| Product Lifecycle - Jira Query Shortcuts | 2162622465 | ? | ? | ? |
 
 ## 00 Start Here (`2162720769`)
 
-| Topic | pageId |
-| --- | --- |
-| Technology at a Glance | 2162688011 |
-| Product & System Map | 2162753557 |
-| Service & Repository Catalog | 2162524247 |
-| Environments | 2162556950 |
-| Glossary | 2162720809 |
-| Onboarding Paths | 2162622525 |
+| Title | pageId | Size | Status | Gist |
+| --- | --- | --- | --- | --- |
+| Technology at a Glance | 2162688011 | ? | ? | ? |
+| Product & System Map | 2162753557 | ? | ? | ? |
+| Service & Repository Catalog | 2162524247 | ? | ? | ? |
+| Environments | 2162556950 | ? | ? | ? |
+| Glossary | 2162720809 | ? | ? | ? |
+| Onboarding Paths | 2162622525 | ? | ? | ? |
 
 ## 10 Product Handbook (`2162753537`)
 
-| Topic | pageId |
-| --- | --- |
-| Radius | 2162327640 |
-| myMathnasium | 2162032800 |
-| Scheduling | 2162556970 |
-| Enrollment & Membership | 2162688032 |
-| Billing & Payments | 2162688052 |
-| Leads & CRM | 2162556990 |
-| Attendance | 2162720829 |
-| Curriculum, Assessments & Learning Plans | 2162458672 |
-| Notifications & Communications | 2162819076 |
-| Reporting & Data | 2162327660 |
+| Title | pageId | Size | Status | Gist |
+| --- | --- | --- | --- | --- |
+| Radius | 2162327640 | ? | ? | ? |
+| myMathnasium | 2162032800 | ? | ? | ? |
+| Scheduling | 2162556970 | ? | ? | ? |
+| Enrollment & Membership | 2162688032 | ? | ? | ? |
+| Billing & Payments | 2162688052 | ? | ? | ? |
+| Leads & CRM | 2162556990 | ? | ? | ? |
+| Attendance | 2162720829 | ? | ? | ? |
+| Curriculum, Assessments & Learning Plans | 2162458672 | ? | ? | ? |
+| Notifications & Communications | 2162819076 | ? | ? | ? |
+| Reporting & Data | 2162327660 | ? | ? | ? |
 
 ## 20 Architecture (`2162360405`)
 
-| Topic | pageId |
-| --- | --- |
-| System Landscape | 2162688072 |
-| Service Catalog | 2162819096 |
-| Data Architecture | 2162753577 |
-| Identity, Authentication & Authorization | 2162229393 |
-| Events, Messaging & Integration Contracts | 2162622545 |
-| Caching Architecture | 2162688092 |
-| Observability & Operational Architecture | 2162262141 |
-| Architecture Decision Index | 2162458692 |
+| Title | pageId | Size | Status | Gist |
+| --- | --- | --- | --- | --- |
+| System Landscape | 2162688072 | ? | ? | ? |
+| Service Catalog | 2162819096 | ? | ? | ? |
+| Data Architecture | 2162753577 | ? | ? | ? |
+| Identity, Authentication & Authorization | 2162229393 | ? | ? | ? |
+| Events, Messaging & Integration Contracts | 2162622545 | ? | ? | ? |
+| Caching Architecture | 2162688092 | ? | ? | ? |
+| Observability & Operational Architecture | 2162262141 | ? | ? | ? |
+| Architecture Decision Index | 2162458692 | ? | ? | ? |
 
 ## 30 Engineering Standards (`2162786305`)
 
-| Topic | pageId |
-| --- | --- |
-| Standards Overview | 2162327680 |
-| Radius Engineering Standard | 2162032820 |
-| API & Service Standard | 2162065463 |
-| SQL, DAL & Data Access Standard | 2162098259 |
-| Frontend Engineering Standard | 2162491461 |
-| Microservice Engineering Standard | 2162458712 |
-| Testing & Quality Standard | 2162622565 |
-| Security Standard | 2162032840 |
-| Logging & Observability Standard | 2162491481 |
-| Caching Standard | 2162458732 |
+| Title | pageId | Size | Status | Gist |
+| --- | --- | --- | --- | --- |
+| Standards Overview | 2162327680 | ? | ? | ? |
+| Radius Engineering Standard | 2162032820 | ? | ? | ? |
+| API & Service Standard | 2162065463 | ? | ? | ? |
+| SQL, DAL & Data Access Standard | 2162098259 | ? | ? | ? |
+| Frontend Engineering Standard | 2162491461 | ? | ? | ? |
+| Microservice Engineering Standard | 2162458712 | ? | ? | ? |
+| Testing & Quality Standard | 2162622565 | ? | ? | ? |
+| Security Standard | 2162032840 | ? | ? | ? |
+| Logging & Observability Standard | 2162491481 | ? | ? | ? |
+| Caching Standard | 2162458732 | ? | ? | ? |
 
 ## 40 Product & Delivery Process (`2162524224`)
 
-| Topic | pageId |
-| --- | --- |
-| Product Lifecycle | 2162131024 |
-| Work Item Standards | 2162557010 |
-| Product Readiness | 2162524267 |
-| Engineering Delivery Flow | 2162327700 |
-| Release Confidence & Readiness | 2162622585 |
-| Release Management | 2162524287 |
-| Vendor & Team Collaboration | 2162753597 |
+| Title | pageId | Size | Status | Gist |
+| --- | --- | --- | --- | --- |
+| Product Lifecycle | 2162131024 | ? | ? | ? |
+| Work Item Standards | 2162557010 | ? | ? | ? |
+| Product Readiness | 2162524267 | ? | ? | ? |
+| Engineering Delivery Flow | 2162327700 | ? | ? | ? |
+| Release Confidence & Readiness | 2162622585 | ? | ? | ? |
+| Release Management | 2162524287 | ? | ? | ? |
+| Vendor & Team Collaboration | 2162753597 | ? | ? | ? |
 
 ## 50 Operations & Support (`2162720789`)
 
-| Topic | pageId |
-| --- | --- |
-| Deployment Runbooks | 2162032860 |
-| Database & Data Migration Runbooks | 2162425907 |
-| Production Access | 2162524307 |
-| Troubleshooting Index | 2162262161 |
-| Scheduled Jobs & Recovery | 2162786388 |
-| Data Repair & Reconciliation | 2162491501 |
-| Center & Customer Support Procedures | 2162393141 |
+| Title | pageId | Size | Status | Gist |
+| --- | --- | --- | --- | --- |
+| Deployment Runbooks | 2162032860 | ? | ? | ? |
+| Database & Data Migration Runbooks | 2162425907 | ? | ? | ? |
+| Production Access | 2162524307 | ? | ? | ? |
+| Troubleshooting Index | 2162262161 | ? | ? | ? |
+| Scheduled Jobs & Recovery | 2162786388 | ? | ? | ? |
+| Data Repair & Reconciliation | 2162491501 | ? | ? | ? |
+| Center & Customer Support Procedures | 2162393141 | ? | ? | ? |
 
 ## 60 History & Decisions (`2162786325`)
 
-| Topic | pageId |
-| --- | --- |
-| Architecture Decision Records | 2162688112 |
-| Superseded Standards | 2162262181 |
-| Migration History | 2162229413 |
-| Release & Product History | 2162098279 |
+| Title | pageId | Size | Status | Gist |
+| --- | --- | --- | --- | --- |
+| Architecture Decision Records | 2162688112 | ? | ? | ? |
+| Superseded Standards | 2162262181 | ? | ? | ? |
+| Migration History | 2162229413 | ? | ? | ? |
+| Release & Product History | 2162098279 | ? | ? | ? |
 
 ## Radius database reference (SQL)
 
-Hub: Radius Database Reference (`2162622605`), under Data Architecture. Read the hub first (gotchas and the map), then Overview and Conventions, then the one domain page the query needs.
+Hub: Radius Database Reference (`2162622605`), under Data Architecture. Read the hub first (small: gotchas and the map). Overview and Conventions and the domain pages are large; fetch each at most once per session, and search first for single columns or rules.
 
-| Topic | Page | pageId |
-| --- | --- | --- |
-| Hub, gotchas, map | Radius Database Reference | 2162622605 |
-| Keys, soft delete, audit columns, enums, tenancy, time zones, PII columns, query safety checklist | Radius DB Reference - Overview and Conventions | 2162098302 |
-| Leads, enrollment opportunities, enrollments, funnel reports | Radius DB Reference - Lead and Enrollment Funnel | 2162065483 |
-| Billing and membership | Radius DB Reference - Billing and Membership | 2162458752 |
-| Scheduling and attendance | Radius DB Reference - Scheduling and Attendance | 2162229433 |
-| Curriculum and assessment | Radius DB Reference - Curriculum and Assessment | 2162098323 |
-| People and organization | Radius DB Reference - People and Organization | 2162688135 |
+| Title | pageId | Size | Status | Gist |
+| --- | --- | --- | --- | --- |
+| Radius Database Reference | 2162622605 | ? | ? | ? |
+| Radius DB Reference - Overview and Conventions | 2162098302 | ? | ? | ? |
+| Radius DB Reference - Lead and Enrollment Funnel | 2162065483 | ? | ? | ? |
+| Radius DB Reference - Billing and Membership | 2162458752 | ? | ? | ? |
+| Radius DB Reference - Scheduling and Attendance | 2162229433 | ? | ? | ? |
+| Radius DB Reference - Curriculum and Assessment | 2162098323 | ? | ? | ? |
+| Radius DB Reference - People and Organization | 2162688135 | ? | ? | ? |
