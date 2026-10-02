@@ -1,30 +1,30 @@
 ---
 name: handbook
-description: Answer questions from the Mathnasium Technology & Product Handbook in Confluence: what the products do, systems and repositories, architecture, engineering standards, how Product, Engineering, QA, vendors and releases work, runbooks and troubleshooting, and how to write SQL against the Radius database. Use when asked "how does X work", "where is the standard for…", "which service owns…", "what does this table/column mean", "write a query for…", or about onboarding, environments, release process or the glossary.
+description: Answer questions from the Mathnasium Technology & Product Handbook in Confluence: what the products do, systems and repositories, architecture, engineering standards, how Product, Engineering, QA, vendors and releases work, runbooks and troubleshooting, and how to write SQL against the Radius database. Use for "how does X work", "where is the standard for…", "which service owns…", "what does this table or column mean", "write a query for…", or onboarding, environments, release process and glossary questions.
 ---
 
 # Technology & Product Handbook
 
-The handbook in Confluence is the **only** reference for this skill. Do not answer from memory or from other sources.
+The handbook in Confluence is the **only** reference. Do not answer from memory or from other sources.
 
-## How to answer
+## Start here
 
-1. Find the topic in [handbook-index.md](handbook-index.md). It lists each page's `pageId` and the cloudId.
-2. Read only the pages you need with the Atlassian connector (`getConfluencePage`, `contentFormat: markdown`). Follow the reading rules at the top of the index, including what to do with "Draft placeholder" pages.
-3. Answer from the page and link it, using the Jira-style rule for any Jira key you mention (`https://mathnasium.atlassian.net/browse/<KEY>`).
-4. Report the page's owner, status and last-verified date when it has them. The handbook is a draft, and a page that is not yet approved does not override existing documentation. Keep the page's own labels for legacy versus current standard.
-5. If the Atlassian connector is not available, say so and stop. Do not guess.
+1. Find the index with the Atlassian connector: `searchConfluenceUsingCql` with `label = "plugin-index" AND space = "IPD"` (cloudId `abd26ef1-c908-455d-8b20-516e025731b2`, site `https://mathnasium.atlassian.net`). Read that page once per session with `getConfluencePage`, `contentFormat: markdown`.
+2. Check its **Plugin contract** line. This plugin supports contract **1**. If the page says a higher number, tell the user to update the plugin and stop.
+3. Follow the index's **Reading rules** and **Intent router** to find the page you need. The index decides what to read; this file does not.
+4. Answer from the page, link it, and report its owner, status and last-verified date when it has them.
+
+If there is no Atlassian connector, no index page, or no matching page, say so plainly and stop. Never guess.
 
 ## SQL for the Radius database
 
-1. Read the Radius Database Reference hub (small). Fetch **Overview and Conventions** at most once per session, and only the single domain page the query needs. For one column or rule, search first (reading rules in the index) instead of fetching a large page.
-2. Follow the conventions and the query safety checklist on those pages. Keep the page's CONFIRMED and INFERRED labels, and say which assumptions a query rests on.
-3. Write read-only `SELECT` queries. Do not write inserts, updates, deletes or schema changes; point to the Data Repair & Reconciliation and Database & Data Migration runbook pages instead.
-4. You cannot run the query. Say so, and remind the user to verify object definitions as the reference page directs.
-5. Never ask for or include credentials, connection strings or production access details. If the schema for a request is not on the pages, say which table or column is unknown rather than inventing it.
+- Use the Radius database reference pages and the SQL, DAL & Data Access Standard that the index points to. Keep the pages' CONFIRMED and INFERRED labels and state the assumptions a query rests on.
+- Write read-only `SELECT` queries only. Point to the repair and migration runbook pages instead of writing inserts, updates, deletes or schema changes.
+- You cannot run queries. Say so, and tell the user to verify object definitions as the reference directs.
+- Never ask for or include credentials, connection strings or production access details. If a table or column is not on the pages, name it as unknown rather than inventing it.
 
 ## Ground rules
 
-- The handbook is read-only here. Do not create or edit Confluence pages or comments; a hook in this plugin asks for confirmation first.
-- For Jira Stories, Bugs, Tasks and releases, use the `write-jira-story` skill. Its Jira write rules apply here too.
-- Never copy secrets or credentials into any output.
+- The handbook is read-only here. Do not create or edit Confluence content; a hook asks for confirmation first.
+- For Jira Stories, Bugs, Tasks and releases, use the `write-jira-story` skill; its Jira write rules apply here too.
+- Link every Jira key to `https://mathnasium.atlassian.net/browse/<KEY>`. Never copy secrets into any output.

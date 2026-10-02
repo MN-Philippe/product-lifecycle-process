@@ -4,9 +4,11 @@ import shutil
 import subprocess
 import unittest
 
-from tools import build_plugin
+from pathlib import Path
 
-GUARD = build_plugin.PLUGIN_DIR / "hooks" / "guard.sh"
+ROOT = Path(__file__).resolve().parents[1]
+PLUGIN_DIR = ROOT / "plugins" / "mathnasium-product-lifecycle"
+GUARD = PLUGIN_DIR / "hooks" / "guard.sh"
 
 
 def run_guard(tool_name, **tool_input):
@@ -103,24 +105,21 @@ class HookWiringTests(unittest.TestCase):
             self.assertEqual(0, result.returncode)
             self.assertEqual("", result.stdout)
 
-    def test_hook_changes_require_a_plugin_rebuild(self):
-        self.assertTrue(build_plugin.is_current(), "Run: python tools/build_plugin.py")
-
 
 class WritePolicyTests(unittest.TestCase):
     def test_repo_standard_keeps_the_full_policy(self):
-        source = (build_plugin.ROOT / "standards" / "jira-conventions.md").read_text(encoding="utf-8")
+        source = (ROOT / "standards" / "jira-conventions.md").read_text(encoding="utf-8")
         self.assertIn("## Write policy", source)
         self.assertIn("`git push` to a working branch, is not covered", source)
         self.assertIn("every Story's full draft", source)
 
     def test_skill_carries_the_short_rule_until_the_handbook_has_it(self):
-        skill = (build_plugin.SKILLS_DIR / "write-jira-story" / "SKILL.md").read_text(encoding="utf-8")
+        skill = ((PLUGIN_DIR / "skills") / "write-jira-story" / "SKILL.md").read_text(encoding="utf-8")
         self.assertIn("GitHub issues and PRs are read-only", skill)
         self.assertIn("draft, approve, then write", skill)
 
     def test_no_playbook_tells_the_agent_to_create_github_items(self):
-        for path in (build_plugin.ROOT / "playbooks").glob("*.md"):
+        for path in (ROOT / "playbooks").glob("*.md"):
             text = path.read_text(encoding="utf-8").lower()
             self.assertFalse(re.search(r"create (?:a |an )?github|open (?:a |an )?github issue", text), path.name)
 

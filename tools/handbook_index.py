@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Keep handbook/index.md honest without scanning the handbook over and over.
+"""Keep the Handbook Index page honest without scanning the handbook over and over.
+
+The index is a Confluence page (label ``plugin-index``). Fetch its markdown body to a file, run
+this tool on it with ``--index``, then publish the updated body back (with approval).
 
 Stateless, like jira_helper.py: it never calls Confluence. An agent or person fetches the
 page tree once through the Atlassian connector (one ``getConfluencePageDescendants`` call
@@ -23,7 +26,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_INDEX = ROOT / "handbook" / "index.md"
+DEFAULT_INDEX = ROOT / "handbook" / "index-page.md"
 
 ROW = re.compile(r"^\|\s*(?P<title>[^|]+?)\s*\|\s*(?P<id>\d{10})\s*\|\s*(?P<size>[^|]*?)\s*\|\s*(?P<status>[^|]*?)\s*\|\s*(?P<gist>[^|]*?)\s*\|\s*$")
 VERIFIED = re.compile(r"^(?P<prefix>\*\*Verified:\*\*\s*)(?P<date>\d{4}-\d{2}-\d{2}|never)", re.M)

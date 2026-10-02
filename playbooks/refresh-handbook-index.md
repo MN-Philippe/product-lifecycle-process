@@ -1,15 +1,16 @@
 # Playbook: Refresh the Handbook Index
 
-Read: [`handbook/index.md`](../handbook/index.md), [`tools/handbook_index.py`](../tools/handbook_index.py)
+Read: [`tools/handbook_index.py`](../tools/handbook_index.py)
 
-Keeps the plugin's page map accurate with one listing call instead of re-reading pages. Run it when the handbook structure changes, when the index `Verified` date is more than 30 days old, or when a page the plugin cites has moved.
+The Handbook Index is a Confluence page (label `plugin-index`). Keeping it accurate costs one listing call, not a re-read of the handbook. Run this when the handbook structure changes, when the page's **Verified** date is more than 60 days old, or when a page the plugin cites has moved.
 
 ## Steps
 
-1. Fetch the live tree once: `getConfluencePageDescendants` on the root (`2162262120`) with depth 4, and again on the Product Lifecycle Process and Radius Database Reference pages if they are not under the root. Save the JSON outside the repo.
-2. Run `python tools/handbook_index.py check <listing.json> --root 2162262120`. It reports pages missing from Confluence, pages not in the index, renames, pages changed since `Verified`, and `(2)` duplicates it ignores.
-3. Read **only** the pages it lists as changed or new (not the whole handbook). Record for each: character count, whether it is still a "Draft placeholder", and a one-line gist.
-4. Put those values in a profile JSON (`pageId`, `title`, `chars`, `placeholder`, `gist`) and run `python tools/handbook_index.py update <profile.json>`. Add rows by hand for new pages and remove rows for deleted ones.
-5. Run `python tools/build_plugin.py` to copy the index into the skills and bump the plugin version, then the tests, then open a PR.
+1. Fetch the index page body (`getConfluencePage`, markdown) and save it to a file outside the repo.
+2. Fetch the live tree once: `getConfluencePageDescendants` on the root (`2162262120`), depth 4, and again on any parent that sits outside the root (Product Lifecycle Process, Radius Database Reference). Save the JSON.
+3. Run `python tools/handbook_index.py --index <index.md> check <listing.json> --root 2162262120`. It reports pages missing from Confluence, pages not in the index, renames, pages changed since **Verified**, and `(2)` duplicates it ignores.
+4. Read **only** the pages it flags. Record for each: character count, whether it is still a "Draft placeholder", and a one-line gist.
+5. Put those values in a profile JSON (`pageId`, `title`, `chars`, `placeholder`, `gist`) and run `python tools/handbook_index.py --index <index.md> update <profile.json>`. Add rows by hand for new pages and remove rows for deleted ones.
+6. Show the result and, once approved, update the Confluence page. Do not edit Confluence without approval.
 
-Do not store page content in this repo. The index keeps a size band, a stub flag and a one-line gist only.
+Do not store page content in this repo. The index keeps a size band, a stub flag and a one-line gist only. Plugin changes are never needed for any of this.

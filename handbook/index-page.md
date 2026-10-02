@@ -1,29 +1,60 @@
-# Technology & Product Handbook: page index
+<!--
+DRAFT of the Confluence page "Handbook Index" (label: plugin-index), space IPD, under the handbook root.
+Publish it, then delete this file: Confluence is the only source. Maintain it with
+playbooks/refresh-handbook-index.md and tools/handbook_index.py.
+-->
 
-Maps handbook topics to Confluence page IDs so the plugin can fetch exactly the page it needs. It holds no handbook content; the pages are the content.
+# Handbook Index
+
+The entry point for the Mathnasium Claude plugin. The plugin finds this page by its label `plugin-index`, reads it once per session, and follows it to every other page. Keep this page current and the plugin never needs updating.
+
+**Plugin contract:** 1
+**Verified:** 2026-10-02
+
+> Bump **Plugin contract** only for a breaking change to this page's structure (for example a renamed section the plugin depends on). Plugins built for an older contract will tell their users to update.
 
 - **Site:** `https://mathnasium.atlassian.net`, space `IPD`
-- **cloudId:** `abd26ef1-c908-455d-8b20-516e025731b2`
-- **Root:** [Technology & Product Handbook — Draft](https://mathnasium.atlassian.net/wiki/spaces/IPD/pages/2162262120) (`2162262120`)
+- **Root:** Technology & Product Handbook — Draft (`2162262120`)
 - Page URL: `https://mathnasium.atlassian.net/wiki/spaces/IPD/pages/<pageId>`
 
-## How to read a page
-
-**Verified:** 2026-10-02
+## Reading rules
 
 Size bands: **S** under 4K characters, **M** under 20K, **L** under 60K, **XL** above. Status: **real** has content; **stub** is a "Draft placeholder".
 
-1. Pick the page from the tables below by title and gist. Do not browse: never fetch the root or a section page to look around.
+1. Pick the page from the map below by title and gist. Do not browse: never fetch the root or a section page to look around.
 2. **Skip stubs.** Status `stub` means there is nothing to read yet. Say the topic is not documented in the handbook yet and quote the gist, then stop. Do not answer from memory.
 3. **Look up facts before reading pages.** For a single fact (a column, a rule, a name), call `searchConfluenceUsingCql` (`text ~ "<term>" AND space = IPD`) and answer from the excerpts. Fetch the whole page only when the excerpt is not enough.
-4. **Size L and XL pages are never fetched in full by default.** Search first; if you must fetch, fetch the one page that answers the question and nothing else from that family.
-5. **Read each page at most once per session.** Reuse what you already read instead of fetching it again.
-6. To read a page, call `getConfluencePage` with the `cloudId`, the `pageId` and `contentFormat: markdown`. Use the body, not the summary field. Follow numeric page-ID links inside a page only when they point at the next page you need.
-7. If an ID fails or the title no longer matches, find the page with `searchConfluenceUsingCql` (`title = "<title>" AND space = IPD`) and tell the user the index is stale.
-8. **Freshness.** `Verified` is the date this index's sizes, statuses and gists were last checked. If it is more than 30 days old, or the user says a page has changed, say so. One `getConfluencePageDescendants` call on the root returns every page's lastModified; use it to see what changed instead of re-reading pages.
+4. **Never fetch L or XL pages in full by default.** Search first; if you must fetch, fetch the one page that answers the question and nothing else from that family.
+5. **Read each page at most once per session.** Reuse what you already read.
+6. To read a page, call `getConfluencePage` with the cloudId, the `pageId` and `contentFormat: markdown`. Use the body, not the summary field. Follow numeric page-ID links inside a page only when they point at the next page you need.
+7. If an ID fails or the title no longer matches, find the page with `searchConfluenceUsingCql` (`title = "<title>" AND space = IPD`) and tell the user this index is stale.
+8. **Freshness.** If **Verified** is more than 60 days old, or the user says a page changed, say so. One `getConfluencePageDescendants` call on the root returns every page's lastModified; use it to see what changed instead of re-reading pages.
 9. Ignore pages titled `… (2)`: they are duplicates awaiting cleanup.
 
 The handbook is a **draft** and does not yet supersede existing documentation. Where a page carries an owner, status or last-verified date, report it. Current implementation is not automatically an approved standard; keep the page's own legacy-versus-standard labels.
+
+## Intent router
+
+| The user wants to… | Read |
+| --- | --- |
+| Write a Story | Playbook - Write Story, then Story Standard, Jira Conventions, Template - Story |
+| Refine a Story or improve its acceptance criteria | Playbook - Refine Story, Story Standard |
+| Split a Story or one with an estimate over 5 points | Playbook - Split Story, Story Standard |
+| Decompose an Epic, BRD or initiative into Stories | Playbook - Decompose Initiative, Story Standard, Task Standard |
+| Turn a raw request, email or Slack thread into work | Playbook - Intake, Lifecycle Standard |
+| Check a Story is ready for dev | Playbook - Ready Check, Lifecycle Standard |
+| Review or audit a Story | Playbook - Review Story, Story Standard |
+| Triage a Bug | Playbook - Triage Bug, Bug Standard, Template - Bug |
+| Write a Task or Spike | Task Standard, Template - Task |
+| Retire replaced tickets | Playbook - Cleanup |
+| Prepare a release or the monthly release docs | Playbook - Release Readiness or Release Docs, Lifecycle Standard |
+| Assess release confidence | AI Release Confidence Standard, Playbook - Assess Release Confidence |
+| Review an Epic or a backlog | Playbook - Review Epic or Backlog Review |
+| Onboard the vendor | Template - Vendor Guide |
+| Understand a product, system, standard or procedure | The matching section map below |
+| Write SQL for the Radius database | Radius database reference map below, plus SQL, DAL & Data Access Standard |
+
+## Page map
 
 ## Jira work: standards, playbooks, templates
 

@@ -9,7 +9,7 @@ It is **not a copy of Jira**. Jira stays the live system of record. This reposit
 - canonical lifecycle and Jira-work standards ([`standards/`](standards/));
 - repeatable agent playbooks ([`playbooks/`](playbooks/)) and templates ([`templates/`](templates/));
 - reusable JQL ([`jira/queries.yaml`](jira/queries.yaml)) and small stateless helpers ([`tools/`](tools/));
-- the Mathnasium Claude plugin ([`plugins/`](plugins/)), which reads the Confluence Technology & Product Handbook live; [`handbook/index.md`](handbook/index.md) maps topics to its page IDs;
+- the Mathnasium Claude plugin ([`plugins/`](plugins/)), a lean standalone install that reads the Confluence Technology & Product Handbook live (see [The Claude plugin](#the-claude-plugin));
 - durable artifact templates and initiative workspaces for material that Jira is not a good home for ([`artifacts/`](artifacts/), [`initiatives/`](initiatives/)).
 
 ## What this repo is not
@@ -51,14 +51,15 @@ Broad good-practice standards are not automation scope. The scheduled job assess
 
 An initiative does not need a folder because it has a Jira Epic. Create one under [`initiatives/`](initiatives/) only for durable material such as architecture, ADRs, integration contracts, migration plans, dependency maps, test strategy or rollout plans. Reference the Jira key; never copy Jira state.
 
-## Updating the plugin and the handbook
+## The Claude plugin
 
-The plugin does not bundle standards or playbooks. It reads the [Technology & Product Handbook](https://mathnasium.atlassian.net/wiki/spaces/IPD/pages/2162262120) in Confluence at runtime, using each person's own Confluence access.
+[`plugins/mathnasium-product-lifecycle/`](plugins/mathnasium-product-lifecycle/) is a **standalone install**, not synced from this repo. It is five small files: two skills, a hook, and a manifest. It holds no handbook content. At runtime it finds the **Handbook Index** page in Confluence by its label (`plugin-index`), reads it, and follows it to the Technology & Product Handbook, using each person's own Confluence access.
 
-- **Handbook content** is edited in Confluence.
-- **Page IDs** live in [`handbook/index.md`](handbook/index.md). When a page is added, renamed or recreated, update the index.
-- **Plugin changes** (the two `SKILL.md` files, the hook, the index): run `python tools/build_plugin.py`. It copies the index into each skill and bumps the plugin version. Then run `python -m unittest discover -s tests -p 'test_*.py'` and open a PR. CI checks that the plugin is in sync (`python tools/build_plugin.py --check`).
-- On merge to `main`, the GitHub-synced org marketplace updates the plugin automatically.
+So Confluence changes reach everyone immediately: edit the handbook or the index page and nothing else needs to happen. Re-share the plugin only when a skill or the hook changes.
+
+- **Package:** `python tools/package_plugin.py` writes `dist/mathnasium-product-lifecycle-<version>.zip`. Bump `version` in `plugin.json` first; an install only updates when the version increases.
+- **Contract:** the index page declares `Plugin contract: 1`. Bump it only for a breaking change to the page's structure; older plugins then tell their users to update.
+- **Index page:** maintained in Confluence. [`handbook/index-page.md`](handbook/index-page.md) is the draft until it is published; delete it afterwards. Refresh the page's sizes, statuses and gists with [`playbooks/refresh-handbook-index.md`](playbooks/refresh-handbook-index.md).
 
 `standards/`, `playbooks/` and `templates/` in this repo currently duplicate the handbook's Product Lifecycle pages and feed `tools/jira_helper.py` and `AGENTS.md`. Until one side is declared the source, a change to one must be made in the other.
 
